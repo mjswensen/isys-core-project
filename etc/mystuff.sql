@@ -4,21 +4,21 @@
 
 SET foreign_key_checks = 0;
 
-DROP TABLE IF EXISTS general_ledger;
-DROP TABLE IF EXISTS store_products;
-DROP TABLE IF EXISTS sales;
-DROP TABLE IF EXISTS revenue_sources;
-DROP TABLE IF EXISTS commissions;
-DROP TABLE IF EXISTS debit_credit;
-DROP TABLE IF EXISTS journal_entries;
-DROP TABLE IF EXISTS transactions;
-DROP TABLE IF EXISTS employees;
-DROP TABLE IF EXISTS stores;
-DROP TABLE IF EXISTS customers;
-DROP TABLE IF EXISTS physical_products;
-DROP TABLE IF EXISTS conceptual_products;
-DROP TABLE IF EXISTS products;
-DROP TABLE IF EXISTS business_objects;
+DROP TABLE IF EXISTS generalledger;
+DROP TABLE IF EXISTS storeproduct;
+DROP TABLE IF EXISTS sale;
+DROP TABLE IF EXISTS revenuesource;
+DROP TABLE IF EXISTS commission;
+DROP TABLE IF EXISTS debitcredit;
+DROP TABLE IF EXISTS journalentry;
+DROP TABLE IF EXISTS transaction;
+DROP TABLE IF EXISTS employee;
+DROP TABLE IF EXISTS store;
+DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS physicalproduct;
+DROP TABLE IF EXISTS conceptualproduct;
+DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS businessobject;
 
 SET foreign_key_checks = 1;
 
@@ -28,22 +28,22 @@ SET foreign_key_checks = 1;
 # ------------------------------------------------------------
 
 
-# Create table business_objects
+# Create table businessobject
 # ------------------------------------------------------------
 
 
-CREATE TABLE business_objects (
+CREATE TABLE businessobject (
   id CHAR(40) PRIMARY KEY,
   botype VARCHAR(250)
 );
 
 
 
-# Create table stores
+# Create table store
 # ------------------------------------------------------------
 
 
-CREATE TABLE stores (
+CREATE TABLE store (
   id CHAR(40) PRIMARY KEY,
   location VARCHAR(50),
   manager CHAR(40),
@@ -52,227 +52,227 @@ CREATE TABLE stores (
   city VARCHAR(100),
   state CHAR(2),
   zip VARCHAR(12),
-  FOREIGN KEY (id) REFERENCES business_objects (id)
+  FOREIGN KEY (id) REFERENCES businessobject (id)
 );
 
 
 
-# Create table employees
+# Create table employee
 # ------------------------------------------------------------
 
 
-CREATE TABLE employees (
+CREATE TABLE employee (
   id CHAR(40) PRIMARY KEY,
-  first_name VARCHAR(50),
-  middle_name VARCHAR(50),
-  last_name VARCHAR(50),
-  hire_date date,
+  firstname VARCHAR(50),
+  middlename VARCHAR(50),
+  lastname VARCHAR(50),
+  hiredate date,
   phone VARCHAR(20),
   salary NUMERIC(10,2),
-  store_id CHAR(40) REFERENCES stores (id),
-  position_id CHAR(40),
-  division_id CHAR(40),
-  FOREIGN KEY (id) REFERENCES business_objects (id)
+  storeid CHAR(40) REFERENCES store (id),
+  positionid CHAR(40),
+  divisionid CHAR(40),
+  FOREIGN KEY (id) REFERENCES businessobject (id)
 );
 
 
-# Now that both stores and employees tables are created, and since they reference each other, add FK to stores for manager.
+# Now that both store and employee tables are created, and since they reference each other, add FK to store for manager.
 # ------------------------------------------------------------
 
 
-ALTER TABLE stores ADD FOREIGN KEY (manager) REFERENCES employees (id);
+ALTER TABLE store ADD FOREIGN KEY (manager) REFERENCES employee (id);
 
 
-# Create table products
+# Create table product
 # ------------------------------------------------------------
 
 
-CREATE TABLE products (
+CREATE TABLE product (
   id CHAR(40) PRIMARY KEY,
   price NUMERIC(10,2),
-  FOREIGN KEY (id) REFERENCES business_objects (id)
+  FOREIGN KEY (id) REFERENCES businessobject (id)
 );
 
 
 
-# Create table conceptual_products
+# Create table conceptualproduct
 # ------------------------------------------------------------
 
 
-CREATE TABLE conceptual_products (
+CREATE TABLE conceptualproduct (
   id CHAR(40) PRIMARY KEY,
   name VARCHAR(50),
   description TEXT,
   manufacturer VARCHAR(50),
-  average_cost NUMERIC(10,2),
-  category_id CHAR(40),
-  vendor_id CHAR(40),
-  FOREIGN KEY (id) REFERENCES products (id)
+  averagecost NUMERIC(10,2),
+  categoryid CHAR(40),
+  vendorid CHAR(40),
+  FOREIGN KEY (id) REFERENCES product (id)
 );
 
 
 
-# Create table physical_products
+# Create table physicalproduct
 # ------------------------------------------------------------
 
 
-CREATE TABLE physical_products (
+CREATE TABLE physicalproduct (
   id CHAR(40) PRIMARY KEY,
-  store_id CHAR(40),
-  conceptual_product_id CHAR(40),
-  serial_num VARCHAR(100),
-  shelf_location VARCHAR(100),
+  storeid CHAR(40),
+  conceptualproductid CHAR(40),
+  serialnum VARCHAR(100),
+  shelflocation VARCHAR(100),
   purchased DATETIME,
   cost NUMERIC(10,2),
   status VARCHAR(100),
-  commission_rate DOUBLE,
-  FOREIGN KEY (id) REFERENCES products (id),
-  FOREIGN KEY (store_id) REFERENCES stores (id),
-  FOREIGN KEY (conceptual_product_id) REFERENCES conceptual_products (id)
+  commissionrate DOUBLE,
+  FOREIGN KEY (id) REFERENCES product (id),
+  FOREIGN KEY (storeid) REFERENCES store (id),
+  FOREIGN KEY (conceptualproductid) REFERENCES conceptualproduct (id)
 );
 
 
 
-# Create table store_products
+# Create table storeproduct
 # ------------------------------------------------------------
 
 
-CREATE TABLE store_products (
+CREATE TABLE storeproduct (
   id CHAR(40) PRIMARY KEY,
-  conceptual_product_id CHAR(40),
-  store_id CHAR(40),
-  quantity_on_hand int(11),
-  shelf_location VARCHAR(50),
-  FOREIGN KEY (id) REFERENCES business_objects (id),
-  FOREIGN KEY (conceptual_product_id) REFERENCES conceptual_products (id),
-  FOREIGN KEY (store_id) REFERENCES stores (id)
+  conceptualproductid CHAR(40),
+  storeid CHAR(40),
+  quantityonhand int(11),
+  shelflocation VARCHAR(50),
+  FOREIGN KEY (id) REFERENCES businessobject (id),
+  FOREIGN KEY (conceptualproductid) REFERENCES conceptualproduct (id),
+  FOREIGN KEY (storeid) REFERENCES store (id)
 );
 
 
 
-# Create table customers
+# Create table customer
 # ------------------------------------------------------------
 
 
-CREATE TABLE customers (
+CREATE TABLE customer (
   id CHAR(40) PRIMARY KEY,
-  first_name VARCHAR(100),
-  last_name VARCHAR(100),
+  firstname VARCHAR(100),
+  lastname VARCHAR(100),
   phone VARCHAR(20),
   address TEXT,
-  FOREIGN KEY (id) REFERENCES business_objects (id)
+  FOREIGN KEY (id) REFERENCES businessobject (id)
 );
 
 
 
-# Create table transactions
+# Create table transaction
 # ------------------------------------------------------------
 
 
-CREATE TABLE transactions (
+CREATE TABLE transaction (
   id CHAR(40) PRIMARY KEY,
-  customer_id CHAR(40),
-  store_id CHAR(40),
-  employee_id CHAR(40),
+  customerid CHAR(40),
+  storeid CHAR(40),
+  employeeid CHAR(40),
   date DATETIME,
   subtotal NUMERIC(10,2),
   tax NUMERIC(10,2),
   total NUMERIC(10,2),
-  FOREIGN KEY (id) REFERENCES business_objects (id),
-  FOREIGN KEY (customer_id) REFERENCES customers (id),
-  FOREIGN KEY (store_id) REFERENCES stores (id),
-  FOREIGN KEY (employee_id) REFERENCES employees (id)
+  FOREIGN KEY (id) REFERENCES businessobject (id),
+  FOREIGN KEY (customerid) REFERENCES customer (id),
+  FOREIGN KEY (storeid) REFERENCES store (id),
+  FOREIGN KEY (employeeid) REFERENCES employee (id)
 );
 
 
 
-# Create table journal_entries
+# Create table journalentry
 # ------------------------------------------------------------
 
 
-CREATE TABLE journal_entries (
+CREATE TABLE journalentry (
   id CHAR(40) PRIMARY KEY,
-  transaction_id CHAR(40),
+  transactionid CHAR(40),
   date DATETIME,
-  is_posted TINYINT(4) DEFAULT 0,
-  FOREIGN KEY (id) REFERENCES business_objects (id),
-  FOREIGN KEY (transaction_id) REFERENCES transactions (id)
+  isposted TINYINT(4) DEFAULT 0,
+  FOREIGN KEY (id) REFERENCES businessobject (id),
+  FOREIGN KEY (transactionid) REFERENCES transaction (id)
 );
 
 
 
-# Create table debit_credit
+# Create table debitcredit
 # ------------------------------------------------------------
 
 
-CREATE TABLE debit_credit (
+CREATE TABLE debitcredit (
   id CHAR(40) PRIMARY KEY,
-  journal_entry_id CHAR(40),
+  journalentryid CHAR(40),
   type enum('DR','CR'),
-  gl_account VARCHAR(50),
+  glaccount VARCHAR(50),
   amount NUMERIC(10,2),
-  FOREIGN KEY (id) REFERENCES business_objects (id),
-  FOREIGN KEY (journal_entry_id) REFERENCES journal_entries (id)
+  FOREIGN KEY (id) REFERENCES businessobject (id),
+  FOREIGN KEY (journalentryid) REFERENCES journalentry (id)
 );
 
 
 
-# Create table commissions
+# Create table commission
 # ------------------------------------------------------------
 
 
-CREATE TABLE commissions (
+CREATE TABLE commission (
   id CHAR(40) PRIMARY KEY,
-  transaction_id CHAR(40),
-  employee_id CHAR(40),
+  transactionid CHAR(40),
+  employeeid CHAR(40),
   amount NUMERIC(10,2),
   date DATETIME,
-  is_paid TINYINT(4) DEFAULT 0,
-  FOREIGN KEY (id) REFERENCES business_objects (id),
-  FOREIGN KEY (transaction_id) REFERENCES transactions (id),
-  FOREIGN KEY (employee_id) REFERENCES employees (id)
+  ispaid TINYINT(4) DEFAULT 0,
+  FOREIGN KEY (id) REFERENCES businessobject (id),
+  FOREIGN KEY (transactionid) REFERENCES transaction (id),
+  FOREIGN KEY (employeeid) REFERENCES employee (id)
 );
 
 
 
-# Create table revenue_sources
+# Create table revenuesource
 # ------------------------------------------------------------
 
 
-CREATE TABLE revenue_sources (
+CREATE TABLE revenuesource (
   id CHAR(40) PRIMARY KEY,
-  transaction_id CHAR(40),
-  charge_amount NUMERIC(10,2),
+  transactionid CHAR(40),
+  chargeamount NUMERIC(10,2),
   type VARCHAR(30),
-  FOREIGN KEY (id) REFERENCES business_objects (id),
-  FOREIGN KEY (transaction_id) REFERENCES transactions (id)
+  FOREIGN KEY (id) REFERENCES businessobject (id),
+  FOREIGN KEY (transactionid) REFERENCES transaction (id)
 );
 
 
 
-# Create table sales
+# Create table sale
 # ------------------------------------------------------------
 
 
-CREATE TABLE sales (
+CREATE TABLE sale (
   id CHAR(40) PRIMARY KEY,
-  product_id CHAR(40),
+  productid CHAR(40),
   quantity int(11),
-  FOREIGN KEY (id) REFERENCES business_objects (id)
+  FOREIGN KEY (id) REFERENCES businessobject (id)
 );
 
 
 
-# Create table general_ledger
+# Create table generalledger
 # ------------------------------------------------------------
 
 
-CREATE TABLE general_ledger (
+CREATE TABLE generalledger (
   id CHAR(40) PRIMARY KEY,
   account VARCHAR(50),
   balance NUMERIC(10,2),
   type enum('DR','CR'),
-  FOREIGN KEY (id) REFERENCES business_objects (id)
+  FOREIGN KEY (id) REFERENCES businessobject (id)
 );
 
 
@@ -283,11 +283,11 @@ CREATE TABLE general_ledger (
 
 
 
-# Populate table business_objects
+# Populate table businessobject
 # ------------------------------------------------------------
 
 
-INSERT INTO `business_objects` (`id`, `botype`)
+INSERT INTO `businessobject` (`id`, `botype`)
 VALUES
   ('commission1','edu.byu.isys413.data.Commission'),
   ('conceptualProduct1','edu.byu.isys413.data.ConceptualProduct'),
@@ -312,157 +312,157 @@ VALUES
 
 
 
-# Populate table stores
+# Populate table store
 # ------------------------------------------------------------
 
 
-INSERT INTO `stores` (`id`, `location`, `manager`, `phone`, `address`, `city`, `state`, `zip`)
+INSERT INTO `store` (`id`, `location`, `manager`, `phone`, `address`, `city`, `state`, `zip`)
 VALUES
   ('store1','Orem',NULL,'801-123-1234','1600 N 800 E','Orem','UT','84720');
 
 
 
-# Populate table employees
+# Populate table employee
 # ------------------------------------------------------------
 
 
-INSERT INTO `employees` (`id`, `first_name`, `middle_name`, `last_name`, `hire_date`, `phone`, `salary`, `store_id`, `position_id`, `division_id`)
+INSERT INTO `employee` (`id`, `firstname`, `middlename`, `lastname`, `hiredate`, `phone`, `salary`, `storeid`, `positionid`, `divisionid`)
 VALUES
   ('employee1','John','Peter','Appleseed','2007-02-07','801-347-2473',65000.00,'store1',NULL,NULL),
   ('employee2','Mark','Leo','Jackson','2008-06-23','801-238-4721',44000.00,'store1',NULL,NULL);
 
 
-# Now that both stores and employees tables are created, and since they reference each other, add FK to store for manager.
+# Now that both store and employee tables are created, and since they reference each other, add FK to store for manager.
 # ------------------------------------------------------------
 
 
-UPDATE stores SET manager = 'employee1' WHERE id = 'store1';
+UPDATE store SET manager = 'employee1' WHERE id = 'store1';
 
 
 
-# Populate table products
+# Populate table product
 # ------------------------------------------------------------
 
 
-INSERT INTO `products` (`id`, `price`)
+INSERT INTO `product` (`id`, `price`)
 VALUES
   ('conceptualProduct1',499.99),
   ('physicalProduct1',499.99);
 
 
 
-# Populate table conceptual_products
+# Populate table conceptualproduct
 # ------------------------------------------------------------
 
 
-INSERT INTO `conceptual_products` (`id`, `name`, `description`, `manufacturer`, `average_cost`, `category_id`, `vendor_id`)
+INSERT INTO `conceptualproduct` (`id`, `name`, `description`, `manufacturer`, `averagecost`, `categoryid`, `vendorid`)
 VALUES
   ('conceptualProduct1','EOS','Entry-level digital camera.','Canon',300.00,NULL,NULL);
 
 
 
-# Populate table physical_products
+# Populate table physicalproduct
 # ------------------------------------------------------------
 
 
-INSERT INTO `physical_products` (`id`, `store_id`, `conceptual_product_id`, `serial_num`, `shelf_location`, `purchased`, `cost`, `status`, `commission_rate`)
+INSERT INTO `physicalproduct` (`id`, `storeid`, `conceptualproductid`, `serialnum`, `shelflocation`, `purchased`, `cost`, `status`, `commissionrate`)
 VALUES
   ('physicalProduct1','store1','conceptualProduct1','JSDF79SF9S8CX','Aisle 5','2012-12-03 08:00:00',300.00,NULL,0.04);
 
 
 
-# Populate table store_products
+# Populate table storeproduct
 # ------------------------------------------------------------
 
 
-INSERT INTO `store_products` (`id`, `conceptual_product_id`, `store_id`, `quantity_on_hand`, `shelf_location`)
+INSERT INTO `storeproduct` (`id`, `conceptualproductid`, `storeid`, `quantityonhand`, `shelflocation`)
 VALUES
   ('storeProduct1','conceptualProduct1','store1',5,'Aisle 5');
 
 
-# Populate table customers
+# Populate table customer
 # ------------------------------------------------------------
 
 
-INSERT INTO `customers` (`id`, `first_name`, `last_name`, `phone`, `address`)
+INSERT INTO `customer` (`id`, `firstname`, `lastname`, `phone`, `address`)
 VALUES
   ('customer1','Jeff','Johnson','801-148-1844','627 N 300 W\nProvo, UT 84601');
 
 
 
-# Populate table transactions
+# Populate table transaction
 # ------------------------------------------------------------
 
 
-INSERT INTO `transactions` (`id`, `customer_id`, `store_id`, `employee_id`, `date`, `subtotal`, `tax`, `total`)
+INSERT INTO `transaction` (`id`, `customerid`, `storeid`, `employeeid`, `date`, `subtotal`, `tax`, `total`)
 VALUES
   ('transaction1','customer1','store1','employee2','2012-08-08 12:59:04',499.99,32.50,532.49);
 
 
 
-# Populate table journal_entries
+# Populate table journalentry
 # ------------------------------------------------------------
 
 
-INSERT INTO `journal_entries` (`id`, `transaction_id`, `date`, `is_posted`)
+INSERT INTO `journalentry` (`id`, `transactionid`, `date`, `isposted`)
 VALUES
   ('journalEntry1','transaction1','2012-08-08 12:59:04',0);
 
 
 
-# Populate table debit_credit
+# Populate table debitcredit
 # ------------------------------------------------------------
 
 
-INSERT INTO `debit_credit` (`id`, `journal_entry_id`, `type`, `gl_account`, `amount`)
+INSERT INTO `debitcredit` (`id`, `journalentryid`, `type`, `glaccount`, `amount`)
 VALUES
   ('debitCredit1','journalEntry1','DR','Cash',532.49),
   ('debitCredit2','journalEntry1','CR','Commission Payable',20.00),
   ('debitCredit3','journalEntry1','CR','Tax Payable',32.50),
-  ('debitCredit4','journalEntry1','CR','Sales Revenue',479.99);
+  ('debitCredit4','journalEntry1','CR','sale Revenue',479.99);
 
 
 
-# Populate table commissions
+# Populate table commission
 # ------------------------------------------------------------
 
 
-INSERT INTO `commissions` (`id`, `transaction_id`, `employee_id`, `amount`, `date`, `is_paid`)
+INSERT INTO `commission` (`id`, `transactionid`, `employeeid`, `amount`, `date`, `ispaid`)
 VALUES
   ('commission1','transaction1','employee2',20.00,'2012-08-08 12:59:04',0);
 
 
 
-# Populate table revenue_sources
+# Populate table revenuesource
 # ------------------------------------------------------------
 
 
-INSERT INTO `revenue_sources` (`id`, `transaction_id`, `charge_amount`, `type`)
+INSERT INTO `revenuesource` (`id`, `transactionid`, `chargeamount`, `type`)
 VALUES
   ('sale1','transaction1',532.49,'Sale');
 
 
 
-# Populate table sales
+# Populate table sale
 # ------------------------------------------------------------
 
 
-INSERT INTO `sales` (`id`, `product_id`, `quantity`)
+INSERT INTO `sale` (`id`, `productid`, `quantity`)
 VALUES
   ('Sale1','physicalProduct1',1);
 
 
 
-# Populate table general_ledger
+# Populate table generalledger
 # ------------------------------------------------------------
 
 
-INSERT INTO `general_ledger` (`id`, `account`, `balance`, `type`)
+INSERT INTO `generalledger` (`id`, `account`, `balance`, `type`)
 VALUES
   ('glAccount1','Cash',25000.00,'DR'),
   ('glAccount2','Commission Payable',3300.00,'CR'),
   ('glAccount3','Commission Expense',0.00,'DR'),
-  ('glAccount4','Sales Revenue',125000.00,'DR'),
+  ('glAccount4','sale Revenue',125000.00,'DR'),
   ('glAccount5','Tax Payable',15000.00,'CR');
 
 
