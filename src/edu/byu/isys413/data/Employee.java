@@ -11,142 +11,37 @@
 
 package edu.byu.isys413.data;
 
+import java.util.Date;
+
 /**
- * An employee.  Example BO that has inheritance.
- *
- * @author Conan C. Albrecht <conan@warp.byu.edu>
- * @version 1.1
+ * An employee.
  */
-public class Employee extends Person {
+public class Employee extends BusinessObject {
 
     @BusinessObjectField
-    private String username = null;
+    private String firstName;
     @BusinessObjectField
-    private String password = null;
+    private String middleName;
     @BusinessObjectField
-    private java.util.Date birthdate = null;
+    private String lastName;
     @BusinessObjectField
-    private double salary = 0.0;
+    private Date hireDate = null;
     @BusinessObjectField
-    private float favoriteNumber = 0.0f;
+    private String phone;
     @BusinessObjectField
-    private int IQ = 0;
+    private double salary;
     @BusinessObjectField
-    private long distance = 0;
-
+    private String storeId;
+    @BusinessObjectField
+    private Store store;
+    @BusinessObjectField
+    private String positionId;
+    @BusinessObjectField
+    private String divisionId;
+    
     /** Creates a new instance of BusinessObject */
-    public Employee(String id) {
-        super(id);
-    }//constructor
+	public Employee(String id) {
+		super(id);
+	}
 
-    /**
-     * Returns the username.
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     *  Sets the username.
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-        setDirty();
-    }
-
-    /**
-     * Returns the password.
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Sets the password.
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-        setDirty();
-    }
-
-  /**
-   * @return the birthdate
-   */
-  public java.util.Date getBirthdate() {
-    return birthdate;
-  }
-
-  /**
-   * @param birthdate the birthdate to set
-   */
-  public void setBirthdate(java.util.Date birthdate) {
-    this.birthdate = birthdate;
-    setDirty();
 }
-
-  /**
-   * @return the salary
-   */
-  public double getSalary() {
-    return salary;
-  }
-
-  /**
-   * @param salary the salary to set
-   */
-  public void setSalary(double salary) {
-    this.salary = salary;
-    setDirty();
-  }
-
-  /**
-   * @return the favoriteNumber
-   */
-  public float getFavoriteNumber() {
-    return favoriteNumber;
-  }
-
-  /**
-   * @param favoriteNumber the favoriteNumber to set
-   */
-  public void setFavoriteNumber(float favoriteNumber) {
-    this.favoriteNumber = favoriteNumber;
-    setDirty();
-  }
-
-  /**
-   * @return the IQ
-   */
-  public int getIQ() {
-    return IQ;
-  }
-
-  /**
-   * @param IQ the IQ to set
-   */
-  public void setIQ(int IQ) {
-    this.IQ = IQ;
-    setDirty();
-  }
-
-  /**
-   * @return the distance
-   */
-  public long getDistance() {
-    return distance;
-  }
-
-  /**
-   * @param distance the distance to set
-   */
-  public void setDistance(long distance) {
-    this.distance = distance;
-    setDirty();
-  }
-
-  
-}//class

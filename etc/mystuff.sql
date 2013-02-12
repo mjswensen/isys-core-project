@@ -258,7 +258,7 @@ CREATE TABLE sale (
   id CHAR(40) PRIMARY KEY,
   productid CHAR(40),
   quantity int(11),
-  FOREIGN KEY (id) REFERENCES businessobject (id)
+  FOREIGN KEY (id) REFERENCES revenuesource (id)
 );
 
 
@@ -449,7 +449,7 @@ VALUES
 
 INSERT INTO `sale` (`id`, `productid`, `quantity`)
 VALUES
-  ('Sale1','physicalProduct1',1);
+  ('sale1','physicalProduct1',1);
 
 
 
