@@ -138,6 +138,86 @@ public class Tester {
 		assertEquals(emps2.size(), 3);
 
 	}
+	
+	/** Test the ConceptualProduct BO (Also tests the Product BO) */
+	@Test
+	public void TestConceptualProduct() throws Exception {
+		// Test create
+		ConceptualProduct p = BusinessObjectDAO.getInstance().create("ConceptualProduct","1conceptualProduct");
+		p.setPrice(300.0);
+		p.setName("Awesome Camera");
+		p.setDescription("Point and shoot");
+		p.setManufacturer("Japan");
+		p.setAverageCost(250.00);
+		p.save();
+		
+		// Test read from cache
+		ConceptualProduct p2 = BusinessObjectDAO.getInstance().read("1conceptualProduct");
+		assertSame(p, p2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		ConceptualProduct p3 = BusinessObjectDAO.getInstance().read("1conceptualProduct");
+		assertEquals(p.getId(), p3.getId());
+		assertTrue(p.getPrice() - p3.getPrice() < 0.1);
+		assertEquals(p.getName(), p3.getName());
+		assertEquals(p.getDescription(), p3.getDescription());
+		assertEquals(p.getManufacturer(), p3.getManufacturer());
+		assertTrue(p.getAverageCost() - p3.getAverageCost() < 0.1);
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(p);
+		ConceptualProduct p4 = BusinessObjectDAO.getInstance().create("ConceptualProduct","1conceptualProduct");
+		p4.setPrice(300.50);
+		p4.setName("Cool Camera");
+		p4.setDescription("Point and snap");
+		p4.setManufacturer("China");
+		p4.setAverageCost(250.50);
+		p4.save();
+	}
+	
+	/** Test the PhysicalProduct BO (Also tests the Product BO) */
+	@Test
+	public void TestPhysicalProduct() throws Exception {
+		// Grab associated objects
+		Store st = BusinessObjectDAO.getInstance().read("store1");
+		ConceptualProduct cp = BusinessObjectDAO.getInstance().read("conceptualProduct1");
+		
+		// Test create
+		PhysicalProduct p = BusinessObjectDAO.getInstance().create("PhysicalProduct", "1physicalProduct");
+		p.setPrice(599.99);
+		p.setStore(st);
+		p.setConceptualProduct(cp);
+		p.setSerialNum("8ASDF7JASDF");
+		p.setShelfLocation("Top 4th");
+		p.setPurchased(new Date());
+		p.setCost(400.0);
+		p.setStatus("new");
+		p.setCommissionRate(0.04);
+		p.save();
+		
+		// Test read from cache
+		PhysicalProduct p2 = BusinessObjectDAO.getInstance().read("1physicalProduct");
+		assertSame(p, p2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		PhysicalProduct p3 = BusinessObjectDAO.getInstance().read("1physicalProduct");
+		assertEquals(p.getId(), p3.getId());
+		assertTrue(p.getPrice() - p3.getPrice() < 0.1);
+		assertEquals(p.getStoreId(), p3.getStoreId());
+		assertEquals(p.getConceptualProductId(), p3.getConceptualProductId());
+		assertEquals(p.getSerialNum(), p3.getSerialNum());
+		assertEquals(p.getShelfLocation(), p3.getShelfLocation());
+		assertEquals(SDF.format(p.getPurchased()), SDF.format(p3.getPurchased()));
+		assertTrue(p.getCost() - p3.getCost() < 0.1);
+		assertEquals(p.getStatus(), p3.getStatus());
+		assertTrue(p.getCommissionRate() - p3.getCommissionRate() < 0.1);
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(p);
+		// Previous three test cases test ability to rewrite a new record with same ID.
+	}
 
 	// /** Test the 1-M relationship between Person and Dog (a person can have many dogs) */
 	// @Test

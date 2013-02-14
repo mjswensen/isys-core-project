@@ -19,7 +19,7 @@ public class PhysicalProduct extends Product {
 	@BusinessObjectField
 	private String status;
 	@BusinessObjectField
-	private double comissionRate;
+	private double commissionRate;
 	
 	/** Creates a new instance of Product/BusinessObject */
 	public PhysicalProduct(String id) {
@@ -164,17 +164,17 @@ public class PhysicalProduct extends Product {
 	}
 
 	/**
-	 * @return the comissionRate
+	 * @return the commissionRate
 	 */
-	public double getComissionRate() {
-		return comissionRate;
+	public double getCommissionRate() {
+		return commissionRate;
 	}
 
 	/**
-	 * @param comissionRate the comissionRate to set
+	 * @param commissionRate the cmomissionRate to set
 	 */
-	public void setComissionRate(double comissionRate) {
-		this.comissionRate = comissionRate;
+	public void setCommissionRate(double commissionRate) {
+		this.commissionRate = commissionRate;
 		setDirty();
 	}
 
