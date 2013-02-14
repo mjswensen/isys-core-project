@@ -1,6 +1,6 @@
-# ------------------------------------------------------------
-# Drop tables
-# ------------------------------------------------------------
+# ------------------------------------------------------------ ;
+# Drop tables ;
+# ------------------------------------------------------------ ;
 
 SET foreign_key_checks = 0;
 
@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS businessobject;
 SET foreign_key_checks = 1;
 
 
-# ------------------------------------------------------------
-# Create database structure
-# ------------------------------------------------------------
+# ------------------------------------------------------------ ;
+# Create database structure ;
+# ------------------------------------------------------------ ;
 
 
-# Create table businessobject
-# ------------------------------------------------------------
+# Create table businessobject ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE businessobject (
@@ -39,8 +39,8 @@ CREATE TABLE businessobject (
 
 
 
-# Create table store
-# ------------------------------------------------------------
+# Create table store ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE store (
@@ -57,8 +57,8 @@ CREATE TABLE store (
 
 
 
-# Create table employee
-# ------------------------------------------------------------
+# Create table employee ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE employee (
@@ -76,15 +76,15 @@ CREATE TABLE employee (
 );
 
 
-# Now that both store and employee tables are created, and since they reference each other, add FK to store for managerid.
-# ------------------------------------------------------------
+# Now that both store and employee tables are created, and since they reference each other, add FK to store for managerid. ;
+# ------------------------------------------------------------ ;
 
 
 ALTER TABLE store ADD FOREIGN KEY (managerid) REFERENCES employee (id);
 
 
-# Create table product
-# ------------------------------------------------------------
+# Create table product ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE product (
@@ -95,8 +95,8 @@ CREATE TABLE product (
 
 
 
-# Create table conceptualproduct
-# ------------------------------------------------------------
+# Create table conceptualproduct ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE conceptualproduct (
@@ -112,8 +112,8 @@ CREATE TABLE conceptualproduct (
 
 
 
-# Create table physicalproduct
-# ------------------------------------------------------------
+# Create table physicalproduct ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE physicalproduct (
@@ -133,8 +133,8 @@ CREATE TABLE physicalproduct (
 
 
 
-# Create table storeproduct
-# ------------------------------------------------------------
+# Create table storeproduct ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE storeproduct (
@@ -150,8 +150,8 @@ CREATE TABLE storeproduct (
 
 
 
-# Create table customer
-# ------------------------------------------------------------
+# Create table customer ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE customer (
@@ -165,8 +165,8 @@ CREATE TABLE customer (
 
 
 
-# Create table transaction
-# ------------------------------------------------------------
+# Create table transaction ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE transaction (
@@ -186,8 +186,8 @@ CREATE TABLE transaction (
 
 
 
-# Create table journalentry
-# ------------------------------------------------------------
+# Create table journalentry ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE journalentry (
@@ -201,8 +201,8 @@ CREATE TABLE journalentry (
 
 
 
-# Create table debitcredit
-# ------------------------------------------------------------
+# Create table debitcredit ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE debitcredit (
@@ -217,8 +217,8 @@ CREATE TABLE debitcredit (
 
 
 
-# Create table commission
-# ------------------------------------------------------------
+# Create table commission ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE commission (
@@ -235,8 +235,8 @@ CREATE TABLE commission (
 
 
 
-# Create table revenuesource
-# ------------------------------------------------------------
+# Create table revenuesource ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE revenuesource (
@@ -250,8 +250,8 @@ CREATE TABLE revenuesource (
 
 
 
-# Create table sale
-# ------------------------------------------------------------
+# Create table sale ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE sale (
@@ -263,8 +263,8 @@ CREATE TABLE sale (
 
 
 
-# Create table generalledger
-# ------------------------------------------------------------
+# Create table generalledger ;
+# ------------------------------------------------------------ ;
 
 
 CREATE TABLE generalledger (
@@ -277,14 +277,14 @@ CREATE TABLE generalledger (
 
 
 
-# ------------------------------------------------------------
-# Populate tables with testing data
-# ------------------------------------------------------------
+# ------------------------------------------------------------ ;
+# Populate tables with testing data ;
+# ------------------------------------------------------------ ;
 
 
 
-# Populate table businessobject
-# ------------------------------------------------------------
+# Populate table businessobject ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `businessobject` (`id`, `botype`)
@@ -312,8 +312,8 @@ VALUES
 
 
 
-# Populate table store
-# ------------------------------------------------------------
+# Populate table store ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `store` (`id`, `location`, `managerid`, `phone`, `address`, `city`, `state`, `zip`)
@@ -322,8 +322,8 @@ VALUES
 
 
 
-# Populate table employee
-# ------------------------------------------------------------
+# Populate table employee ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `employee` (`id`, `firstname`, `middlename`, `lastname`, `hiredate`, `phone`, `salary`, `storeid`, `positionid`, `divisionid`)
@@ -332,16 +332,16 @@ VALUES
   ('employee2','Mark','Leo','Jackson','2008-06-23','801-238-4721',44000.00,'store1',NULL,NULL);
 
 
-# Now that both store and employee tables are created, and since they reference each other, add FK to store for managerid.
-# ------------------------------------------------------------
+# Now that both store and employee tables are created, and since they reference each other, add FK to store for managerid. ;
+# ------------------------------------------------------------ ;
 
 
 UPDATE store SET managerid = 'employee1' WHERE id = 'store1';
 
 
 
-# Populate table product
-# ------------------------------------------------------------
+# Populate table product ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `product` (`id`, `price`)
@@ -351,8 +351,8 @@ VALUES
 
 
 
-# Populate table conceptualproduct
-# ------------------------------------------------------------
+# Populate table conceptualproduct ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `conceptualproduct` (`id`, `name`, `description`, `manufacturer`, `averagecost`, `categoryid`, `vendorid`)
@@ -361,8 +361,8 @@ VALUES
 
 
 
-# Populate table physicalproduct
-# ------------------------------------------------------------
+# Populate table physicalproduct ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `physicalproduct` (`id`, `storeid`, `conceptualproductid`, `serialnum`, `shelflocation`, `purchased`, `cost`, `status`, `commissionrate`)
@@ -371,8 +371,8 @@ VALUES
 
 
 
-# Populate table storeproduct
-# ------------------------------------------------------------
+# Populate table storeproduct ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `storeproduct` (`id`, `conceptualproductid`, `storeid`, `quantityonhand`, `shelflocation`)
@@ -380,8 +380,8 @@ VALUES
   ('storeProduct1','conceptualProduct1','store1',5,'Aisle 5');
 
 
-# Populate table customer
-# ------------------------------------------------------------
+# Populate table customer ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `customer` (`id`, `firstname`, `lastname`, `phone`, `address`)
@@ -390,8 +390,8 @@ VALUES
 
 
 
-# Populate table transaction
-# ------------------------------------------------------------
+# Populate table transaction ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `transaction` (`id`, `customerid`, `storeid`, `employeeid`, `date`, `subtotal`, `tax`, `total`)
@@ -400,8 +400,8 @@ VALUES
 
 
 
-# Populate table journalentry
-# ------------------------------------------------------------
+# Populate table journalentry ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `journalentry` (`id`, `transactionid`, `date`, `isposted`)
@@ -410,8 +410,8 @@ VALUES
 
 
 
-# Populate table debitcredit
-# ------------------------------------------------------------
+# Populate table debitcredit ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `debitcredit` (`id`, `journalentryid`, `type`, `glaccount`, `amount`)
@@ -423,8 +423,8 @@ VALUES
 
 
 
-# Populate table commission
-# ------------------------------------------------------------
+# Populate table commission ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `commission` (`id`, `transactionid`, `employeeid`, `amount`, `date`, `ispaid`)
@@ -433,8 +433,8 @@ VALUES
 
 
 
-# Populate table revenuesource
-# ------------------------------------------------------------
+# Populate table revenuesource ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `revenuesource` (`id`, `transactionid`, `chargeamount`, `type`)
@@ -443,8 +443,8 @@ VALUES
 
 
 
-# Populate table sale
-# ------------------------------------------------------------
+# Populate table sale ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `sale` (`id`, `productid`, `quantity`)
@@ -453,8 +453,8 @@ VALUES
 
 
 
-# Populate table generalledger
-# ------------------------------------------------------------
+# Populate table generalledger ;
+# ------------------------------------------------------------ ;
 
 
 INSERT INTO `generalledger` (`id`, `account`, `balance`, `type`)

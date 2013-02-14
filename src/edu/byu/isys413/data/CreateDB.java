@@ -35,7 +35,7 @@ import java.util.*;
 public class CreateDB {
 
     /** Set this to the full path of your file */
-    public static final String SQL_FILE = "/Users/conan/Documents/data/teaching/ISys413-JavaDBWeb/2013/DynamicDAO/src/edu/byu/isys413/data/CreateDB.sql";
+    public static final String SQL_FILE = "/Users/mswensen/Eclipse Projects/MyStuffSprint/src/edu/byu/isys413/data/mystuff.sql";
 
     /** Drops everything from the database and recreates it */
     public static void main(String args[]) throws Exception {

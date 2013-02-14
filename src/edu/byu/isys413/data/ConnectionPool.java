@@ -13,7 +13,6 @@ package edu.byu.isys413.data;
 
 import java.sql.*;
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * Version 2008-03-03
