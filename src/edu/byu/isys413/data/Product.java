@@ -10,4 +10,19 @@ public class Product extends BusinessObject {
 		super(id);
 	}
 
+	/**
+	 * @return the price
+	 */
+	public double getPrice() {
+		return price;
+	}
+
+	/**
+	 * @param price the price to set
+	 */
+	public void setPrice(double price) {
+		this.price = price;
+		setDirty();
+	}
+
 }

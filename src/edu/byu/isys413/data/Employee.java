@@ -44,4 +44,154 @@ public class Employee extends BusinessObject {
 		super(id);
 	}
 
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+		setDirty();
+	}
+
+	/**
+	 * @return the middleName
+	 */
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	/**
+	 * @param middleName the middleName to set
+	 */
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+		setDirty();
+	}
+
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		return lastName;
+	}
+
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+		setDirty();
+	}
+
+	/**
+	 * @return the hireDate
+	 */
+	public Date getHireDate() {
+		return hireDate;
+	}
+
+	/**
+	 * @param hireDate the hireDate to set
+	 */
+	public void setHireDate(Date hireDate) {
+		this.hireDate = hireDate;
+		setDirty();
+	}
+
+	/**
+	 * @return the phone
+	 */
+	public String getPhone() {
+		return phone;
+	}
+
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+		setDirty();
+	}
+
+	/**
+	 * @return the salary
+	 */
+	public double getSalary() {
+		return salary;
+	}
+
+	/**
+	 * @param salary the salary to set
+	 */
+	public void setSalary(double salary) {
+		this.salary = salary;
+		setDirty();
+	}
+
+	/**
+	 * @return the storeId
+	 */
+	public String getStoreId() {
+		return storeId;
+	}
+
+	/**
+	 * @param storeId the storeId to set
+	 */
+	public void setStoreId(String storeId) {
+		this.storeId = storeId;
+		setDirty();
+	}
+
+	/**
+	 * @return the store
+	 */
+	public Store getStore() {
+		return store;
+	}
+
+	/**
+	 * @param store the store to set
+	 */
+	public void setStore(Store store) {
+		this.storeId = store.getId();
+		setDirty();
+	}
+
+	/**
+	 * @return the positionId
+	 */
+	public String getPositionId() {
+		return positionId;
+	}
+
+	/**
+	 * @param positionId the positionId to set
+	 */
+	public void setPositionId(String positionId) {
+		this.positionId = positionId;
+		setDirty();
+	}
+
+	/**
+	 * @return the divisionId
+	 */
+	public String getDivisionId() {
+		return divisionId;
+	}
+
+	/**
+	 * @param divisionId the divisionId to set
+	 */
+	public void setDivisionId(String divisionId) {
+		this.divisionId = divisionId;
+		setDirty();
+	}
+
 }

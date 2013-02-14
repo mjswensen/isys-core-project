@@ -46,7 +46,7 @@ CREATE TABLE businessobject (
 CREATE TABLE store (
   id CHAR(40) PRIMARY KEY,
   location VARCHAR(50),
-  manager CHAR(40),
+  managerid CHAR(40),
   phone VARCHAR(20),
   address VARCHAR(100),
   city VARCHAR(100),
@@ -76,11 +76,11 @@ CREATE TABLE employee (
 );
 
 
-# Now that both store and employee tables are created, and since they reference each other, add FK to store for manager.
+# Now that both store and employee tables are created, and since they reference each other, add FK to store for managerid.
 # ------------------------------------------------------------
 
 
-ALTER TABLE store ADD FOREIGN KEY (manager) REFERENCES employee (id);
+ALTER TABLE store ADD FOREIGN KEY (managerid) REFERENCES employee (id);
 
 
 # Create table product
@@ -316,7 +316,7 @@ VALUES
 # ------------------------------------------------------------
 
 
-INSERT INTO `store` (`id`, `location`, `manager`, `phone`, `address`, `city`, `state`, `zip`)
+INSERT INTO `store` (`id`, `location`, `managerid`, `phone`, `address`, `city`, `state`, `zip`)
 VALUES
   ('store1','Orem',NULL,'801-123-1234','1600 N 800 E','Orem','UT','84720');
 
@@ -332,11 +332,11 @@ VALUES
   ('employee2','Mark','Leo','Jackson','2008-06-23','801-238-4721',44000.00,'store1',NULL,NULL);
 
 
-# Now that both store and employee tables are created, and since they reference each other, add FK to store for manager.
+# Now that both store and employee tables are created, and since they reference each other, add FK to store for managerid.
 # ------------------------------------------------------------
 
 
-UPDATE store SET manager = 'employee1' WHERE id = 'store1';
+UPDATE store SET managerid = 'employee1' WHERE id = 'store1';
 
 
 
