@@ -7,11 +7,7 @@ public class Commission extends BusinessObject {
 	@BusinessObjectField
 	private String transactionId;
 	@BusinessObjectField
-	private Transaction transaction;
-	@BusinessObjectField
 	private String employeeId;
-	@BusinessObjectField
-	private Employee employee;
 	@BusinessObjectField
 	private double amount;
 	@BusinessObjectField
@@ -41,9 +37,10 @@ public class Commission extends BusinessObject {
 
 	/**
 	 * @return the transaction
+	 * @throws DataException 
 	 */
-	public Transaction getTransaction() {
-		return transaction;
+	public Transaction getTransaction() throws DataException {
+		return BusinessObjectDAO.getInstance().read(transactionId);
 	}
 
 	/**
@@ -71,9 +68,10 @@ public class Commission extends BusinessObject {
 
 	/**
 	 * @return the employee
+	 * @throws DataException 
 	 */
-	public Employee getEmployee() {
-		return employee;
+	public Employee getEmployee() throws DataException {
+		return BusinessObjectDAO.getInstance().read(employeeId);
 	}
 
 	/**

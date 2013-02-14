@@ -5,8 +5,6 @@ public class Sale extends RevenueSource {
 	@BusinessObjectField
 	private String productId;
 	@BusinessObjectField
-	private Product product;
-	@BusinessObjectField
 	private int quantity;
 	
 	/** Creates a new instance of RevenueSource/BusinessObject */
@@ -31,9 +29,10 @@ public class Sale extends RevenueSource {
 
 	/**
 	 * @return the product
+	 * @throws DataException 
 	 */
-	public Product getProduct() {
-		return product;
+	public Product getProduct() throws DataException {
+		return BusinessObjectDAO.getInstance().read(productId);
 	}
 
 	/**

@@ -7,8 +7,6 @@ public class JournalEntry extends BusinessObject {
 	@BusinessObjectField
 	private String transactionId;
 	@BusinessObjectField
-	private Transaction transaction;
-	@BusinessObjectField
 	private Date date;
 	@BusinessObjectField
 	private boolean isPosted;
@@ -35,9 +33,10 @@ public class JournalEntry extends BusinessObject {
 
 	/**
 	 * @return the transaction
+	 * @throws DataException 
 	 */
-	public Transaction getTransaction() {
-		return transaction;
+	public Transaction getTransaction() throws DataException {
+		return BusinessObjectDAO.getInstance().read(transactionId);
 	}
 
 	/**

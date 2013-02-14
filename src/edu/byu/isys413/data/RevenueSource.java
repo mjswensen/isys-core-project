@@ -5,8 +5,6 @@ public class RevenueSource extends BusinessObject {
 	@BusinessObjectField
 	private String transactionId;
 	@BusinessObjectField
-	private Transaction transaction;
-	@BusinessObjectField
 	private double chargeAmount;
 	@BusinessObjectField
 	private String type;
@@ -33,9 +31,10 @@ public class RevenueSource extends BusinessObject {
 
 	/**
 	 * @return the transaction
+	 * @throws DataException 
 	 */
-	public Transaction getTransaction() {
-		return transaction;
+	public Transaction getTransaction() throws DataException {
+		return BusinessObjectDAO.getInstance().read(transactionId);
 	}
 
 	/**

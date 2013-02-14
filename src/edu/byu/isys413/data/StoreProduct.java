@@ -5,11 +5,7 @@ public class StoreProduct extends BusinessObject {
 	@BusinessObjectField
 	private String conceptualProductId;
 	@BusinessObjectField
-	private ConceptualProduct conceptualProduct;
-	@BusinessObjectField
 	private String storeId;
-	@BusinessObjectField
-	private Store store;
 	@BusinessObjectField
 	private int quantityOnHand;
 	@BusinessObjectField
@@ -37,9 +33,10 @@ public class StoreProduct extends BusinessObject {
 
 	/**
 	 * @return the conceptualProduct
+	 * @throws DataException 
 	 */
-	public ConceptualProduct getConceptualProduct() {
-		return conceptualProduct;
+	public ConceptualProduct getConceptualProduct() throws DataException {
+		return BusinessObjectDAO.getInstance().read(conceptualProductId);
 	}
 
 	/**
@@ -67,9 +64,10 @@ public class StoreProduct extends BusinessObject {
 
 	/**
 	 * @return the store
+	 * @throws DataException 
 	 */
-	public Store getStore() {
-		return store;
+	public Store getStore() throws DataException {
+		return BusinessObjectDAO.getInstance().read(storeId);
 	}
 
 	/**

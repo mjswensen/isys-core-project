@@ -7,11 +7,7 @@ public class PhysicalProduct extends Product {
 	@BusinessObjectField
 	private String storeId;
 	@BusinessObjectField
-	private Store store;
-	@BusinessObjectField
 	private String conceptualProductId;
-	@BusinessObjectField
-	private ConceptualProduct conceptualProduct;
 	@BusinessObjectField
 	private String serialNum;
 	@BusinessObjectField
@@ -47,9 +43,10 @@ public class PhysicalProduct extends Product {
 
 	/**
 	 * @return the store
+	 * @throws DataException 
 	 */
-	public Store getStore() {
-		return store;
+	public Store getStore() throws DataException {
+		return BusinessObjectDAO.getInstance().read(storeId);
 	}
 
 	/**
@@ -77,9 +74,10 @@ public class PhysicalProduct extends Product {
 
 	/**
 	 * @return the conceptualProduct
+	 * @throws DataException 
 	 */
-	public ConceptualProduct getConceptualProduct() {
-		return conceptualProduct;
+	public ConceptualProduct getConceptualProduct() throws DataException {
+		return BusinessObjectDAO.getInstance().read(conceptualProductId);
 	}
 
 	/**

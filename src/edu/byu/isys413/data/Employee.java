@@ -33,8 +33,6 @@ public class Employee extends BusinessObject {
     @BusinessObjectField
     private String storeId;
     @BusinessObjectField
-    private Store store;
-    @BusinessObjectField
     private String positionId;
     @BusinessObjectField
     private String divisionId;
@@ -151,9 +149,10 @@ public class Employee extends BusinessObject {
 
 	/**
 	 * @return the store
+	 * @throws DataException 
 	 */
-	public Store getStore() {
-		return store;
+	public Store getStore() throws DataException {
+		return BusinessObjectDAO.getInstance().read(storeId);
 	}
 
 	/**

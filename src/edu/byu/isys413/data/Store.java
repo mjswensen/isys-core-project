@@ -7,8 +7,6 @@ public class Store extends BusinessObject {
 	@BusinessObjectField
 	private String managerId;
 	@BusinessObjectField
-	private Employee manager;
-	@BusinessObjectField
 	private String phone;
 	@BusinessObjectField
 	private String address;
@@ -56,9 +54,10 @@ public class Store extends BusinessObject {
 	
 	/**
 	 * @return the manager
+	 * @throws DataException 
 	 */
-	public Employee getManager() {
-		return manager;
+	public Employee getManager() throws DataException {
+		return BusinessObjectDAO.getInstance().read(managerId);
 	}
 
 	/**

@@ -7,15 +7,9 @@ public class Transaction extends BusinessObject {
 	@BusinessObjectField
 	private String customerId;
 	@BusinessObjectField
-	private Customer customer;
-	@BusinessObjectField
 	private String storeId;
 	@BusinessObjectField
-	private Store store;
-	@BusinessObjectField
 	private String employeeId;
-	@BusinessObjectField
-	private Employee employee;
 	@BusinessObjectField
 	private Date date;
 	@BusinessObjectField
@@ -47,9 +41,10 @@ public class Transaction extends BusinessObject {
 
 	/**
 	 * @return the customer
+	 * @throws DataException 
 	 */
-	public Customer getCustomer() {
-		return customer;
+	public Customer getCustomer() throws DataException {
+		return BusinessObjectDAO.getInstance().read(customerId);
 	}
 
 	/**
@@ -77,9 +72,10 @@ public class Transaction extends BusinessObject {
 
 	/**
 	 * @return the store
+	 * @throws DataException 
 	 */
-	public Store getStore() {
-		return store;
+	public Store getStore() throws DataException {
+		return BusinessObjectDAO.getInstance().read(storeId);
 	}
 
 	/**
@@ -107,9 +103,10 @@ public class Transaction extends BusinessObject {
 
 	/**
 	 * @return the employee
+	 * @throws DataException 
 	 */
-	public Employee getEmployee() {
-		return employee;
+	public Employee getEmployee() throws DataException {
+		return BusinessObjectDAO.getInstance().read(employeeId);
 	}
 
 	/**

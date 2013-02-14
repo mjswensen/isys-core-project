@@ -7,8 +7,6 @@ public class DebitCredit extends BusinessObject {
 	@BusinessObjectField
 	private String journalEntryId;
 	@BusinessObjectField
-	private JournalEntry journalEntry;
-	@BusinessObjectField
 	private Type type;
 	@BusinessObjectField
 	private String glAccount;
@@ -37,9 +35,10 @@ public class DebitCredit extends BusinessObject {
 
 	/**
 	 * @return the journalEntry
+	 * @throws DataException 
 	 */
-	public JournalEntry getJournalEntry() {
-		return journalEntry;
+	public JournalEntry getJournalEntry() throws DataException {
+		return BusinessObjectDAO.getInstance().read(journalEntryId);
 	}
 
 	/**
