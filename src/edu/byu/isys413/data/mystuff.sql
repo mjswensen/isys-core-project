@@ -52,6 +52,7 @@ CREATE TABLE store (
   city VARCHAR(100),
   state CHAR(2),
   zip VARCHAR(12),
+  salestaxrate NUMERIC(6,5),
   FOREIGN KEY (id) REFERENCES businessobject (id)
 );
 
@@ -258,7 +259,8 @@ CREATE TABLE sale (
   id CHAR(40) PRIMARY KEY,
   productid CHAR(40),
   quantity int(11),
-  FOREIGN KEY (id) REFERENCES revenuesource (id)
+  FOREIGN KEY (id) REFERENCES revenuesource (id),
+  FOREIGN KEY (productid) REFERENCES product (id)
 );
 
 
@@ -328,11 +330,11 @@ VALUES
 # ------------------------------------------------------------ ;
 
 
-INSERT INTO `store` (`id`, `location`, `managerid`, `phone`, `address`, `city`, `state`, `zip`)
+INSERT INTO `store` (`id`, `location`, `managerid`, `phone`, `address`, `city`, `state`, `zip`, `salestaxrate`)
 VALUES
-  ('store1','Orem',NULL,'801-123-1234','1600 N 800 E','Orem','UT','84720'),
-  ('store2','Sandy',NULL,'801-321-5423','1800 N 200 E','Sandy','UT','82474'),
-  ('store3','Riverton',NULL,'801-342-9243','1200 N 900 E','Riverton','UT','20948');
+  ('store1','Orem',NULL,'801-123-1234','1600 N 800 E','Orem','UT','84720', 0.0625),
+  ('store2','Sandy',NULL,'801-321-5423','1800 N 200 E','Sandy','UT','82474', 0.033),
+  ('store3','Riverton',NULL,'801-342-9243','1200 N 900 E','Riverton','UT','20948', 0.0755);
 
 
 

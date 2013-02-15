@@ -19,6 +19,8 @@ public class Store extends BusinessObject {
 	private String state;
 	@BusinessObjectField
 	private String zip;
+	@BusinessObjectField
+	private double salesTaxRate;
 	
 	/** Creates a new instance of BusinessObject */
 	public Store(String id) {
@@ -146,6 +148,20 @@ public class Store extends BusinessObject {
 		setDirty();
 	}
 	
+	/**
+	 * @return the salesTaxRate
+	 */
+	public double getSalesTaxRate() {
+		return salesTaxRate;
+	}
+
+	/**
+	 * @param salesTaxRate the salesTaxRate to set
+	 */
+	public void setSalesTaxRate(double salesTaxRate) {
+		this.salesTaxRate = salesTaxRate;
+	}
+
 	/**
 	 * @return A list of StoreProducts where the store is this Store.
 	 * @throws DataException

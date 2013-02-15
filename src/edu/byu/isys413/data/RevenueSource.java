@@ -5,13 +5,14 @@ public class RevenueSource extends BusinessObject {
 	@BusinessObjectField
 	private String transactionId;
 	@BusinessObjectField
-	private double chargeAmount;
+	protected double chargeAmount;
 	@BusinessObjectField
 	private String type;
 	
 	/** Creates a new instance of BusinessObject */
 	public RevenueSource(String id) {
 		super(id);
+		type = "Sale";
 	}
 
 	/**
@@ -53,26 +54,10 @@ public class RevenueSource extends BusinessObject {
 	}
 
 	/**
-	 * @param chargeAmount the chargeAmount to set
-	 */
-	public void setChargeAmount(double chargeAmount) {
-		this.chargeAmount = chargeAmount;
-		setDirty();
-	}
-
-	/**
 	 * @return the type
 	 */
 	public String getType() {
 		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-		setDirty();
 	}
 
 }

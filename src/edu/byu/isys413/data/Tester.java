@@ -48,6 +48,7 @@ public class Tester {
 		st.setCity("Provo");
 		st.setState("UT");
 		st.setZip("76842");
+		st.setSalesTaxRate(0.0625);
 		st.save();
 	
 		// Test read from cache
@@ -64,6 +65,7 @@ public class Tester {
 		assertEquals(st.getCity(), st3.getCity());
 		assertEquals(st.getState(), st3.getState());
 		assertEquals(st.getZip(), st3.getZip());
+		assertTrue(st.getSalesTaxRate() - st3.getSalesTaxRate() < 0.1);
 		
 		// Test delete
 		BusinessObjectDAO.getInstance().delete(st);
@@ -77,6 +79,7 @@ public class Tester {
 		st4.setCity("Provo");
 		st4.setState("UT");
 		st4.setZip("76333");
+		st4.setSalesTaxRate(0.075);
 		st4.save();
 		
 		// Employee will test search methods
@@ -244,6 +247,92 @@ public class Tester {
 		assertEquals(conceptualProduct1.getStores().size(), 2);
 		assertTrue(conceptualProduct1.getStores().contains(store1));
 		assertTrue(conceptualProduct1.getStores().contains(store2));
+	}
+	
+	/** Test the Customer */
+	@Test
+	public void TestCustomer() throws Exception {
+		// Test create/save
+		Customer cust = BusinessObjectDAO.getInstance().create("Customer", "1customer");
+		cust.setFirstName("Billy");
+		cust.setLastName("Fredette");
+		cust.setPhone("324-230-0234");
+		cust.setAddress("465 N 300 E Provo UT 87364");
+		cust.save();
+	
+		// Test read from cache
+		Customer cust2 = BusinessObjectDAO.getInstance().read("1customer");
+		assertSame(cust, cust2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Customer cust3 = BusinessObjectDAO.getInstance().read("1customer");
+		assertEquals(cust.getId(), cust3.getId());
+		assertEquals(cust.getFirstName(), cust3.getFirstName());
+		assertEquals(cust.getLastName(), cust3.getLastName());
+		assertEquals(cust.getPhone(), cust3.getPhone());
+		assertEquals(cust.getAddress(), cust3.getAddress());
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(cust);
+	}
+	
+	/** Test the Transaction. Tests the 1-M relationship between transactions and sales. */
+	@Test
+	public void TestTransaction() throws Exception {
+		// Grab associated objects
+		Customer cust = BusinessObjectDAO.getInstance().read("customer1");
+		Store store = BusinessObjectDAO.getInstance().read("store1");
+		Employee emp = BusinessObjectDAO.getInstance().read("employee1");
+		ConceptualProduct prod1 = BusinessObjectDAO.getInstance().read("conceptualProduct3");
+		PhysicalProduct prod2 = BusinessObjectDAO.getInstance().read("physicalProduct1");
+		
+		// Test create
+		Transaction trans = BusinessObjectDAO.getInstance().create("Transaction", "1transaction");
+		trans.setCustomer(cust);
+		trans.setStore(store);
+		trans.setEmployee(emp);
+		trans.setDate(new Date());
+		
+		// Test adding sales to the transaction.
+		Sale sale = BusinessObjectDAO.getInstance().create("Sale", "1sale");
+		sale.setProduct((Product)prod1);
+		sale.setQuantity(5);
+		trans.addSale(sale);
+		Sale sale2 = BusinessObjectDAO.getInstance().create("Sale", "2sale");
+		sale2.setProduct((Product)prod2);
+		sale2.setQuantity(1);
+		trans.addSale(sale2);
+		
+		// Test subtotal, tax, and total
+		double subtotal = prod1.getPrice() * sale.getQuantity() + prod2.getPrice() * sale2.getQuantity();
+		assertTrue(trans.getSubtotal() - subtotal < 0.1);
+		double tax = subtotal * store.getSalesTaxRate();
+		assertTrue(trans.getTax() - tax < 0.1);
+		double total = tax + subtotal;
+		assertTrue(trans.getTotal() - total < 0.1);
+		
+		trans.save();
+		sale.save();
+		sale2.save();
+		
+		// Test read from cache
+		Transaction trans2 = BusinessObjectDAO.getInstance().read("1transaction");
+		assertSame(trans, trans2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Transaction trans3 = BusinessObjectDAO.getInstance().read("1transaction");
+		assertEquals(trans.getId(), trans3.getId());
+		assertSame(trans.getCustomer(), trans3.getCustomer());
+		assertSame(trans.getStore(), trans3.getStore());
+		assertSame(trans.getEmployee(), trans3.getEmployee());
+		assertEquals(SDF.format(trans.getDate()), SDF.format(trans3.getDate()));
+		assertTrue(trans.getSubtotal() - trans3.getSubtotal() < 0.1);
+		assertTrue(trans.getTax() - trans3.getTax() < 0.1);
+		assertTrue(trans.getTotal() - trans3.getTotal() < 0.1);
+		
+		// Test delete.
 	}
 
 	// /** Test the 1-M relationship between Person and Dog (a person can have many dogs) */

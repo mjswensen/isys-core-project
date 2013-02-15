@@ -5,7 +5,7 @@ public class Sale extends RevenueSource {
 	@BusinessObjectField
 	private String productId;
 	@BusinessObjectField
-	private int quantity;
+	private int quantity = 1;
 	
 	/** Creates a new instance of RevenueSource/BusinessObject */
 	public Sale(String id) {
@@ -40,6 +40,7 @@ public class Sale extends RevenueSource {
 	 */
 	public void setProduct(Product product) {
 		this.productId = product.getId();
+		this.chargeAmount = product.getPrice() * quantity;
 		setDirty();
 	}
 

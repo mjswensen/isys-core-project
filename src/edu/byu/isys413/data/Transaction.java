@@ -1,6 +1,8 @@
 package edu.byu.isys413.data;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Transaction extends BusinessObject {
 
@@ -13,11 +15,13 @@ public class Transaction extends BusinessObject {
 	@BusinessObjectField
 	private Date date;
 	@BusinessObjectField
-	private double subtotal;
+	private double subtotal = 0.0;
 	@BusinessObjectField
-	private double tax;
+	private double tax = 0.0;
 	@BusinessObjectField
-	private double total;
+	private double total = 0.0;
+	
+	private List<Sale> sales = new LinkedList<Sale>();
 	
 	/** Creates a new instance of BusinessObject */
 	public Transaction(String id) {
@@ -134,6 +138,7 @@ public class Transaction extends BusinessObject {
 
 	/**
 	 * @return the subtotal
+	 * @throws DataException 
 	 */
 	public double getSubtotal() {
 		return subtotal;
@@ -141,14 +146,16 @@ public class Transaction extends BusinessObject {
 
 	/**
 	 * @param subtotal the subtotal to set
+	 * @throws DataException 
 	 */
-	public void setSubtotal(double subtotal) {
+	private void setSubtotal(double subtotal) {
 		this.subtotal = subtotal;
 		setDirty();
 	}
 
 	/**
 	 * @return the tax
+	 * @throws DataException 
 	 */
 	public double getTax() {
 		return tax;
@@ -157,13 +164,14 @@ public class Transaction extends BusinessObject {
 	/**
 	 * @param tax the tax to set
 	 */
-	public void setTax(double tax) {
+	private void setTax(double tax) {
 		this.tax = tax;
 		setDirty();
 	}
 
 	/**
 	 * @return the total
+	 * @throws DataException 
 	 */
 	public double getTotal() {
 		return total;
@@ -172,8 +180,39 @@ public class Transaction extends BusinessObject {
 	/**
 	 * @param total the total to set
 	 */
-	public void setTotal(double total) {
+	private void setTotal(double total) {
 		this.total = total;
 		setDirty();
+	}
+	
+	/**
+	 * @return sales associated with this transaction
+	 * @throws DataException
+	 */
+	public List<Sale> getSales() throws DataException {
+		return sales;
+	}
+	
+	/**
+	 * Adds a sale to this transaction.
+	 * @param sale
+	 * @throws DataException 
+	 */
+	public void addSale(Sale sale) throws DataException {
+		sale.setTransaction(this);
+		sales.add(sale);
+		calculateTotals();
+	}
+	
+	private void calculateTotals() throws DataException {
+		double subtotal = 0.0, tax, total;
+		for(Sale s : sales) {
+			subtotal += s.getChargeAmount();
+		}
+		tax = subtotal * getStore().getSalesTaxRate();
+		total = tax + subtotal;
+		setSubtotal(subtotal);
+		setTax(tax);
+		setTotal(total);
 	}
 }
