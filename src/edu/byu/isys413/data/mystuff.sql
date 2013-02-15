@@ -291,6 +291,8 @@ INSERT INTO `businessobject` (`id`, `botype`)
 VALUES
   ('commission1','edu.byu.isys413.data.Commission'),
   ('conceptualProduct1','edu.byu.isys413.data.ConceptualProduct'),
+  ('conceptualProduct2','edu.byu.isys413.data.ConceptualProduct'),
+  ('conceptualProduct3','edu.byu.isys413.data.ConceptualProduct'),
   ('customer1','edu.byu.isys413.data.Customer'),
   ('debitCredit1','edu.byu.isys413.data.DebitCredit'),
   ('debitCredit2','edu.byu.isys413.data.DebitCredit'),
@@ -298,6 +300,10 @@ VALUES
   ('debitCredit4','edu.byu.isys413.data.DebitCredit'),
   ('employee1','edu.byu.isys413.data.Employee'),
   ('employee2','edu.byu.isys413.data.Employee'),
+  ('employee3','edu.byu.isys413.data.Employee'),
+  ('employee4','edu.byu.isys413.data.Employee'),
+  ('employee5','edu.byu.isys413.data.Employee'),
+  ('employee6','edu.byu.isys413.data.Employee'),
   ('glAccount1','edu.byu.isys413.data.GeneralLedger'),
   ('glAccount2','edu.byu.isys413.data.GeneralLedger'),
   ('glAccount3','edu.byu.isys413.data.GeneralLedger'),
@@ -307,7 +313,13 @@ VALUES
   ('physicalProduct1','edu.byu.isys413.data.PhysicalProduct'),
   ('sale1','edu.byu.isys413.data.Sale'),
   ('store1','edu.byu.isys413.data.Store'),
+  ('store2','edu.byu.isys413.data.Store'),
+  ('store3','edu.byu.isys413.data.Store'),
   ('storeProduct1','edu.byu.isys413.data.StoreProduct'),
+  ('storeProduct2','edu.byu.isys413.data.StoreProduct'),
+  ('storeProduct3','edu.byu.isys413.data.StoreProduct'),
+  ('storeProduct4','edu.byu.isys413.data.StoreProduct'),
+  ('storeProduct5','edu.byu.isys413.data.StoreProduct'),
   ('transaction1','edu.byu.isys413.data.Transaction');
 
 
@@ -318,7 +330,9 @@ VALUES
 
 INSERT INTO `store` (`id`, `location`, `managerid`, `phone`, `address`, `city`, `state`, `zip`)
 VALUES
-  ('store1','Orem',NULL,'801-123-1234','1600 N 800 E','Orem','UT','84720');
+  ('store1','Orem',NULL,'801-123-1234','1600 N 800 E','Orem','UT','84720'),
+  ('store2','Sandy',NULL,'801-321-5423','1800 N 200 E','Sandy','UT','82474'),
+  ('store3','Riverton',NULL,'801-342-9243','1200 N 900 E','Riverton','UT','20948');
 
 
 
@@ -329,7 +343,11 @@ VALUES
 INSERT INTO `employee` (`id`, `firstname`, `middlename`, `lastname`, `hiredate`, `phone`, `salary`, `storeid`, `positionid`, `divisionid`)
 VALUES
   ('employee1','John','Peter','Appleseed','2007-02-07','801-347-2473',65000.00,'store1',NULL,NULL),
-  ('employee2','Mark','Leo','Jackson','2008-06-23','801-238-4721',44000.00,'store1',NULL,NULL);
+  ('employee2','Mark','Leo','Jackson','2008-06-23','801-238-4721',44000.00,'store1',NULL,NULL),
+  ('employee3','Jack','Gi','Johnson','2006-06-01','801-522-4423',49000.00,'store2',NULL,NULL),
+  ('employee4','Andrea','LuEtta','Terribilini','2006-07-01','801-248-4441',40000.00,'store2',NULL,NULL),
+  ('employee5','Kyle','Jacob','Armstrong','2008-11-13','801-233-4111',50000.00,'store3',NULL,NULL),
+  ('employee6','Richard','Alfred','Yankee','2002-05-21','801-233-4221',64000.00,'store3',NULL,NULL);
 
 
 # Now that both store and employee tables are created, and since they reference each other, add FK to store for managerid. ;
@@ -337,6 +355,8 @@ VALUES
 
 
 UPDATE store SET managerid = 'employee1' WHERE id = 'store1';
+UPDATE store SET managerid = 'employee3' WHERE id = 'store2';
+UPDATE store SET managerid = 'employee5' WHERE id = 'store3';
 
 
 
@@ -347,6 +367,8 @@ UPDATE store SET managerid = 'employee1' WHERE id = 'store1';
 INSERT INTO `product` (`id`, `price`)
 VALUES
   ('conceptualProduct1',499.99),
+  ('conceptualProduct2',29.49),
+  ('conceptualProduct3',9.99),
   ('physicalProduct1',499.99);
 
 
@@ -357,7 +379,9 @@ VALUES
 
 INSERT INTO `conceptualproduct` (`id`, `name`, `description`, `manufacturer`, `averagecost`, `categoryid`, `vendorid`)
 VALUES
-  ('conceptualProduct1','EOS','Entry-level digital camera.','Canon',300.00,NULL,NULL);
+  ('conceptualProduct1','EOS','Entry-level digital camera.','Canon',300.00,NULL,NULL),
+  ('conceptualProduct2','Keychain','MyStuff logo keychain','Rocky',10.00,NULL,NULL),
+  ('conceptualProduct3','Analog Film','Medium roll of film','Canon',5.00,NULL,NULL);
 
 
 
@@ -377,7 +401,11 @@ VALUES
 
 INSERT INTO `storeproduct` (`id`, `conceptualproductid`, `storeid`, `quantityonhand`, `shelflocation`)
 VALUES
-  ('storeProduct1','conceptualProduct1','store1',5,'Aisle 5');
+  ('storeProduct1','conceptualProduct1','store1',5,'Aisle 5'),
+  ('storeProduct2','conceptualProduct2','store1',25,'Aisle 10'),
+  ('storeProduct3','conceptualProduct3','store1',50,'Aisle 5'),
+  ('storeProduct4','conceptualProduct1','store2',7,'Aisle 5'),
+  ('storeProduct5','conceptualProduct2','store2',27,'Aisle 10');
 
 
 # Populate table customer ;

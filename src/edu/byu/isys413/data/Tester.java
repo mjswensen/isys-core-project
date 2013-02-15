@@ -131,11 +131,11 @@ public class Tester {
 
 		// test the search methods
 		List<Employee> emps = BusinessObjectDAO.getInstance().searchForAll("Employee");
-		assertEquals(emps.size(), 3);  // 2 from CreateDB, Matthew above
+		assertEquals(emps.size(), 7);  // 6 from CreateDB, Matthew above
 		Employee emp1 = BusinessObjectDAO.getInstance().searchForBO("Employee", new SearchCriteria("id", "employee1"));
 		assertEquals(emp1.getId().trim(), "employee1");
 		List<Employee> emps2 = BusinessObjectDAO.getInstance().searchForList("Employee", new SearchCriteria("lastname", "%s%", SearchCriteria.LIKE));
-		assertEquals(emps2.size(), 3);
+		assertEquals(emps2.size(), 5);
 
 	}
 	
@@ -218,6 +218,33 @@ public class Tester {
 		BusinessObjectDAO.getInstance().delete(p);
 		// Previous three test cases test ability to rewrite a new record with same ID.
 	}
+	
+	/** Test the StoreProduct (tests the M-M relationship between Stores and ConceptualProducts). */
+	@Test
+	public void TestStoreProduct() throws Exception {
+		// This test assumes that certain Stores and ConceptualProducts are already in the database.
+		Store store1 = BusinessObjectDAO.getInstance().read("store1");
+		Store store2 = BusinessObjectDAO.getInstance().read("store2");
+		ConceptualProduct conceptualProduct1 = BusinessObjectDAO.getInstance().read("conceptualProduct1");
+		ConceptualProduct conceptualProduct2 = BusinessObjectDAO.getInstance().read("conceptualProduct2");
+		ConceptualProduct conceptualProduct3 = BusinessObjectDAO.getInstance().read("conceptualProduct3");
+		
+		// Test store1's products.
+		assertEquals(store1.getProducts().size(), 3);
+		assertSame(store1.getProducts().get(0), conceptualProduct1);
+		assertSame(store1.getProducts().get(1), conceptualProduct2);
+		assertSame(store1.getProducts().get(2), conceptualProduct3);
+		
+		// Test store2's products.
+		assertEquals(store2.getProducts().size(), 2);
+		assertTrue(store2.getProducts().contains(conceptualProduct1));
+		assertTrue(store2.getProducts().contains(conceptualProduct2));
+		
+		// Test conceptualProuct1's stores.
+		assertEquals(conceptualProduct1.getStores().size(), 2);
+		assertTrue(conceptualProduct1.getStores().contains(store1));
+		assertTrue(conceptualProduct1.getStores().contains(store2));
+	}
 
 	// /** Test the 1-M relationship between Person and Dog (a person can have many dogs) */
 	// @Test
@@ -259,34 +286,7 @@ public class Tester {
 	// 	assertSame(dogs.get(2).getPerson(), p);
 	// }    
 
-	// /** Test the M-M relationship between Person and Car */
-	// @Test
-	// public void TestPersonCar() throws Exception {
-	// 	// this test assumes that certain people and cars are already in the database
-	// 	// in the DB, person1 owns only car1, person2 owns car1, car2, car3
-	// 	Person person1 = BusinessObjectDAO.getInstance().read("person1");
-	// 	Person person2 = BusinessObjectDAO.getInstance().read("person2");
-	// 	Car car1 = BusinessObjectDAO.getInstance().read("car1");
-	// 	Car car2 = BusinessObjectDAO.getInstance().read("car2");
-	// 	Car car3 = BusinessObjectDAO.getInstance().read("car2");
-
-	// 	// test person1's cars
-	// 	assertEquals(person1.getCars().size(), 1);
-	// 	assertSame(person1.getCars().get(0), car1);
-
-	// 	// test person2's cars
-	// 	List<Car> cars = person2.getCars();
-	// 	assertEquals(cars.size(), 3);
-	// 	assertTrue(cars.contains(car1));
-	// 	assertTrue(cars.contains(car2));
-	// 	assertTrue(cars.contains(car3));
-
-	// 	// test car1's owners
-	// 	List<Person> owners = car1.getOwners();
-	// 	assertEquals(owners.size(), 2);
-	// 	assertTrue(owners.contains(person1));
-	// 	assertTrue(owners.contains(person2));
-	// }    
+	   
 
 
 

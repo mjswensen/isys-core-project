@@ -1,5 +1,8 @@
 package edu.byu.isys413.data;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class ConceptualProduct extends Product {
 	
 	@BusinessObjectField
@@ -102,5 +105,25 @@ public class ConceptualProduct extends Product {
 	 */
 	public void setVendorId(String vendorId) {
 		this.vendorId = vendorId;
+	}
+	
+	/**
+	 * @return A list of StoreProducts where the product is this Product.
+	 * @throws DataException
+	 */
+	public List<StoreProduct> getStoreProducts() throws DataException {
+		return BusinessObjectDAO.getInstance().searchForList("StoreProduct", new SearchCriteria("conceptualproductid", id));
+	}
+	
+	/**
+	 * @return A list of stores this product is associated with.
+	 * @throws DataException
+	 */
+	public List<Store> getStores() throws DataException {
+		List<Store> stores = new LinkedList<Store>();
+		for(StoreProduct sp : getStoreProducts()) {
+			stores.add(sp.getStore());
+		}
+		return stores;
 	}
 }

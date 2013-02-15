@@ -1,5 +1,8 @@
 package edu.byu.isys413.data;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Store extends BusinessObject {
 
 	@BusinessObjectField
@@ -141,6 +144,26 @@ public class Store extends BusinessObject {
 	public void setZip(String zip) {
 		this.zip = zip;
 		setDirty();
+	}
+	
+	/**
+	 * @return A list of StoreProducts where the store is this Store.
+	 * @throws DataException
+	 */
+	public List<StoreProduct> getStoreProducts() throws DataException {
+		return BusinessObjectDAO.getInstance().searchForList("StoreProduct", new SearchCriteria("storeid", id));
+	}
+	
+	/**
+	 * @return A list of products that pertain to this Store.
+	 * @throws DataException
+	 */
+	public List<ConceptualProduct> getProducts() throws DataException {
+		List<ConceptualProduct> conceptualProducts = new LinkedList<ConceptualProduct>();
+		for(StoreProduct sp : getStoreProducts()) {
+			conceptualProducts.add(sp.getConceptualProduct());
+		}
+		return conceptualProducts;
 	}
 	
 }
