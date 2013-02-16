@@ -305,17 +305,26 @@ public class Tester {
 		
 		// Test adding sales to the transaction.
 		Sale sale = BusinessObjectDAO.getInstance().create("Sale", "1sale");
-		sale.setProduct((Product)prod1);
+		sale.setProduct(prod1);
 		sale.setQuantity(5);
 		sale.setTransaction(trans);
 		sale.save();
 		Sale sale2 = BusinessObjectDAO.getInstance().create("Sale", "2sale");
-		sale2.setProduct((Product)prod2);
+		sale2.setProduct(prod2);
 		sale2.setQuantity(1);
 		sale2.setTransaction(trans);
 		sale2.save();
 		
-		trans.calculateTotals();
+		// Test finalizing the transaction.
+		trans.finalizeAndSave();
+		
+		Commission comm = BusinessObjectDAO.getInstance().searchForBO("Commission", new SearchCriteria("transactionid", trans.getId()));
+		assertTrue(comm.getAmount() - trans.getCommissionAmount() < 0.1);
+		assertSame(comm.getEmployee(), trans.getEmployee());
+		
+		JournalEntry je = BusinessObjectDAO.getInstance().searchForBO("JournalEntry", new SearchCriteria("transactionid", trans.getId()));
+		assertEquals(je.getDebitCredits().size(), 5);
+		assertTrue(je.getDebitCredits().get(0).getAmount() - trans.getTotal() < 0.1);
 		
 		// Test subtotal, tax, and total
 		double subtotal = prod1.getPrice() * sale.getQuantity() + prod2.getPrice() * sale2.getQuantity();
@@ -324,8 +333,6 @@ public class Tester {
 		assertTrue(trans.getTax() - tax < 0.1);
 		double total = tax + subtotal;
 		assertTrue(trans.getTotal() - total < 0.1);
-		
-		trans.save();
 		
 		// Test read from cache
 		Transaction trans2 = BusinessObjectDAO.getInstance().read("1transaction");
@@ -345,9 +352,11 @@ public class Tester {
 		assertEquals(trans.getSales().size(), trans3.getSales().size());
 		
 		// Test delete.
-		BusinessObjectDAO.getInstance().delete(sale);
-		BusinessObjectDAO.getInstance().delete(sale2);
-		BusinessObjectDAO.getInstance().delete(trans3);
+//		BusinessObjectDAO.getInstance().delete(je);
+//		BusinessObjectDAO.getInstance().delete(comm);
+//		BusinessObjectDAO.getInstance().delete(sale);
+//		BusinessObjectDAO.getInstance().delete(sale2);
+//		BusinessObjectDAO.getInstance().delete(trans3);
 	}
 	
 	/** Test the Journal Entry. */

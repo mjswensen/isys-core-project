@@ -302,6 +302,7 @@ VALUES
   ('debitCredit2','edu.byu.isys413.data.DebitCredit'),
   ('debitCredit3','edu.byu.isys413.data.DebitCredit'),
   ('debitCredit4','edu.byu.isys413.data.DebitCredit'),
+  ('debitCredit5','edu.byu.isys413.data.DebitCredit'),
   ('employee1','edu.byu.isys413.data.Employee'),
   ('employee2','edu.byu.isys413.data.Employee'),
   ('employee3','edu.byu.isys413.data.Employee'),
@@ -449,9 +450,11 @@ VALUES
 INSERT INTO `debitcredit` (`id`, `journalentryid`, `type`, `glaccount`, `amount`)
 VALUES
   ('debitCredit1','journalEntry1','DR','Cash',532.49),
-  ('debitCredit2','journalEntry1','CR','Commission Payable',20.00),
+  ('debitCredit2','journalEntry1','CR','Sales Revenue',479.99),
   ('debitCredit3','journalEntry1','CR','Tax Payable',32.50),
-  ('debitCredit4','journalEntry1','CR','sale Revenue',479.99);
+  ('debitCredit4','journalEntry1','DR','Commission Expense',20.0),
+  ('debitCredit5','journalEntry1','CR','Commission Payable',20.0);
+  
 
 
 

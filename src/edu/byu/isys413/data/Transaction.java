@@ -220,20 +220,22 @@ public class Transaction extends BusinessObject {
 	 * Commission (with its journal entry debits and credits) for this transaction.
 	 * @throws DataException 
 	 */
-	public void finish() throws DataException {
+	public void finalizeAndSave() throws DataException {
 		calculateTotals();
 		// Update inventory
 		ConceptualProduct cp;
 		PhysicalProduct pp;
 		for(Sale s : getSales()) {
-			if((cp = BusinessObjectDAO.getInstance().read(s.getProductId())) != null) {
+			if(s.getProduct().getClass().getSimpleName().equals("ConceptualProduct")) {
+				cp = BusinessObjectDAO.getInstance().read(s.getProductId());
 				StoreProduct sp = BusinessObjectDAO.getInstance().searchForBO("StoreProduct", new SearchCriteria("conceptualproductid", cp.getId()), new SearchCriteria("storeid", getStoreId()));
 				if(sp != null) {
 					sp.subtractQuantityOnHand(s.getQuantity());
 					sp.save();
 				}
 			}
-			if((pp = BusinessObjectDAO.getInstance().read(s.getProductId())) != null) {
+			if(s.getProduct().getClass().getSimpleName().equals("PhysicalProduct")) {
+				pp = BusinessObjectDAO.getInstance().read(s.getProductId());
 				pp.setStatus("sold");
 				pp.save();
 			}
@@ -286,6 +288,9 @@ public class Transaction extends BusinessObject {
 		commissionPayable.setAmount(comm.getAmount());
 		commissionPayable.save();
 		
+		// Save
+		save();
+		
 	}
 	
 	/**
@@ -297,10 +302,12 @@ public class Transaction extends BusinessObject {
 		ConceptualProduct cp;
 		PhysicalProduct pp;
 		for(Sale s : getSales()) {
-			if((cp = BusinessObjectDAO.getInstance().read(s.getProductId())) != null) {
+			if(s.getProduct().getClass().getSimpleName().equals("ConceptualProduct")) {
+				cp = BusinessObjectDAO.getInstance().read(s.getProductId());
 				commissionAmount += cp.getPrice() * cp.getCommissionRate();
 			}
-			if((pp = BusinessObjectDAO.getInstance().read(s.getProductId())) != null) {
+			if(s.getProduct().getClass().getSimpleName().equals("PhysicalProduct")) {
+				pp = BusinessObjectDAO.getInstance().read(s.getProductId());
 				commissionAmount += pp.getPrice() * (pp.getCommissionRate() + pp.getConceptualProduct().getCommissionRate());
 			}
 		}
