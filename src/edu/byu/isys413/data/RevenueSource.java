@@ -52,12 +52,29 @@ public class RevenueSource extends BusinessObject {
 	public double getChargeAmount() {
 		return chargeAmount;
 	}
+	
+	/**
+	 * Should only be called when reading from the database.
+	 * @param chargeAmount the chargeAmount to set
+	 */
+	public void setChargeAmount(double chargeAmount) {
+		this.chargeAmount = chargeAmount;
+		setDirty();
+	}
 
 	/**
 	 * @return the type
 	 */
 	public String getType() {
 		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+		setDirty();
 	}
 
 }

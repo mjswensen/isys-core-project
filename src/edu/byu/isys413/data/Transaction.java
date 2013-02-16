@@ -15,13 +15,11 @@ public class Transaction extends BusinessObject {
 	@BusinessObjectField
 	private Date date;
 	@BusinessObjectField
-	private double subtotal = 0.0;
+	private Double subtotal = 0.0;
 	@BusinessObjectField
-	private double tax = 0.0;
+	private Double tax = 0.0;
 	@BusinessObjectField
-	private double total = 0.0;
-	
-	private List<Sale> sales = new LinkedList<Sale>();
+	private Double total = 0.0;
 	
 	/** Creates a new instance of BusinessObject */
 	public Transaction(String id) {
@@ -140,15 +138,16 @@ public class Transaction extends BusinessObject {
 	 * @return the subtotal
 	 * @throws DataException 
 	 */
-	public double getSubtotal() {
+	public Double getSubtotal() throws DataException {
 		return subtotal;
 	}
 
 	/**
+	 * Should only be called by BusinessObjectDAO when retrieving data from DB.
 	 * @param subtotal the subtotal to set
 	 * @throws DataException 
 	 */
-	private void setSubtotal(double subtotal) {
+	public void setSubtotal(Double subtotal) {
 		this.subtotal = subtotal;
 		setDirty();
 	}
@@ -157,14 +156,15 @@ public class Transaction extends BusinessObject {
 	 * @return the tax
 	 * @throws DataException 
 	 */
-	public double getTax() {
+	public Double getTax() throws DataException {
 		return tax;
 	}
 
 	/**
+	 * Should only be called by BusinessObjectDAO when retrieving data from DB.
 	 * @param tax the tax to set
 	 */
-	private void setTax(double tax) {
+	public void setTax(Double tax) {
 		this.tax = tax;
 		setDirty();
 	}
@@ -173,14 +173,15 @@ public class Transaction extends BusinessObject {
 	 * @return the total
 	 * @throws DataException 
 	 */
-	public double getTotal() {
+	public Double getTotal() throws DataException {
 		return total;
 	}
 
 	/**
+	 * Should only be called by BusinessObjectDAO when retrieving data from DB.
 	 * @param total the total to set
 	 */
-	private void setTotal(double total) {
+	public void setTotal(Double total) {
 		this.total = total;
 		setDirty();
 	}
@@ -190,23 +191,21 @@ public class Transaction extends BusinessObject {
 	 * @throws DataException
 	 */
 	public List<Sale> getSales() throws DataException {
+		List<Sale> allSales = BusinessObjectDAO.getInstance().searchForAll("Sale");
+		List<Sale> sales = new LinkedList<Sale>();
+		for(Sale s : allSales) {
+			if(s.getTransactionId() == id) sales.add(s);
+		}
 		return sales;
 	}
 	
 	/**
-	 * Adds a sale to this transaction.
-	 * @param sale
-	 * @throws DataException 
+	 * Retrieves associated sales from DB and calculates totals. Getters for totals will call this if null.
+	 * @throws DataException
 	 */
-	public void addSale(Sale sale) throws DataException {
-		sale.setTransaction(this);
-		sales.add(sale);
-		calculateTotals();
-	}
-	
-	private void calculateTotals() throws DataException {
+	public void calculateTotals() throws DataException {
 		double subtotal = 0.0, tax, total;
-		for(Sale s : sales) {
+		for(Sale s : getSales()) {
 			subtotal += s.getChargeAmount();
 		}
 		tax = subtotal * getStore().getSalesTaxRate();
