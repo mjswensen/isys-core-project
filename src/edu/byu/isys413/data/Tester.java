@@ -285,7 +285,11 @@ public class Tester {
 		BusinessObjectDAO.getInstance().delete(cust);
 	}
 	
-	/** Test the Transaction and Sale. Tests the 1-M relationship between transactions and sales. */
+	/**
+	 * Test the Transaction and Sale.
+	 * Tests the 1-M relationship between transactions and sales.
+	 * Also tests Commission.
+	 * */
 	@Test
 	public void TestTransaction() throws Exception {
 		// Grab associated objects
@@ -320,6 +324,7 @@ public class Tester {
 		
 		Commission comm = BusinessObjectDAO.getInstance().searchForBO("Commission", new SearchCriteria("transactionid", trans.getId()));
 		assertTrue(comm.getAmount() - trans.getCommissionAmount() < 0.1);
+		assertTrue(comm.getAmount() > 0);
 		assertSame(comm.getEmployee(), trans.getEmployee());
 		
 		JournalEntry je = BusinessObjectDAO.getInstance().searchForBO("JournalEntry", new SearchCriteria("transactionid", trans.getId()));
@@ -352,11 +357,14 @@ public class Tester {
 		assertEquals(trans.getSales().size(), trans3.getSales().size());
 		
 		// Test delete.
-//		BusinessObjectDAO.getInstance().delete(je);
-//		BusinessObjectDAO.getInstance().delete(comm);
-//		BusinessObjectDAO.getInstance().delete(sale);
-//		BusinessObjectDAO.getInstance().delete(sale2);
-//		BusinessObjectDAO.getInstance().delete(trans3);
+		for(DebitCredit drcr : je.getDebitCredits()) {
+			BusinessObjectDAO.getInstance().delete(drcr);
+		}
+		BusinessObjectDAO.getInstance().delete(je);
+		BusinessObjectDAO.getInstance().delete(comm);
+		BusinessObjectDAO.getInstance().delete(sale);
+		BusinessObjectDAO.getInstance().delete(sale2);
+		BusinessObjectDAO.getInstance().delete(trans3);
 	}
 	
 	/** Test the Journal Entry. */
