@@ -15,6 +15,7 @@ public class JournalEntry extends BusinessObject {
 	/** Creates a new instance of BusinessObject */
 	public JournalEntry(String id) {
 		super(id);
+		setPosted(false);
 	}
 
 	/**

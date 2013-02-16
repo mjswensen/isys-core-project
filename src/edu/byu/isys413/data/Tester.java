@@ -450,51 +450,38 @@ public class Tester {
 	/** Test the Commission. */
 	@Test
 	public void TestCommission() throws Exception {
+		// Grab associated BO
+		Transaction trans = BusinessObjectDAO.getInstance().read("transaction1");
+		
+		// Create
+		Commission comm = BusinessObjectDAO.getInstance().create("Commission", "1commission");
+		comm.setTransaction(trans);
+		// Employee should be set automatically when transaction is set.
+		assertSame(comm.getEmployee(), trans.getEmployee());
+		// amount should be set automatically when transaction is set.
+		assertTrue(comm.getAmount() - trans.getCommissionAmount() < 0.1);
+		comm.setDate(new Date());
+		// isPaid should default to false
+		assertTrue(!comm.isPaid());
+		comm.save();
+		
+		// Test read from cache
+		Commission comm2 = BusinessObjectDAO.getInstance().read("1commission");
+		assertSame(comm, comm2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Commission comm3 = BusinessObjectDAO.getInstance().read("1commission");
+		assertEquals(comm.getId(), comm3.getId());
+		assertSame(comm.getTransaction(), comm3.getTransaction());
+		assertSame(comm.getEmployee(), comm3.getEmployee());
+		assertTrue(comm.getAmount() - comm3.getAmount() < 0.1);
+		assertEquals(SDF.format(comm.getDate()), SDF.format(comm3.getDate()));
+		assertEquals(comm.isPaid(), comm3.isPaid());
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(comm3);
 		
 	}
-
-	// /** Test the 1-M relationship between Person and Dog (a person can have many dogs) */
-	// @Test
-	// public void TestPersonDogs() throws Exception {
-	// 	// this person will own three dogs
-	// 	Person p = BusinessObjectDAO.getInstance().create("Person", "personA");
-	// 	p.setFirstName("Jack");
-	// 	p.setLastName("O'Neill");
-	// 	p.setPhone("555-555-1234");
-	// 	p.save();
-
-	// 	// first dog
-	// 	Dog d1 = BusinessObjectDAO.getInstance().create("Dog", "dogA");
-	// 	d1.setBreed("Bassetoodle");
-	// 	d1.setDogName("Flipper");
-	// 	d1.setPerson(p);
-	// 	d1.save();
-
-	// 	// second dog
-	// 	Dog d2 = BusinessObjectDAO.getInstance().create("Dog", "dogB");
-	// 	d2.setBreed("Pug");
-	// 	d2.setDogName("Buddy");
-	// 	d2.setPerson(p);
-	// 	d2.save();
-
-	// 	// third dog
-	// 	Dog d3 = BusinessObjectDAO.getInstance().create("Dog", "dogC");
-	// 	d3.setBreed("Siberian Husky ");
-	// 	d3.setDogName("Doc");
-	// 	d3.setPerson(p);
-	// 	d3.save();
-
-	// 	// retrieve the three dogs from the Person object
-	// 	List<Dog> dogs = p.getDogs();
-	// 	assertEquals(dogs.size(), 3);
-	// 	System.out.println(dogs.get(0).getPerson().getId());
-	// 	assertSame(dogs.get(0).getPerson(), p);
-	// 	assertSame(dogs.get(1).getPerson(), p);
-	// 	assertSame(dogs.get(2).getPerson(), p);
-	// }    
-
-	   
-
-
 
 }

@@ -13,11 +13,12 @@ public class Commission extends BusinessObject {
 	@BusinessObjectField
 	private Date date;
 	@BusinessObjectField
-	private boolean isPaid;
+	private boolean paid;
 	
 	/** Creates a new instance of BusinessObject */
 	public Commission(String id) {
 		super(id);
+		setPaid(false);
 	}
 
 	/**
@@ -44,10 +45,14 @@ public class Commission extends BusinessObject {
 	}
 
 	/**
+	 * Also sets the employeeId, for convenience.
 	 * @param transaction the transaction to set
+	 * @throws DataException 
 	 */
-	public void setTransaction(Transaction transaction) {
+	public void setTransaction(Transaction transaction) throws DataException {
 		this.transactionId = transaction.getId();
+		setEmployee(transaction.getEmployee());
+		setAmount(transaction.getCommissionAmount());
 		setDirty();
 	}
 
@@ -113,17 +118,17 @@ public class Commission extends BusinessObject {
 	}
 
 	/**
-	 * @return the isPaid
+	 * @return whether or not the commission has been paid.
 	 */
 	public boolean isPaid() {
-		return isPaid;
+		return paid;
 	}
 
 	/**
-	 * @param isPaid the isPaid to set
+	 * @param whether or not the commission has been paid.
 	 */
-	public void setPaid(boolean isPaid) {
-		this.isPaid = isPaid;
+	public void setPaid(boolean paid) {
+		this.paid = paid;
 		setDirty();
 	}
 

@@ -14,6 +14,10 @@ public class ConceptualProduct extends Product {
 	@BusinessObjectField
 	private double averageCost;
 	@BusinessObjectField
+	private double commissionRate;
+	@BusinessObjectField
+	private String sku;
+	@BusinessObjectField
 	private String categoryId;
 	@BusinessObjectField
 	private String vendorId;
@@ -35,6 +39,7 @@ public class ConceptualProduct extends Product {
 	 */
 	public void setName(String name) {
 		this.name = name;
+		setDirty();
 	}
 
 	/**
@@ -49,6 +54,7 @@ public class ConceptualProduct extends Product {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+		setDirty();
 	}
 
 	/**
@@ -63,6 +69,7 @@ public class ConceptualProduct extends Product {
 	 */
 	public void setManufacturer(String manufacturer) {
 		this.manufacturer = manufacturer;
+		setDirty();
 	}
 
 	/**
@@ -77,6 +84,37 @@ public class ConceptualProduct extends Product {
 	 */
 	public void setAverageCost(double averageCost) {
 		this.averageCost = averageCost;
+		setDirty();
+	}
+
+	/**
+	 * @return the commissionRate
+	 */
+	public double getCommissionRate() {
+		return commissionRate;
+	}
+
+	/**
+	 * @param commissionRate the commissionRate to set
+	 */
+	public void setCommissionRate(double commissionRate) {
+		this.commissionRate = commissionRate;
+		setDirty();
+	}
+
+	/**
+	 * @return the sku
+	 */
+	public String getSku() {
+		return sku;
+	}
+
+	/**
+	 * @param sku the sku to set
+	 */
+	public void setSku(String sku) {
+		this.sku = sku;
+		setDirty();
 	}
 
 	/**
@@ -91,6 +129,7 @@ public class ConceptualProduct extends Product {
 	 */
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
+		setDirty();
 	}
 
 	/**
@@ -105,6 +144,7 @@ public class ConceptualProduct extends Product {
 	 */
 	public void setVendorId(String vendorId) {
 		this.vendorId = vendorId;
+		setDirty();
 	}
 	
 	/**

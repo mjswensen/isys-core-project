@@ -106,6 +106,8 @@ CREATE TABLE conceptualproduct (
   description TEXT,
   manufacturer VARCHAR(50),
   averagecost NUMERIC(10,2),
+  commissionrate NUMERIC (6,5),
+  sku VARCHAR(20),
   categoryid CHAR(40),
   vendorid CHAR(40),
   FOREIGN KEY (id) REFERENCES product (id)
@@ -126,7 +128,7 @@ CREATE TABLE physicalproduct (
   purchased DATETIME,
   cost NUMERIC(10,2),
   status VARCHAR(100),
-  commissionrate DOUBLE,
+  commissionrate NUMERIC(6,5),
   FOREIGN KEY (id) REFERENCES product (id),
   FOREIGN KEY (storeid) REFERENCES store (id),
   FOREIGN KEY (conceptualproductid) REFERENCES conceptualproduct (id)
@@ -228,7 +230,7 @@ CREATE TABLE commission (
   employeeid CHAR(40),
   amount NUMERIC(10,2),
   date DATETIME,
-  ispaid TINYINT(4) DEFAULT 0,
+  paid TINYINT(4) DEFAULT 0,
   FOREIGN KEY (id) REFERENCES businessobject (id),
   FOREIGN KEY (transactionid) REFERENCES transaction (id),
   FOREIGN KEY (employeeid) REFERENCES employee (id)
@@ -379,11 +381,11 @@ VALUES
 # ------------------------------------------------------------ ;
 
 
-INSERT INTO `conceptualproduct` (`id`, `name`, `description`, `manufacturer`, `averagecost`, `categoryid`, `vendorid`)
+INSERT INTO `conceptualproduct` (`id`, `name`, `description`, `manufacturer`, `averagecost`, `commissionrate`, `sku`, `categoryid`, `vendorid`)
 VALUES
-  ('conceptualProduct1','EOS','Entry-level digital camera.','Canon',300.00,NULL,NULL),
-  ('conceptualProduct2','Keychain','MyStuff logo keychain','Rocky',10.00,NULL,NULL),
-  ('conceptualProduct3','Analog Film','Medium roll of film','Canon',5.00,NULL,NULL);
+  ('conceptualProduct1','EOS','Entry-level digital camera.','Canon',300.00,0.05,NULL,NULL,NULL),
+  ('conceptualProduct2','Keychain','MyStuff logo keychain','Rocky',10.00,0.01,'123456789',NULL,NULL),
+  ('conceptualProduct3','Analog Film','Medium roll of film','Canon',5.00,0.02,'234567891',NULL,NULL);
 
 
 
@@ -457,7 +459,7 @@ VALUES
 # ------------------------------------------------------------ ;
 
 
-INSERT INTO `commission` (`id`, `transactionid`, `employeeid`, `amount`, `date`, `ispaid`)
+INSERT INTO `commission` (`id`, `transactionid`, `employeeid`, `amount`, `date`, `paid`)
 VALUES
   ('commission1','transaction1','employee2',20.00,'2012-08-08 12:59:04',0);
 

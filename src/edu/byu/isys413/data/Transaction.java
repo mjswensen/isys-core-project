@@ -214,4 +214,19 @@ public class Transaction extends BusinessObject {
 		setTax(tax);
 		setTotal(total);
 	}
+	
+	public double getCommissionAmount() throws DataException {
+		double commissionAmount = 0.0;
+		ConceptualProduct cp;
+		PhysicalProduct pp;
+		for(Sale s : getSales()) {
+			if((cp = BusinessObjectDAO.getInstance().read(s.getProductId())) != null) {
+				commissionAmount += cp.getPrice() * cp.getCommissionRate();
+			}
+			if((pp = BusinessObjectDAO.getInstance().read(s.getProductId())) != null) {
+				commissionAmount += pp.getPrice() * (pp.getCommissionRate() + pp.getConceptualProduct().getCommissionRate());
+			}
+		}
+		return commissionAmount;
+	}
 }
