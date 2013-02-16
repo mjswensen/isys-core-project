@@ -152,6 +152,8 @@ public class Tester {
 		p.setDescription("Point and shoot");
 		p.setManufacturer("Japan");
 		p.setAverageCost(250.00);
+		p.setCommissionRate(0.0325);
+		p.setSku("345678912");
 		p.save();
 		
 		// Test read from cache
@@ -167,6 +169,8 @@ public class Tester {
 		assertEquals(p.getDescription(), p3.getDescription());
 		assertEquals(p.getManufacturer(), p3.getManufacturer());
 		assertTrue(p.getAverageCost() - p3.getAverageCost() < 0.1);
+		assertTrue(p.getCommissionRate() - p3.getCommissionRate() < 0.1);
+		assertEquals(p.getSku(), p3.getSku());
 		
 		// Test delete
 		BusinessObjectDAO.getInstance().delete(p);
@@ -176,7 +180,11 @@ public class Tester {
 		p4.setDescription("Point and snap");
 		p4.setManufacturer("China");
 		p4.setAverageCost(250.50);
+		p4.setCommissionRate(0.0435);
+		p4.setSku("456789123");
 		p4.save();
+		
+		BusinessObjectDAO.getInstance().delete(p4);
 	}
 	
 	/** Test the PhysicalProduct BO (Also tests the Product BO) */
