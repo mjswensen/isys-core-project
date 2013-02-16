@@ -195,7 +195,7 @@ CREATE TABLE journalentry (
   id CHAR(40) PRIMARY KEY,
   transactionid CHAR(40),
   date DATETIME,
-  isposted TINYINT(4) DEFAULT 0,
+  posted TINYINT(4) DEFAULT 0,
   FOREIGN KEY (id) REFERENCES businessobject (id),
   FOREIGN KEY (transactionid) REFERENCES transaction (id)
 );
@@ -434,7 +434,7 @@ VALUES
 # ------------------------------------------------------------ ;
 
 
-INSERT INTO `journalentry` (`id`, `transactionid`, `date`, `isposted`)
+INSERT INTO `journalentry` (`id`, `transactionid`, `date`, `posted`)
 VALUES
   ('journalEntry1','transaction1','2012-08-08 12:59:04',0);
 

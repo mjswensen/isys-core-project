@@ -9,7 +9,7 @@ public class JournalEntry extends BusinessObject {
 	@BusinessObjectField
 	private Date date;
 	@BusinessObjectField
-	private boolean isPosted;
+	private boolean posted;
 	
 	/** Creates a new instance of BusinessObject */
 	public JournalEntry(String id) {
@@ -63,17 +63,17 @@ public class JournalEntry extends BusinessObject {
 	}
 
 	/**
-	 * @return the isPosted
+	 * @return whether or not the journal entry has been posted
 	 */
 	public boolean isPosted() {
-		return isPosted;
+		return posted;
 	}
 
 	/**
-	 * @param isPosted the isPosted to set
+	 * @param whether or not the journal entry has been posted
 	 */
-	public void setPosted(boolean isPosted) {
-		this.isPosted = isPosted;
+	public void setPosted(boolean posted) {
+		this.posted = posted;
 		setDirty();
 	}
 

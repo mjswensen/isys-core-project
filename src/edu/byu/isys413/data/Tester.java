@@ -277,7 +277,7 @@ public class Tester {
 		BusinessObjectDAO.getInstance().delete(cust);
 	}
 	
-	/** Test the Transaction. Tests the 1-M relationship between transactions and sales. */
+	/** Test the Transaction and Sale. Tests the 1-M relationship between transactions and sales. */
 	@Test
 	public void TestTransaction() throws Exception {
 		// Grab associated objects
@@ -340,6 +340,49 @@ public class Tester {
 		BusinessObjectDAO.getInstance().delete(sale);
 		BusinessObjectDAO.getInstance().delete(sale2);
 		BusinessObjectDAO.getInstance().delete(trans3);
+	}
+	
+	/** Test the Journal Entry. */
+	@Test
+	public void TestJournalEntry() throws Exception {
+		// Grab associated objects. Note that technically this transaction already has a JournalEntry.
+		Transaction trans = BusinessObjectDAO.getInstance().read("transaction1");
+		
+		// Test create/save
+		JournalEntry je = BusinessObjectDAO.getInstance().create("JournalEntry", "1journalEntry");
+		je.setTransaction(trans);
+		je.setDate(new Date());
+		// isPosted needs to default to false.
+		assertTrue(!je.isPosted());
+		je.save();
+		
+		// Test read from cache.
+		JournalEntry je2 = BusinessObjectDAO.getInstance().read("1journalEntry");
+		assertSame(je, je2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		JournalEntry je3 = BusinessObjectDAO.getInstance().read("1journalEntry");
+		assertEquals(je.getId(), je3.getId());
+		assertSame(je.getTransaction(), je3.getTransaction());
+		assertEquals(SDF.format(je.getDate()), SDF.format(je3.getDate()));
+		assertEquals(je.isPosted(), je3.isPosted());
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(je);
+		
+	}
+	
+	/** Test the DebitCredit. Tests 1-M relationship between JournalEntry and DebitCredit. */
+	@Test
+	public void TestDebitCredit() {
+		
+	}
+	
+	/** Test the Commission. */
+	@Test
+	public void TestCommission() {
+		
 	}
 
 	// /** Test the 1-M relationship between Person and Dog (a person can have many dogs) */
