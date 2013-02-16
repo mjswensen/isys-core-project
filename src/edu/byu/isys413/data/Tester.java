@@ -373,15 +373,83 @@ public class Tester {
 		
 	}
 	
-	/** Test the DebitCredit. Tests 1-M relationship between JournalEntry and DebitCredit. */
+	/** Test the DebitCredit. */
 	@Test
-	public void TestDebitCredit() {
+	public void TestDebitCredit() throws Exception {
+		// Grab associated object.
+		JournalEntry je = BusinessObjectDAO.getInstance().read("journalEntry1");
+		
+		// Test create/save
+		DebitCredit dr = BusinessObjectDAO.getInstance().create("DebitCredit", "1debitCredit");
+		dr.setJournalEntry(je);
+		dr.setType("DR");
+		dr.setGlAccount("Cash");
+		dr.setAmount(1050.49);
+		dr.save();
+		
+		// Test read from cache
+		DebitCredit dr2 = BusinessObjectDAO.getInstance().read("1debitCredit");
+		assertSame(dr, dr2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		DebitCredit dr3 = BusinessObjectDAO.getInstance().read("1debitCredit");
+		assertEquals(dr.getId(), dr3.getId());
+		assertSame(dr.getJournalEntry(), dr3.getJournalEntry());
+		assertEquals(dr.getType(), dr3.getType());
+		assertEquals(dr.getGlAccount(), dr3.getGlAccount());
+		assertTrue(dr.getAmount() - dr3.getAmount() < 0.1);
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(dr3);
 		
 	}
 	
+	/** Test 1-M relationship between JournalEntry and DebitCredit. */
+	@Test
+	public void TestJournalEntryDebitCredits() throws Exception {
+		// This journal entry will have 3 debits or credits.
+		JournalEntry je = BusinessObjectDAO.getInstance().create("JournalEntry", "1journalEntry");
+		je.setDate(new Date());
+		je.save();
+		
+		DebitCredit dr = BusinessObjectDAO.getInstance().create("DebitCredit", "1debitCredit");
+		dr.setJournalEntry(je);
+		dr.setType("DR");
+		dr.setGlAccount("Cash");
+		dr.setAmount(400.0);
+		dr.save();
+		
+		DebitCredit cr = BusinessObjectDAO.getInstance().create("DebitCredit", "2debitCredit");
+		cr.setJournalEntry(je);
+		cr.setType("CR");
+		cr.setGlAccount("Sales Revenue");
+		cr.setAmount(390.0);
+		cr.save();
+		
+		DebitCredit cr2 = BusinessObjectDAO.getInstance().create("DebitCredit", "3debitCredit");
+		cr2.setJournalEntry(je);
+		cr2.setType("CR");
+		cr2.setGlAccount("Tax Payable");
+		cr2.setAmount(10.0);
+		cr2.save();
+		
+		List<DebitCredit> drcrs = je.getDebitCredits();
+		assertEquals(drcrs.size(), 3);
+		assertSame(drcrs.get(0).getJournalEntry(), je);
+		assertSame(drcrs.get(1).getJournalEntry(), je);
+		assertSame(drcrs.get(2).getJournalEntry(), je);
+		
+		BusinessObjectDAO.getInstance().delete(cr2);
+		BusinessObjectDAO.getInstance().delete(cr);
+		BusinessObjectDAO.getInstance().delete(dr);
+		BusinessObjectDAO.getInstance().delete(je);
+	}
+	
+	
 	/** Test the Commission. */
 	@Test
-	public void TestCommission() {
+	public void TestCommission() throws Exception {
 		
 	}
 

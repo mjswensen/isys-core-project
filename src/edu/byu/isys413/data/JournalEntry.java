@@ -1,6 +1,7 @@
 package edu.byu.isys413.data;
 
 import java.util.Date;
+import java.util.List;
 
 public class JournalEntry extends BusinessObject {
 
@@ -75,6 +76,14 @@ public class JournalEntry extends BusinessObject {
 	public void setPosted(boolean posted) {
 		this.posted = posted;
 		setDirty();
+	}
+	
+	/**
+	 * @return list of debitcredits associated with this journal entry
+	 * @throws DataException
+	 */
+	public List<DebitCredit> getDebitCredits() throws DataException {
+		return BusinessObjectDAO.getInstance().searchForList("DebitCredit", new SearchCriteria("journalentryid", id));
 	}
 
 }

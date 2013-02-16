@@ -1,13 +1,13 @@
 package edu.byu.isys413.data;
 
 public class DebitCredit extends BusinessObject {
-
-	public enum Type { DR, CR }
+	
+//	public enum Type { DR("DR"), CR("CR") }
 	
 	@BusinessObjectField
 	private String journalEntryId;
 	@BusinessObjectField
-	private Type type;
+	private String type;
 	@BusinessObjectField
 	private String glAccount;
 	@BusinessObjectField
@@ -52,14 +52,14 @@ public class DebitCredit extends BusinessObject {
 	/**
 	 * @return the type
 	 */
-	public Type getType() {
+	public String getType() {
 		return type;
 	}
 
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(Type type) {
+	public void setType(String type) {
 		this.type = type;
 		setDirty();
 	}
