@@ -308,38 +308,38 @@ public class Tester {
 		sale2.save();
 		
 		trans.calculateTotals();
-//		
-//		// Test subtotal, tax, and total
-//		double subtotal = prod1.getPrice() * sale.getQuantity() + prod2.getPrice() * sale2.getQuantity();
-//		assertTrue(trans.getSubtotal() - subtotal < 0.1);
-//		double tax = subtotal * store.getSalesTaxRate();
-//		assertTrue(trans.getTax() - tax < 0.1);
-//		double total = tax + subtotal;
-//		assertTrue(trans.getTotal() - total < 0.1);
-//		
-//		trans.save();
-//		
-//		// Test read from cache
-//		Transaction trans2 = BusinessObjectDAO.getInstance().read("1transaction");
-//		assertSame(trans, trans2);
-//		
-//		// Test read from DB
-//		Cache.getInstance().clear();
-//		Transaction trans3 = BusinessObjectDAO.getInstance().read("1transaction");
-//		assertEquals(trans.getId(), trans3.getId());
-//		assertSame(trans.getCustomer(), trans3.getCustomer());
-//		assertSame(trans.getStore(), trans3.getStore());
-//		assertSame(trans.getEmployee(), trans3.getEmployee());
-//		assertEquals(SDF.format(trans.getDate()), SDF.format(trans3.getDate()));
-//		assertTrue(trans.getSubtotal() - trans3.getSubtotal() < 0.1);
-//		assertTrue(trans.getTax() - trans3.getTax() < 0.1);
-//		assertTrue(trans.getTotal() - trans3.getTotal() < 0.1);
-//		assertEquals(trans.getSales().size(), trans3.getSales().size());
-//		
-//		// Test delete.
-//		BusinessObjectDAO.getInstance().delete(sale);
-//		BusinessObjectDAO.getInstance().delete(sale2);
-//		BusinessObjectDAO.getInstance().delete(trans3);
+		
+		// Test subtotal, tax, and total
+		double subtotal = prod1.getPrice() * sale.getQuantity() + prod2.getPrice() * sale2.getQuantity();
+		assertTrue(trans.getSubtotal() - subtotal < 0.1);
+		double tax = subtotal * store.getSalesTaxRate();
+		assertTrue(trans.getTax() - tax < 0.1);
+		double total = tax + subtotal;
+		assertTrue(trans.getTotal() - total < 0.1);
+		
+		trans.save();
+		
+		// Test read from cache
+		Transaction trans2 = BusinessObjectDAO.getInstance().read("1transaction");
+		assertSame(trans, trans2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Transaction trans3 = BusinessObjectDAO.getInstance().read("1transaction");
+		assertEquals(trans.getId(), trans3.getId());
+		assertSame(trans.getCustomer(), trans3.getCustomer());
+		assertSame(trans.getStore(), trans3.getStore());
+		assertSame(trans.getEmployee(), trans3.getEmployee());
+		assertEquals(SDF.format(trans.getDate()), SDF.format(trans3.getDate()));
+		assertTrue(trans.getSubtotal() - trans3.getSubtotal() < 0.1);
+		assertTrue(trans.getTax() - trans3.getTax() < 0.1);
+		assertTrue(trans.getTotal() - trans3.getTotal() < 0.1);
+		assertEquals(trans.getSales().size(), trans3.getSales().size());
+		
+		// Test delete.
+		BusinessObjectDAO.getInstance().delete(sale);
+		BusinessObjectDAO.getInstance().delete(sale2);
+		BusinessObjectDAO.getInstance().delete(trans3);
 	}
 
 	// /** Test the 1-M relationship between Person and Dog (a person can have many dogs) */
