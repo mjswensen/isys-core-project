@@ -45,7 +45,7 @@ public class Commission extends BusinessObject {
 	}
 
 	/**
-	 * Also sets the employeeId, for convenience.
+	 * Also sets the employee, amount, and date for convenience.
 	 * @param transaction the transaction to set
 	 * @throws DataException 
 	 */
@@ -53,6 +53,7 @@ public class Commission extends BusinessObject {
 		this.transactionId = transaction.getId();
 		setEmployee(transaction.getEmployee());
 		setAmount(transaction.getCommissionAmount());
+		setDate(transaction.getDate());
 		setDirty();
 	}
 

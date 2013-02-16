@@ -359,7 +359,8 @@ public class Tester {
 		// Test create/save
 		JournalEntry je = BusinessObjectDAO.getInstance().create("JournalEntry", "1journalEntry");
 		je.setTransaction(trans);
-		je.setDate(new Date());
+		// date should be set automatically when transaction is set.
+		assertEquals(SDF.format(je.getDate()), SDF.format(trans.getDate()));
 		// isPosted needs to default to false.
 		assertTrue(!je.isPosted());
 		je.save();
@@ -468,7 +469,8 @@ public class Tester {
 		assertSame(comm.getEmployee(), trans.getEmployee());
 		// amount should be set automatically when transaction is set.
 		assertTrue(comm.getAmount() - trans.getCommissionAmount() < 0.1);
-		comm.setDate(new Date());
+		// date should be set automatically when transaction is set.
+		assertEquals(SDF.format(comm.getDate()), SDF.format(trans.getDate()));
 		// isPaid should default to false
 		assertTrue(!comm.isPaid());
 		comm.save();

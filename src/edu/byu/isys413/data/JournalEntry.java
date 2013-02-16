@@ -42,10 +42,12 @@ public class JournalEntry extends BusinessObject {
 	}
 
 	/**
+	 * Also sets the date for convenience.
 	 * @param transaction the transaction to set
 	 */
 	public void setTransaction(Transaction transaction) {
 		this.transactionId = transaction.getId();
+		setDate(transaction.getDate());
 		setDirty();
 	}
 

@@ -107,4 +107,9 @@ public class StoreProduct extends BusinessObject {
 		this.shelfLocation = shelfLocation;
 		setDirty();
 	}
+	
+	public void subtractQuantityOnHand(int amount) {
+		setQuantityOnHand(quantityOnHand - amount);
+		setDirty();
+	}
 }

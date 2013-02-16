@@ -215,6 +215,83 @@ public class Transaction extends BusinessObject {
 		setTotal(total);
 	}
 	
+	/**
+	 * Takes care of updating inventory, creating a JournalEntry, and creating a 
+	 * Commission (with its journal entry debits and credits) for this transaction.
+	 * @throws DataException 
+	 */
+	public void finish() throws DataException {
+		calculateTotals();
+		// Update inventory
+		ConceptualProduct cp;
+		PhysicalProduct pp;
+		for(Sale s : getSales()) {
+			if((cp = BusinessObjectDAO.getInstance().read(s.getProductId())) != null) {
+				StoreProduct sp = BusinessObjectDAO.getInstance().searchForBO("StoreProduct", new SearchCriteria("conceptualproductid", cp.getId()), new SearchCriteria("storeid", getStoreId()));
+				if(sp != null) {
+					sp.subtractQuantityOnHand(s.getQuantity());
+					sp.save();
+				}
+			}
+			if((pp = BusinessObjectDAO.getInstance().read(s.getProductId())) != null) {
+				pp.setStatus("sold");
+				pp.save();
+			}
+		}
+		
+		// Create journal entry
+		JournalEntry je = BusinessObjectDAO.getInstance().create("JournalEntry");
+		je.setTransaction(this);
+		je.save();
+		
+		DebitCredit cash = BusinessObjectDAO.getInstance().create("DebitCredit");
+		cash.setJournalEntry(je);
+		cash.setGlAccount("Cash");
+		cash.setType("DR");
+		cash.setAmount(total);
+		cash.save();
+		
+		DebitCredit salesRevenue = BusinessObjectDAO.getInstance().create("DebitCredit");
+		salesRevenue.setJournalEntry(je);
+		salesRevenue.setGlAccount("Sales Revenue");
+		salesRevenue.setType("CR");
+		salesRevenue.setAmount(subtotal);
+		salesRevenue.save();
+		
+		DebitCredit taxPayable = BusinessObjectDAO.getInstance().create("DebitCredit");
+		taxPayable.setJournalEntry(je);
+		taxPayable.setGlAccount("Tax Payable");
+		taxPayable.setType("CR");
+		taxPayable.setAmount(tax);
+		taxPayable.save();
+		
+		// Create commission
+		
+		Commission comm = BusinessObjectDAO.getInstance().create("Commission");
+		comm.setTransaction(this);
+		comm.save();
+		
+		// Add commission debit and credit to journal entry
+		DebitCredit commissionExpense = BusinessObjectDAO.getInstance().create("DebitCredit");
+		commissionExpense.setJournalEntry(je);
+		commissionExpense.setGlAccount("Commission Expense");
+		commissionExpense.setType("DR");
+		commissionExpense.setAmount(comm.getAmount());
+		commissionExpense.save();
+		
+		DebitCredit commissionPayable = BusinessObjectDAO.getInstance().create("DebitCredit");
+		commissionPayable.setJournalEntry(je);
+		commissionPayable.setGlAccount("Commission Payable");
+		commissionPayable.setType("CR");
+		commissionPayable.setAmount(comm.getAmount());
+		commissionPayable.save();
+		
+	}
+	
+	/**
+	 * @return the commission amount for this transaction.
+	 * @throws DataException
+	 */
 	public double getCommissionAmount() throws DataException {
 		double commissionAmount = 0.0;
 		ConceptualProduct cp;
