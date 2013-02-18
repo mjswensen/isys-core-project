@@ -1,6 +1,7 @@
 package edu.byu.isys413.data;
 
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -12,6 +13,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -22,6 +25,8 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
 
 public class SaleView extends Shell {
 	private Text txtFirstname;
@@ -33,6 +38,10 @@ public class SaleView extends Shell {
 	private Text txtSubtotal;
 	private Text txtTax;
 	private Text txtTotal;
+	
+	private TableViewer tableViewer;
+	private TableViewerColumn tableViewerColumnItemDesc;
+	private TableViewerColumn tableViewerColumnItemPrice;
 	
 	private Transaction t;
 
@@ -151,20 +160,44 @@ public class SaleView extends Shell {
 		Button btnEditCustomer = new Button(grpCustomer, SWT.NONE);
 		btnEditCustomer.setText("Edit Customer");
 		
-		TableViewer tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnName = tableViewerColumn.getColumn();
+		tableViewerColumnItemDesc = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableColumn tblclmnName = tableViewerColumnItemDesc.getColumn();
 		tblclmnName.setWidth(100);
 		tblclmnName.setText("Name");
 		
-		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnPrice = tableViewerColumn_1.getColumn();
+		tableViewerColumnItemDesc.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Sale s = (Sale)element;
+				try {
+					return s.getProduct().getId();
+				} catch (DataException e) {
+					return "Unable to get product identifier.";
+				}
+			}
+		});
+		
+		tableViewerColumnItemPrice = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableColumn tblclmnPrice = tableViewerColumnItemPrice.getColumn();
 		tblclmnPrice.setWidth(100);
 		tblclmnPrice.setText("Price");
 		new Label(this, SWT.NONE);
+		
+		tableViewerColumnItemPrice.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Sale s = (Sale)element;
+				try {
+					return s.getProduct().getPrice() + "";
+				} catch (DataException e) {
+					return "Unable to get product price.";
+				}
+			}
+		});
 		
 		Composite composite = new Composite(this, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
@@ -175,6 +208,43 @@ public class SaleView extends Shell {
 		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
 		Button btnAddItem = new Button(composite_1, SWT.NONE);
+		btnAddItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				final ScanProductView spv = new ScanProductView(display);
+				spv.open();
+				spv.layout();
+				spv.addShellListener(new ShellListener() {
+					@Override
+					public void shellActivated(ShellEvent arg0) {}
+					@Override
+					public void shellClosed(ShellEvent arg0) {
+						try {
+							Sale s = BusinessObjectDAO.getInstance().create("Sale");
+							s.setTransaction(t);
+							s.setProduct(spv.getProduct());
+							s.save();
+							spv.dispose();
+						} catch (DataException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					@Override
+					public void shellDeactivated(ShellEvent arg0) {}
+					@Override
+					public void shellDeiconified(ShellEvent arg0) {}
+					@Override
+					public void shellIconified(ShellEvent arg0) {}
+				});
+				spv.addDisposeListener(new DisposeListener() {
+					@Override
+					public void widgetDisposed(DisposeEvent arg0) {
+						updateProductsView();
+					}
+				});
+			}
+		});
 		btnAddItem.setText("Add Item");
 		
 		Button btnRemoveItem = new Button(composite_1, SWT.NONE);
@@ -246,6 +316,17 @@ public class SaleView extends Shell {
 			txtEmail.setText(c.getEmail());
 		} catch (Exception e) {
 			System.out.println("Not updating customer view: " + e.getMessage());
+		}
+	}
+	
+	private void updateProductsView() {
+		try {
+			List<Sale> sales = t.getSales();
+			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+			tableViewer.setInput(sales);
+			tableViewer.refresh();
+		} catch (Exception e) {
+			System.out.println("Not updating products view: " + e.getMessage());
 		}
 	}
 
