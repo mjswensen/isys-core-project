@@ -14,7 +14,9 @@ public class MainView {
 
 	protected Shell shell;
 	protected Display display;
+	
 	private boolean isLoggedIn = false;
+	private Store store = null;
 
 	/**
 	 * Launch the application.
@@ -82,6 +84,15 @@ public class MainView {
 		mntmManageEntities.setText("Manage Entities...");
 		
 		shell.setMaximized(true);
+		
+		// Get store information.
+		try {
+			Computer comp = BusinessObjectDAO.getInstance().searchForBO("Computer", new SearchCriteria("mac", "00:26:bb:17:56:ec"));
+			store = comp.getStore();
+		} catch (DataException e1) {
+			System.out.println("Unable to get store from current computer.");
+			// TODO: extra: add drop-down to login window with stores.
+		}
 		
 		displayLoginPrompt();
 
