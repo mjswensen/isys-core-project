@@ -1,5 +1,7 @@
 package edu.byu.isys413.data;
 
+import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -26,34 +28,37 @@ public class SaleView extends Shell {
 	private Text txtSubtotal;
 	private Text txtTax;
 	private Text txtTotal;
+	
+	private Transaction t;
 
 	/**
 	 * Launch the application.
 	 * @param args
 	 */
-	public static void main(String args[]) {
-		try {
-			Display display = Display.getDefault();
-			SaleView shell = new SaleView(display);
-			shell.open();
-			shell.layout();
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String args[]) {
+//		try {
+//			Display display = Display.getDefault();
+//			SaleView shell = new SaleView(display);
+//			shell.open();
+//			shell.layout();
+//			while (!shell.isDisposed()) {
+//				if (!display.readAndDispatch()) {
+//					display.sleep();
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * Create the shell.
 	 * @param display
 	 */
-	public SaleView(Display display) {
+	public SaleView(Display display, Store store) {
 		super(display, SWT.SHELL_TRIM);
-		setSize(604, 384);
+		setSize(708, 450);
+		setText("Sales Transaction");
 		setLayout(new GridLayout(2, false));
 		
 		Group grpCustomer = new Group(this, SWT.NONE);
@@ -68,21 +73,21 @@ public class SaleView extends Shell {
 		lblFirstName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFirstName.setText("First Name");
 		
-		txtFirstname = new Text(grpCustomer, SWT.BORDER);
+		txtFirstname = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY);
 		txtFirstname.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblLastName = new Label(grpCustomer, SWT.NONE);
 		lblLastName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblLastName.setText("Last Name");
 		
-		txtLastname = new Text(grpCustomer, SWT.BORDER);
+		txtLastname = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY);
 		txtLastname.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblAddress = new Label(grpCustomer, SWT.NONE);
 		lblAddress.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblAddress.setText("Address");
 		
-		txtAddress = new Text(grpCustomer, SWT.BORDER | SWT.MULTI);
+		txtAddress = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY | SWT.MULTI);
 		GridData gd_txtAddress = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_txtAddress.heightHint = 30;
 		txtAddress.setLayoutData(gd_txtAddress);
@@ -91,14 +96,14 @@ public class SaleView extends Shell {
 		lblEmail.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEmail.setText("Email");
 		
-		txtEmail = new Text(grpCustomer, SWT.BORDER);
+		txtEmail = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY);
 		txtEmail.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblPhone = new Label(grpCustomer, SWT.NONE);
 		lblPhone.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblPhone.setText("Phone");
 		
-		txtPhone = new Text(grpCustomer, SWT.BORDER);
+		txtPhone = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY);
 		txtPhone.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnNewCustomer = new Button(grpCustomer, SWT.NONE);
@@ -124,7 +129,7 @@ public class SaleView extends Shell {
 		
 		Composite composite = new Composite(this, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		composite.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		
 		Composite composite_1 = new Composite(composite, SWT.NONE);
 		composite_1.setLayout(new GridLayout(1, false));
@@ -143,27 +148,27 @@ public class SaleView extends Shell {
 		lblSubtotal.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblSubtotal.setText("Subtotal");
 		
-		txtSubtotal = new Text(composite_2, SWT.BORDER);
+		txtSubtotal = new Text(composite_2, SWT.BORDER | SWT.READ_ONLY);
 		txtSubtotal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblTax = new Label(composite_2, SWT.NONE);
 		lblTax.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblTax.setText("Tax");
 		
-		txtTax = new Text(composite_2, SWT.BORDER);
+		txtTax = new Text(composite_2, SWT.BORDER | SWT.READ_ONLY);
 		txtTax.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblTotal = new Label(composite_2, SWT.NONE);
 		lblTotal.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblTotal.setText("Total");
 		
-		txtTotal = new Text(composite_2, SWT.BORDER);
+		txtTotal = new Text(composite_2, SWT.BORDER | SWT.READ_ONLY);
 		txtTotal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(this, SWT.NONE);
 		
 		Composite composite_3 = new Composite(this, SWT.NONE);
 		composite_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		composite_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		composite_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		
 		Button btnCancelTransaction = new Button(composite_3, SWT.NONE);
 		btnCancelTransaction.setText("Cancel Transaction");
@@ -171,16 +176,18 @@ public class SaleView extends Shell {
 		Button btnSubmitTransaction = new Button(composite_3, SWT.NONE);
 		btnSubmitTransaction.setText("Submit Transaction");
 		
+		// Begin the transaction
 		
-	}
-
-	/**
-	 * Create contents of the shell.
-	 */
-	protected void createContents() {
-		setText("Sales Transaction");
-		setSize(581, 321);
-
+		try {
+			t = BusinessObjectDAO.getInstance().create("Transaction");
+			t.setStore(store);
+			// Emp
+			t.setDate(new Date());
+			t.save();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
