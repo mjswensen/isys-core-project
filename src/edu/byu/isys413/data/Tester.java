@@ -540,5 +540,31 @@ public class Tester {
 		BusinessObjectDAO.getInstance().delete(comm3);
 		
 	}
+	
+	/** Test the GeneralLedger. */
+	@Test
+	public void TestGeneralLedger() throws Exception {
+		// Create
+		GeneralLedger gl = BusinessObjectDAO.getInstance().create("GeneralLedger", "1glAccount");
+		gl.setAccount("Fixed Assets");
+		gl.setType("DR");
+		gl.setBalance(100000.0);
+		gl.save();
+		
+		// Test read from cache
+		GeneralLedger gl2 = BusinessObjectDAO.getInstance().read("1glAccount");
+		assertSame(gl, gl2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		GeneralLedger gl3 = BusinessObjectDAO.getInstance().read("1glAccount");
+		assertEquals(gl.getId(), gl3.getId());
+		assertEquals(gl.getAccount(), gl3.getAccount());
+		assertEquals(gl.getType(), gl3.getType());
+		assertTrue(gl.getBalance() - gl3.getBalance() < 0.1);
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(gl3);
+	}
 
 }

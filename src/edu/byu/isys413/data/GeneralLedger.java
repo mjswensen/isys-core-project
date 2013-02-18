@@ -2,14 +2,14 @@ package edu.byu.isys413.data;
 
 public class GeneralLedger extends BusinessObject {
 
-	public enum Type { DR, CR }
+//	public static enum Type { DR, CR }
 	
 	@BusinessObjectField
 	private String account;
 	@BusinessObjectField
 	private double balance;
 	@BusinessObjectField
-	private Type type;
+	private String type;
 	
 	/** Creates a new instance of BusinessObject */
 	public GeneralLedger(String id) {
@@ -49,14 +49,14 @@ public class GeneralLedger extends BusinessObject {
 	/**
 	 * @return the type
 	 */
-	public Type getType() {
+	public String getType() {
 		return type;
 	}
 
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(Type type) {
+	public void setType(String type) {
 		this.type = type;
 		setDirty();
 	}
