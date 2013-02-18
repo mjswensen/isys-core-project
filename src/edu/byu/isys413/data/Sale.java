@@ -58,4 +58,13 @@ public class Sale extends RevenueSource {
 		this.quantity = quantity;
 		setDirty();
 	}
+	
+	@Override
+	public double getChargeAmount() {
+		try {
+			return getProduct().getPrice() * getQuantity();
+		} catch (DataException e) {
+			return super.getChargeAmount();
+		}
+	}
 }

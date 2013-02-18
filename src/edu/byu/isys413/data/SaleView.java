@@ -40,8 +40,6 @@ public class SaleView extends Shell {
 	private Text txtTotal;
 	
 	private TableViewer tableViewer;
-	private TableViewerColumn tableViewerColumnItemDesc;
-	private TableViewerColumn tableViewerColumnItemPrice;
 	
 	private Transaction t;
 
@@ -166,9 +164,9 @@ public class SaleView extends Shell {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
-		tableViewerColumnItemDesc = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn tableViewerColumnItemDesc = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn tblclmnName = tableViewerColumnItemDesc.getColumn();
-		tblclmnName.setWidth(237);
+		tblclmnName.setWidth(197);
 		tblclmnName.setText("Name");
 		
 		tableViewerColumnItemDesc.setLabelProvider(new ColumnLabelProvider() {
@@ -183,9 +181,9 @@ public class SaleView extends Shell {
 			}
 		});
 		
-		tableViewerColumnItemPrice = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn tableViewerColumnItemPrice = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn tblclmnPrice = tableViewerColumnItemPrice.getColumn();
-		tblclmnPrice.setWidth(152);
+		tblclmnPrice.setWidth(71);
 		tblclmnPrice.setText("Price");
 		new Label(this, SWT.NONE);
 		
@@ -194,10 +192,36 @@ public class SaleView extends Shell {
 			public String getText(Object element) {
 				Sale s = (Sale)element;
 				try {
-					return s.getProduct().getPrice() + "";
+					return "$" + s.getProduct().getPrice();
 				} catch (DataException e) {
 					return "Unable to get product price.";
 				}
+			}
+		});
+		
+		TableViewerColumn tableViewerColumnQuantity = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableColumn tblclmnQuantity = tableViewerColumnQuantity.getColumn();
+		tblclmnQuantity.setWidth(76);
+		tblclmnQuantity.setText("Quantity");
+		
+		tableViewerColumnQuantity.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Sale s = (Sale)element;
+				return s.getQuantity() + "";
+			}
+		});
+		
+		TableViewerColumn tableViewerColumnItemTotal = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableColumn tblclmnItemTotal = tableViewerColumnItemTotal.getColumn();
+		tblclmnItemTotal.setWidth(90);
+		tblclmnItemTotal.setText("Item Total");
+		
+		tableViewerColumnItemTotal.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Sale s = (Sale)element;
+				return "$" + s.getChargeAmount();
 			}
 		});
 		
@@ -225,6 +249,7 @@ public class SaleView extends Shell {
 							Sale s = BusinessObjectDAO.getInstance().create("Sale");
 							s.setTransaction(t);
 							s.setProduct(spv.getProduct());
+							s.setQuantity(spv.getQuantity());
 							s.save();
 							spv.dispose();
 						} catch (DataException e) {
@@ -323,10 +348,17 @@ public class SaleView extends Shell {
 	
 	private void updateProductsView() {
 		try {
+			// Update products table
 			List<Sale> sales = t.getSales();
 			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 			tableViewer.setInput(sales);
 			tableViewer.refresh();
+			
+			// Update totals display
+			t.calculateTotals();
+			txtSubtotal.setText("$" + t.getSubtotal());
+			txtTax.setText("$" + t.getTax());
+			txtTotal.setText("$" + t.getTotal());
 		} catch (Exception e) {
 			System.out.println("Not updating products view: " + e.getMessage());
 		}

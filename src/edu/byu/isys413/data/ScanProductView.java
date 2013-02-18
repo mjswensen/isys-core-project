@@ -10,12 +10,15 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.widgets.Group;
 
 public class ScanProductView extends Shell {
 	private Text txtSku;
 	private Text txtSerialnumber;
 	
 	private Product p;
+	private Text txtQty;
+	private int quantity = 1;
 
 	/**
 	 * Launch the application.
@@ -43,22 +46,37 @@ public class ScanProductView extends Shell {
 	 */
 	public ScanProductView(Display display) {
 		super(display, SWT.SHELL_TRIM);
-		setLayout(new GridLayout(3, false));
+		setLayout(new GridLayout(1, false));
 		
-		Label lblSku = new Label(this, SWT.NONE);
-		lblSku.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		Group grpStandard = new Group(this, SWT.NONE);
+		GridData gd_grpStandard = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		gd_grpStandard.widthHint = 380;
+		grpStandard.setLayoutData(gd_grpStandard);
+		grpStandard.setText("Standard");
+		grpStandard.setLayout(new GridLayout(3, false));
+		
+		Label lblSku = new Label(grpStandard, SWT.NONE);
 		lblSku.setText("SKU:");
 		
-		txtSku = new Text(this, SWT.BORDER);
-		txtSku.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtSku = new Text(grpStandard, SWT.BORDER);
+		txtSku.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		new Label(grpStandard, SWT.NONE);
 		
-		Button btnGo = new Button(this, SWT.NONE);
+		Label lblQuantity = new Label(grpStandard, SWT.NONE);
+		lblQuantity.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblQuantity.setText("Quantity:");
+		
+		txtQty = new Text(grpStandard, SWT.BORDER);
+		txtQty.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		
+		Button btnGo = new Button(grpStandard, SWT.NONE);
 		btnGo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				try {
 					ConceptualProduct cp = BusinessObjectDAO.getInstance().searchForBO("ConceptualProduct", new SearchCriteria("sku", txtSku.getText()));
 					p = (Product)cp;
+					quantity = Integer.parseInt(txtQty.getText());
 					close();
 				} catch (DataException e1) {
 					// TODO
@@ -67,14 +85,20 @@ public class ScanProductView extends Shell {
 		});
 		btnGo.setText("Go");
 		
-		Label lblSerialNumber = new Label(this, SWT.NONE);
-		lblSerialNumber.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		Group grpHighend = new Group(this, SWT.NONE);
+		grpHighend.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		grpHighend.setText("High-end");
+		grpHighend.setLayout(new GridLayout(3, false));
+		
+		Label lblSerialNumber = new Label(grpHighend, SWT.NONE);
 		lblSerialNumber.setText("Serial Number:");
 		
-		txtSerialnumber = new Text(this, SWT.BORDER);
-		txtSerialnumber.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtSerialnumber = new Text(grpHighend, SWT.BORDER);
+		GridData gd_txtSerialnumber = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		gd_txtSerialnumber.widthHint = 227;
+		txtSerialnumber.setLayoutData(gd_txtSerialnumber);
 		
-		Button btnGo_1 = new Button(this, SWT.NONE);
+		Button btnGo_1 = new Button(grpHighend, SWT.NONE);
 		btnGo_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -95,7 +119,7 @@ public class ScanProductView extends Shell {
 	 * Create contents of the shell.
 	 */
 	protected void createContents() {
-		setText("SWT Application");
+		setText("Scan Product");
 		setSize(450, 300);
 
 	}
@@ -105,6 +129,13 @@ public class ScanProductView extends Shell {
 	 */
 	public Product getProduct() {
 		return p;
+	}
+	
+	/**
+	 * @return the quantity of the conceptual product.
+	 */
+	public int getQuantity() {
+		return quantity;
 	}
 
 	@Override
