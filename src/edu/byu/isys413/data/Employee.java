@@ -18,6 +18,8 @@ import java.util.Date;
  */
 public class Employee extends BusinessObject {
 
+	@BusinessObjectField
+	private String netid;
     @BusinessObjectField
     private String firstName;
     @BusinessObjectField
@@ -40,6 +42,20 @@ public class Employee extends BusinessObject {
     /** Creates a new instance of BusinessObject */
 	public Employee(String id) {
 		super(id);
+	}
+
+	/**
+	 * @return the netid
+	 */
+	public String getNetid() {
+		return netid;
+	}
+
+	/**
+	 * @param netid the netid to set
+	 */
+	public void setNetid(String netid) {
+		this.netid = netid;
 	}
 
 	/**

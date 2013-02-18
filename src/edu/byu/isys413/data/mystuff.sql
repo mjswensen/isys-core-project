@@ -65,6 +65,7 @@ CREATE TABLE store (
 
 CREATE TABLE employee (
   id CHAR(40) PRIMARY KEY,
+  netid VARCHAR(40),
   firstname VARCHAR(50),
   middlename VARCHAR(50),
   lastname VARCHAR(50),
@@ -361,14 +362,14 @@ VALUES
 # ------------------------------------------------------------ ;
 
 
-INSERT INTO `employee` (`id`, `firstname`, `middlename`, `lastname`, `hiredate`, `phone`, `salary`, `storeid`, `positionid`, `divisionid`)
+INSERT INTO `employee` (`id`, `netid`, `firstname`, `middlename`, `lastname`, `hiredate`, `phone`, `salary`, `storeid`, `positionid`, `divisionid`)
 VALUES
-  ('employee1','John','Peter','Appleseed','2007-02-07','801-347-2473',65000.00,'store1',NULL,NULL),
-  ('employee2','Mark','Leo','Jackson','2008-06-23','801-238-4721',44000.00,'store1',NULL,NULL),
-  ('employee3','Jack','Gi','Johnson','2006-06-01','801-522-4423',49000.00,'store2',NULL,NULL),
-  ('employee4','Andrea','LuEtta','Terribilini','2006-07-01','801-248-4441',40000.00,'store2',NULL,NULL),
-  ('employee5','Kyle','Jacob','Armstrong','2008-11-13','801-233-4111',50000.00,'store3',NULL,NULL),
-  ('employee6','Richard','Alfred','Yankee','2002-05-21','801-233-4221',64000.00,'store3',NULL,NULL);
+  ('employee1','mswensen','Matt','Joseph','Swensen','2007-02-07','801-347-2473',65000.00,'store1',NULL,NULL),
+  ('employee2','','Mark','Leo','Jackson','2008-06-23','801-238-4721',44000.00,'store1',NULL,NULL),
+  ('employee3','','Jack','Gi','Johnson','2006-06-01','801-522-4423',49000.00,'store2',NULL,NULL),
+  ('employee4','','Andrea','LuEtta','Terribilini','2006-07-01','801-248-4441',40000.00,'store2',NULL,NULL),
+  ('employee5','','Kyle','Jacob','Armstrong','2008-11-13','801-233-4111',50000.00,'store3',NULL,NULL),
+  ('employee6','','Richard','Alfred','Yankee','2002-05-21','801-233-4221',64000.00,'store3',NULL,NULL);
 
 
 # Now that both store and employee tables are created, and since they reference each other, add FK to store for managerid. ;
