@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -275,6 +276,20 @@ public class SaleView extends Shell {
 		btnAddItem.setText("Add Item");
 		
 		Button btnRemoveItem = new Button(composite_1, SWT.NONE);
+		btnRemoveItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				// Get selection from the table and remove it in the database. Then update the view.
+				IStructuredSelection sel = (IStructuredSelection)tableViewer.getSelection();
+				Sale toRemove = (Sale)sel.getFirstElement();
+				try {
+					BusinessObjectDAO.getInstance().delete(toRemove);
+					updateProductsView();
+				} catch (DataException e1) {
+					// TODO
+				}
+			}
+		});
 		btnRemoveItem.setText("Remove Item");
 		
 		Composite composite_2 = new Composite(composite, SWT.NONE);
