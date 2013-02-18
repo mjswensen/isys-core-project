@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS commission;
 DROP TABLE IF EXISTS debitcredit;
 DROP TABLE IF EXISTS journalentry;
 DROP TABLE IF EXISTS transaction;
+DROP TABLE IF EXISTS computer;
 DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS store;
 DROP TABLE IF EXISTS customer;
@@ -82,6 +83,19 @@ CREATE TABLE employee (
 
 
 ALTER TABLE store ADD FOREIGN KEY (managerid) REFERENCES employee (id);
+
+
+# Create table computer ;
+# ------------------------------------------------------------ ;
+
+
+CREATE TABLE computer (
+  id CHAR(40),
+  storeid CHAR(40),
+  mac CHAR(17),
+  FOREIGN KEY (id) REFERENCES businessobject (id),
+  FOREIGN KEY (storeid) REFERENCES store (id)
+);
 
 
 # Create table product ;
@@ -321,6 +335,7 @@ VALUES
   ('store1','edu.byu.isys413.data.Store'),
   ('store2','edu.byu.isys413.data.Store'),
   ('store3','edu.byu.isys413.data.Store'),
+  ('computer1','edu.byu.isys413.data.Computer'),
   ('storeProduct1','edu.byu.isys413.data.StoreProduct'),
   ('storeProduct2','edu.byu.isys413.data.StoreProduct'),
   ('storeProduct3','edu.byu.isys413.data.StoreProduct'),
@@ -363,6 +378,15 @@ VALUES
 UPDATE store SET managerid = 'employee1' WHERE id = 'store1';
 UPDATE store SET managerid = 'employee3' WHERE id = 'store2';
 UPDATE store SET managerid = 'employee5' WHERE id = 'store3';
+
+
+# Populate table computer ;
+# ------------------------------------------------------------ ;
+
+
+INSERT INTO `computer` (`id`, `storeid`, `mac`)
+VALUES
+  ('computer1','store1','00:26:bb:17:56:ec');
 
 
 

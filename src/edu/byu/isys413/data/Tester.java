@@ -142,6 +142,34 @@ public class Tester {
 
 	}
 	
+	/** Test the computer. */
+	@Test
+	public void TestComputer() throws Exception {
+		// Grab associated objects
+		Store store = BusinessObjectDAO.getInstance().read("store2");
+		
+		// Test create
+		Computer comp = BusinessObjectDAO.getInstance().create("Computer", "1computer");
+		comp.setMac("12:12:12:12:12:12");
+		comp.setStore(store);
+		comp.save();
+		
+		// Test read from cache
+		Computer comp2 = BusinessObjectDAO.getInstance().read("1computer");
+		assertSame(comp, comp2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Computer comp3 = BusinessObjectDAO.getInstance().read("1computer");
+		assertEquals(comp.getId(), comp3.getId());
+		assertEquals(comp.getMac(), comp3.getMac());
+		assertSame(comp.getStore(), comp3.getStore());
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(comp);
+		
+	}
+	
 	/** Test the ConceptualProduct BO (Also tests the Product BO) */
 	@Test
 	public void TestConceptualProduct() throws Exception {
