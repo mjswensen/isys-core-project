@@ -397,6 +397,38 @@ public class Tester {
 		BusinessObjectDAO.getInstance().delete(trans3);
 	}
 	
+	/** Test the Sale. */
+	@Test
+	public void TestSale() throws Exception {
+		// Grab associated objects
+		Transaction t = BusinessObjectDAO.getInstance().read("transaction1");
+		ConceptualProduct cp = BusinessObjectDAO.getInstance().read("conceptualProduct1");
+		
+		// Test create
+		Sale s = BusinessObjectDAO.getInstance().create("Sale", "1sale");
+		s.setTransaction(t);
+		s.setProduct(cp);
+		s.setQuantity(5);
+		// Test that the charge amount is being calculated properly.
+		assertTrue(s.getChargeAmount() - (s.getProduct().getPrice() * s.getQuantity()) < 0.1);
+		s.save();
+		
+		// Test read from cache
+		Sale s2 = BusinessObjectDAO.getInstance().read("1sale");
+		assertSame(s, s2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Sale s3 = BusinessObjectDAO.getInstance().read("1sale");
+		assertEquals(s.getId(), s3.getId());
+		assertSame(s.getTransaction(), s3.getTransaction());
+		assertSame(s.getProduct(), s3.getProduct());
+		assertTrue(s.getChargeAmount() - s3.getChargeAmount() < 0.1);
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(s3);
+	}
+	
 	/** Test the Journal Entry. */
 	@Test
 	public void TestJournalEntry() throws Exception {
