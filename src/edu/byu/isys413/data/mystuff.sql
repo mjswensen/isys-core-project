@@ -162,6 +162,7 @@ CREATE TABLE customer (
   firstname VARCHAR(100),
   lastname VARCHAR(100),
   phone VARCHAR(20),
+  email VARCHAR(50),
   address TEXT,
   FOREIGN KEY (id) REFERENCES businessobject (id)
 );

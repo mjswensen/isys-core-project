@@ -9,6 +9,8 @@ public class Customer extends BusinessObject {
 	@BusinessObjectField
 	private String phone;
 	@BusinessObjectField
+	private String email;
+	@BusinessObjectField
 	private String address;
 	
 	/** Creates a new instance of BusinessObject */
@@ -59,6 +61,20 @@ public class Customer extends BusinessObject {
 	public void setPhone(String phone) {
 		this.phone = phone;
 		setDirty();
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	/**

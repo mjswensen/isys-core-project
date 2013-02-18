@@ -265,6 +265,7 @@ public class Tester {
 		cust.setFirstName("Billy");
 		cust.setLastName("Fredette");
 		cust.setPhone("324-230-0234");
+		cust.setEmail("bff@msn.com");
 		cust.setAddress("465 N 300 E Provo UT 87364");
 		cust.save();
 	
@@ -279,6 +280,7 @@ public class Tester {
 		assertEquals(cust.getFirstName(), cust3.getFirstName());
 		assertEquals(cust.getLastName(), cust3.getLastName());
 		assertEquals(cust.getPhone(), cust3.getPhone());
+		assertEquals(cust.getEmail(), cust3.getEmail());
 		assertEquals(cust.getAddress(), cust3.getAddress());
 		
 		// Test delete
