@@ -52,7 +52,6 @@ public class CustomerInfoView extends Shell {
 		lblFirstName.setText("First Name:");
 		
 		txtFirstname = new Text(this, SWT.BORDER);
-		txtFirstname.setText("firstName");
 		txtFirstname.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblLastName = new Label(this, SWT.NONE);
@@ -60,7 +59,6 @@ public class CustomerInfoView extends Shell {
 		lblLastName.setText("Last Name:");
 		
 		txtLastname = new Text(this, SWT.BORDER);
-		txtLastname.setText("lastName");
 		txtLastname.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblPhone = new Label(this, SWT.NONE);
@@ -68,7 +66,6 @@ public class CustomerInfoView extends Shell {
 		lblPhone.setText("Phone:");
 		
 		txtPhone = new Text(this, SWT.BORDER);
-		txtPhone.setText("phone");
 		txtPhone.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblEmail = new Label(this, SWT.NONE);
@@ -76,7 +73,6 @@ public class CustomerInfoView extends Shell {
 		lblEmail.setText("Email:");
 		
 		txtEmail = new Text(this, SWT.BORDER);
-		txtEmail.setText("email");
 		txtEmail.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblAddress = new Label(this, SWT.NONE);
@@ -84,7 +80,6 @@ public class CustomerInfoView extends Shell {
 		lblAddress.setText("Address:");
 		
 		txtAddress = new Text(this, SWT.BORDER);
-		txtAddress.setText("address");
 		txtAddress.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(this, SWT.NONE);
 		
