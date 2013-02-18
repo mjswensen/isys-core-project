@@ -55,7 +55,7 @@ public class SaleView extends Shell {
 	 * Create the shell.
 	 * @param display
 	 */
-	public SaleView(Display display, Store store) {
+	public SaleView(Display display) {
 		super(display, SWT.SHELL_TRIM);
 		setSize(708, 450);
 		setText("Sales Transaction");
@@ -179,11 +179,17 @@ public class SaleView extends Shell {
 		// Begin the transaction
 		
 		try {
+			// Grab related objects
+			Store store = AppData.getInstance().getStore();
+			Employee emp = AppData.getInstance().getEmployee();
+			
+			// Create transaction and save.
 			t = BusinessObjectDAO.getInstance().create("Transaction");
 			t.setStore(store);
-			// Emp
+			t.setEmployee(emp);
 			t.setDate(new Date());
 			t.save();
+			
 		} catch (DataException e) {
 			e.printStackTrace();
 		}

@@ -82,10 +82,15 @@ public class LoginView extends Shell {
 		            env.put(Context.SECURITY_CREDENTIALS, passwd);
 		            @SuppressWarnings("unused")
 					DirContext ctx = new InitialDirContext(env);
+		            Employee emp = BusinessObjectDAO.getInstance().searchForBO("Employee", new SearchCriteria("netid", netId));
+		            AppData.getInstance().setLoggedIn(true);
+		            AppData.getInstance().setEmployee(emp);
 		            closeLoginPrompt();
 		        } catch (NamingException e1) {
 		            // TODO: extra: display some feedback to the user.
-		        }
+		        } catch (DataException e1) {
+		        	// TODO: extra: display some feedback to the user.
+				}
 				
 			}
 		});

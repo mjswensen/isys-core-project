@@ -1,7 +1,5 @@
 package edu.byu.isys413.data;
 
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Menu;
@@ -14,9 +12,6 @@ public class MainView {
 
 	protected Shell shell;
 	protected Display display;
-	
-	private boolean isLoggedIn = false;
-	private Store store = null;
 
 	/**
 	 * Launch the application.
@@ -88,7 +83,7 @@ public class MainView {
 		// Get store information.
 		try {
 			Computer comp = BusinessObjectDAO.getInstance().searchForBO("Computer", new SearchCriteria("mac", "00:26:bb:17:56:ec"));
-			store = comp.getStore();
+			AppData.getInstance().setStore(comp.getStore());
 		} catch (DataException e1) {
 			System.out.println("Unable to get store from current computer.");
 			// TODO: extra: add drop-down to login window with stores.
@@ -102,11 +97,5 @@ public class MainView {
 		LoginView loginView = new LoginView(display);
 		loginView.open();
 		loginView.layout();
-		loginView.addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent arg0) {
-				isLoggedIn = true;
-			}
-		});
 	}
 }
