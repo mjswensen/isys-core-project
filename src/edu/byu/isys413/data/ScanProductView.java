@@ -75,6 +75,18 @@ public class ScanProductView extends Shell {
 		txtSerialnumber.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnGo_1 = new Button(this, SWT.NONE);
+		btnGo_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				try {
+					PhysicalProduct pp = BusinessObjectDAO.getInstance().searchForBO("PhysicalProduct", new SearchCriteria("serialnum", txtSerialnumber.getText()));
+					p = (Product)pp;
+					close();
+				} catch (DataException e1) {
+					// TODO
+				}
+			}
+		});
 		btnGo_1.setText("Go");
 		createContents();
 	}

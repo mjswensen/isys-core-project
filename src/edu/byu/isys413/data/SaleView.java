@@ -162,11 +162,13 @@ public class SaleView extends Shell {
 		
 		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		tableViewerColumnItemDesc = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn tblclmnName = tableViewerColumnItemDesc.getColumn();
-		tblclmnName.setWidth(100);
+		tblclmnName.setWidth(237);
 		tblclmnName.setText("Name");
 		
 		tableViewerColumnItemDesc.setLabelProvider(new ColumnLabelProvider() {
@@ -183,7 +185,7 @@ public class SaleView extends Shell {
 		
 		tableViewerColumnItemPrice = new TableViewerColumn(tableViewer, SWT.NONE);
 		TableColumn tblclmnPrice = tableViewerColumnItemPrice.getColumn();
-		tblclmnPrice.setWidth(100);
+		tblclmnPrice.setWidth(152);
 		tblclmnPrice.setText("Price");
 		new Label(this, SWT.NONE);
 		
