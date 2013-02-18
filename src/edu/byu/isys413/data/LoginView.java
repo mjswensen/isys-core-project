@@ -108,8 +108,11 @@ public class LoginView extends Shell {
 
 	}
 	
+	/**
+	 * Simply closes the window.
+	 */
 	private void closeLoginPrompt() {
-		this.dispose();
+		dispose();
 	}
 
 	@Override

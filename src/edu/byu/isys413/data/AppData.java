@@ -12,6 +12,8 @@ public class AppData {
 	private Employee employee;
 	private boolean isLoggedIn;
 	
+	private Customer lookupCustomer;
+	
 	// Singleton pattern
 	private AppData() {}
 	
@@ -63,6 +65,20 @@ public class AppData {
 	 */
 	public void setLoggedIn(boolean isLoggedIn) {
 		this.isLoggedIn = isLoggedIn;
+	}
+
+	/**
+	 * @return the lookupCustomer
+	 */
+	public Customer getLookupCustomer() {
+		return lookupCustomer;
+	}
+
+	/**
+	 * @param lookupCustomer the lookupCustomer to set
+	 */
+	public void setLookupCustomer(Customer lookupCustomer) {
+		this.lookupCustomer = lookupCustomer;
 	}
 	
 }

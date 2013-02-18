@@ -18,6 +18,11 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.widgets.Composite;
 import swing2swt.layout.FlowLayout;
 
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+
 public class SaleView extends Shell {
 	private Text txtFirstname;
 	private Text txtLastname;
@@ -55,7 +60,7 @@ public class SaleView extends Shell {
 	 * Create the shell.
 	 * @param display
 	 */
-	public SaleView(Display display) {
+	public SaleView(final Display display) {
 		super(display, SWT.SHELL_TRIM);
 		setSize(708, 450);
 		setText("Sales Transaction");
@@ -66,6 +71,20 @@ public class SaleView extends Shell {
 		grpCustomer.setLayout(new GridLayout(2, false));
 		
 		Button btnLookupCustomer = new Button(grpCustomer, SWT.NONE);
+		btnLookupCustomer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				CustomerLookupView clv = new CustomerLookupView(display);
+				clv.open();
+				clv.layout();
+				clv.addDisposeListener(new DisposeListener() {
+					@Override
+					public void widgetDisposed(DisposeEvent arg0) {
+						t.setCustomer(AppData.getInstance().getLookupCustomer());
+						updateCustomerView();
+					}});
+			}
+		});
 		btnLookupCustomer.setText("Lookup Customer");
 		new Label(grpCustomer, SWT.NONE);
 		
@@ -194,6 +213,20 @@ public class SaleView extends Shell {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void updateCustomerView() {
+		try {
+			Customer c = t.getCustomer();
+			if(c == null) throw new Exception("Customer was null.");
+			txtFirstname.setText(c.getFirstName());
+			txtLastname.setText(c.getLastName());
+			txtPhone.setText(c.getPhone());
+			txtAddress.setText(c.getAddress());
+			txtEmail.setText(c.getEmail());
+		} catch (Exception e) {
+			System.out.println("Not updating customer view: " + e.getMessage());
+		}
 	}
 
 	@Override
