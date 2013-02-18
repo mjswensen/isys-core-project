@@ -126,6 +126,26 @@ public class SaleView extends Shell {
 		txtPhone.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnNewCustomer = new Button(grpCustomer, SWT.NONE);
+		btnNewCustomer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				Customer c;
+				try {
+					c = BusinessObjectDAO.getInstance().create("Customer");
+					t.setCustomer(c);
+					CustomerInfoView civ = new CustomerInfoView(display, c);
+					civ.open();
+					civ.layout();
+					civ.addDisposeListener(new DisposeListener() {
+						@Override
+						public void widgetDisposed(DisposeEvent arg0) {
+							updateCustomerView();
+						}});
+				} catch (DataException e1) {
+					// TODO
+				}
+			}
+		});
 		btnNewCustomer.setText("New Customer");
 		
 		Button btnEditCustomer = new Button(grpCustomer, SWT.NONE);

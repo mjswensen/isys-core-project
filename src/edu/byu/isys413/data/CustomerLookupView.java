@@ -59,7 +59,7 @@ public class CustomerLookupView extends Shell {
 					Customer c = BusinessObjectDAO.getInstance().searchForBO("Customer", new SearchCriteria("lastname", "%" + lastName + "%", SearchCriteria.LIKE));
 					if(c != null) {
 						AppData.getInstance().setLookupCustomer(c);
-						closeLookupCustomer();
+						dispose();
 					} else {
 						// TODO: extra: show some feedback to the user that the lookup returned no results.
 					}
@@ -86,7 +86,7 @@ public class CustomerLookupView extends Shell {
 					Customer c = BusinessObjectDAO.getInstance().searchForBO("Customer", new SearchCriteria("phone", "%" + phone + "%", SearchCriteria.LIKE));
 					if(c != null) {
 						AppData.getInstance().setLookupCustomer(c);
-						closeLookupCustomer();
+						dispose();
 					} else {
 						// TODO: extra: show some feedback to the user that the lookup returned no results.
 					}
@@ -106,13 +106,6 @@ public class CustomerLookupView extends Shell {
 		setText("Customer Lookup");
 		setSize(450, 300);
 
-	}
-	
-	/**
-	 * Simply closes the window.
-	 */
-	private void closeLookupCustomer() {
-		dispose();
 	}
 
 	@Override

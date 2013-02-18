@@ -85,7 +85,7 @@ public class LoginView extends Shell {
 		            Employee emp = BusinessObjectDAO.getInstance().searchForBO("Employee", new SearchCriteria("netid", netId));
 		            AppData.getInstance().setLoggedIn(true);
 		            AppData.getInstance().setEmployee(emp);
-		            closeLoginPrompt();
+		            dispose();
 		        } catch (NamingException e1) {
 		            // TODO: extra: display some feedback to the user.
 		        } catch (DataException e1) {
@@ -106,13 +106,6 @@ public class LoginView extends Shell {
 		setText("Log In");
 		setSize(325, 135);
 
-	}
-	
-	/**
-	 * Simply closes the window.
-	 */
-	private void closeLoginPrompt() {
-		dispose();
 	}
 
 	@Override
