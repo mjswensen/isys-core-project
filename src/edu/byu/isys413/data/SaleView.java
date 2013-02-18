@@ -325,6 +325,17 @@ public class SaleView extends Shell {
 		btnCancelTransaction.setText("Cancel Transaction");
 		
 		Button btnSubmitTransaction = new Button(composite_3, SWT.NONE);
+		btnSubmitTransaction.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				try {
+					t.finalizeAndSave();
+					dispose();
+				} catch (DataException e1) {
+					// TODO
+				}
+			}
+		});
 		btnSubmitTransaction.setText("Submit Transaction");
 		
 		// Begin the transaction
