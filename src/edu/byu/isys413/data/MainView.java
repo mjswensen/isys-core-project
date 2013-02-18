@@ -7,6 +7,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class MainView {
 
@@ -60,6 +62,14 @@ public class MainView {
 		mntmSales.setMenu(menu_1);
 		
 		MenuItem mntmProcessTransaction = new MenuItem(menu_1, SWT.NONE);
+		mntmProcessTransaction.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				SaleView saleView = new SaleView(display);
+				saleView.open();
+				saleView.layout();
+			}
+		});
 		mntmProcessTransaction.setText("Process Transaction...");
 		
 		MenuItem mntmManagement = new MenuItem(menu, SWT.CASCADE);
@@ -70,6 +80,8 @@ public class MainView {
 		
 		MenuItem mntmManageEntities = new MenuItem(menu_2, SWT.NONE);
 		mntmManageEntities.setText("Manage Entities...");
+		
+		shell.setMaximized(true);
 		
 		displayLoginPrompt();
 
@@ -86,5 +98,4 @@ public class MainView {
 			}
 		});
 	}
-
 }
