@@ -1,12 +1,10 @@
-<jsp:include page="/header.jsp">
-	<jsp:param name="title" value="DYN - MESSAGE TYPE" />
-</jsp:include>
+<jsp:include page="/header.jsp"/>
 
 <div class="container">
 	<div class="row">
 		<div class="span4 offset4">
-			<div class="alert alert-<%= "DYN - MESSAGE TYPE" %>">
-				<%= "DYN - MESSAGE" %>
+			<div class="alert alert-<%= request.getAttribute("messageType") %>">
+				<%= request.getAttribute("message") %>
 			</div>
 		</div>
 	</div>

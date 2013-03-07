@@ -5,11 +5,12 @@
 <div class="container">
 	<div class="row">
 		<div class="span4 offset4">
-			<form action="products.html" method="post">
+			<form action="edu.byu.isys413.data.actions.Login.action" method="post">
 				<legend>Log in</legend>
 				<fieldset>
-					<label for="username">Username*</label> <input type="text"
-						name="username" required> <label for="password">Password*</label>
+					<label for="email">Email*</label>
+					<input type="text" name="email" required>
+					<label for="password">Password*</label>
 					<input type="password" name="password" required>
 				</fieldset>
 				<fieldset>
@@ -29,16 +30,24 @@
 	<div class="modal-body">
 		<form action="confirmation-sent.html" method="get">
 			<fieldset>
-				<label for="name">Name</label> <input type="text" name="name">
-				<label for="phone">Phone</label> <input type="text" name="phone">
-				<label for="email">Email</label> <input type="text" name="email">
-				<label for="address1">Address</label> <input type="text"
-					name="address1"> <label for="address2">Address Line
-					2</label> <input type="text" name="address2"> <label for="city">City</label>
-				<input type="text" name="city"> <label for="state">State</label>
-				<input type="text" name="state"> <label for="zip">Zip</label>
-				<input type="text" name="zip"> <label for="creditcard">Credit
-					Card Number</label> <input type="text" name="creditcard">
+				<label for="name">Name</label>
+				<input type="text" name="name">
+				<label for="phone">Phone</label>
+				<input type="text" name="phone">
+				<label for="email">Email</label>
+				<input type="text" name="email">
+				<label for="address1">Address</label>
+				<input type="text" name="address1">
+				<label for="address2">Address Line 2</label>
+				<input type="text" name="address2">
+				<label for="city">City</label>
+				<input type="text" name="city">
+				<label for="state">State</label>
+				<input type="text" name="state">
+				<label for="zip">Zip</label>
+				<input type="text" name="zip">
+				<label for="creditcard">Credit Card Number</label>
+				<input type="text" name="creditcard">
 			</fieldset>
 			<fieldset>
 				<button type="submit" class="btn btn-primary">Submit</button>

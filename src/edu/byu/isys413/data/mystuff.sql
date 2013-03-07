@@ -179,6 +179,9 @@ CREATE TABLE customer (
   phone VARCHAR(20),
   email VARCHAR(50),
   address TEXT,
+  password VARCHAR(50),
+  validationcode CHAR(36),
+  valid tinyint(4) DEFAULT 0,
   FOREIGN KEY (id) REFERENCES businessobject (id)
 );
 
@@ -314,6 +317,7 @@ VALUES
   ('conceptualProduct2','edu.byu.isys413.data.ConceptualProduct'),
   ('conceptualProduct3','edu.byu.isys413.data.ConceptualProduct'),
   ('customer1','edu.byu.isys413.data.Customer'),
+  ('customer2','edu.byu.isys413.data.Customer'),
   ('debitCredit1','edu.byu.isys413.data.DebitCredit'),
   ('debitCredit2','edu.byu.isys413.data.DebitCredit'),
   ('debitCredit3','edu.byu.isys413.data.DebitCredit'),
@@ -443,9 +447,10 @@ VALUES
 # ------------------------------------------------------------ ;
 
 
-INSERT INTO `customer` (`id`, `firstname`, `lastname`, `phone`, `address`)
+INSERT INTO `customer` (`id`, `firstname`, `lastname`, `phone`, `email`, `address`, `password`, `validationcode`, `valid`)
 VALUES
-  ('customer1','Jeff','Johnson','801-148-1844','627 N 300 W\nProvo, UT 84601');
+  ('customer1','Jeff','Johnson','801-148-1844','cust1@me.com','627 N 300 W\nProvo, UT 84601','pass','validatethiscode', 1),
+  ('customer2','Bennett','Swensen','801-444-1234','cust2@me.com','645 N 300 W\nProvo, UT 84601','passy','validatethisnewcode', 0);
 
 
 
