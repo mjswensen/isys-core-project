@@ -1,12 +1,23 @@
+<jsp:directive.page import="edu.byu.isys413.data.*"/>
+<jsp:directive.page import="java.util.List"/>
+
 <jsp:include page="/header.jsp">
-	<jsp:param name="title" value="DYN - PRODUCT NAME" />
+	<jsp:param name="title" value="Product Details" />
 </jsp:include>
+
+<%
+
+ConceptualProduct cp = (ConceptualProduct) request.getAttribute("cp");
+List<StoreProduct> sps = (List<StoreProduct>) request.getAttribute("sps");
+List<PhysicalProduct> pps = (List<PhysicalProduct>) request.getAttribute("pps");
+
+%>
 
 <div class="container">
 	<div class="row">
 		<div class="span4 offset4">
-			<h1><%= "PRODUCT_NAME" %></h1>
-			<p><%= "PRODUCT_DESCRIPTION" %></p>
+			<h1><%= cp.getName() %></h1>
+			<p><%= cp.getDescription() %></p>
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#new-product" data-toggle="tab">New</a></li>
 				<li><a href="#used-product" data-toggle="tab">Used</a></li>
@@ -16,21 +27,16 @@
 					<form action="purchase-confirmation.html">
 						<fieldset>
 							<legend>New</legend>
-							<label for="store">Store - Quantity</label>
-							<select name="store">
-								<option value=""><%= "DYN - SOTRE (QTY AVAILABLE)" %></option>
+							<label for="storeproductid">Store - Quantity</label>
+							<select name="storeproductid">
+								<% for(StoreProduct sp : sps) { %>
+								<option value="<%= sp.getId() %>"><%= sp.getStore().getLocation() + " (" + sp.getQuantityOnHand() + " Available)" %></option>
+								<% }//for %>
 							</select>
 							<label for="quantity">Quantity</label>
-							<input type="text" name="quantity">
+							<input type="text" name="quantity" class="input-mini">
 						</fieldset>
-						<fieldset>
-							<label for="shipping" class="radio inline">
-								<input type="radio" name="shipping" value="in-store"> In-store pickup
-							</label>
-							<label for="shipping" class="radio inline">
-								<input type="radio" name="shipping" value="standard"> Standard shipping
-							</label>
-						</fieldset>
+						<jsp:include page="/shipping.jsp"/>
 						<fieldset>
 							<button class="btn btn-primary">Purchase</button>
 						</fieldset>
@@ -40,19 +46,14 @@
 					<form action="purchase-confirmation.html">
 						<fieldset>
 							<legend>Used</legend>
-							<label for="product_id">Product - Location</label>
-							<select name="product_id">
-								<option value=""><%= "DYN - PRODUCT NAME (STORE)" %></option>
+							<label for="physicalproductid">Product - Location</label>
+							<select name="physicalproductid">
+								<% for(PhysicalProduct pp : pps) { %>
+								<option value="<%= pp.getId() %>"><%= pp.getStore().getLocation() + " (Serial: " + pp.getSerialNum() + ")" %></option>
+								<% } %>
 							</select>
 						</fieldset>
-						<fieldset>
-							<label for="shipping" class="radio inline">
-								<input type="radio" name="shipping" value="in-store"> In-store pickup
-							</label>
-							<label for="shipping" class="radio inline">
-								<input type="radio" name="shipping" value="standard"> Standard shipping
-							</label>
-						</fieldset>
+						<jsp:include page="/shipping.jsp"/>
 						<fieldset>
 							<button class="btn btn-primary">Purchase</button>
 						</fieldset>
