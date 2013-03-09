@@ -9,13 +9,10 @@
 			<form class="form-search">
 				<input type="text" class="search-query">
 			</form>
-			<ul class="media-list">
+			<ul class="media-list products">
 				<li class="media">
-					<a href="product-detail.html" class="pull-left"></a>
 					<div class="media-body">
-						<h4>PRODUCT_NAME</h4>
-						<p>PRODUCT_DESCRIPTION</p>
-						<p><a href="product-detail.html" class="btn">Choose</a></p>
+						<h4 class="muted">Search for products using the field above.</h4>
 					</div>
 				</li>
 			</ul>
@@ -29,7 +26,20 @@ $(function() {
 		$.ajax({
 			url: '/MyStuffSprint/edu.byu.isys413.data.actions.ProductList.action?q=' + encodeURIComponent(query),
 			success: function(data) {
-				console.log(data);
+				if(data.length > 0) {
+					$('.products').html('');
+					for(var each in data) {
+						var $li = $('<li></li>').addClass('media')
+							.append($('<div></div>').addClass('media-body')
+								.append($('<h4></h4>').text(data[each].name))
+								.append($('<p></p>').text(data[each].description))
+								.append($('<p></p>')
+									.append($('<a></a>').addClass('btn').attr('href','/MyStuffSprint/edu.byu.isys413.data.actions.ProductDetails.action?id=' + data[each].id).text('Choose'))));
+						$('.products').append($li);
+					}
+				} else {
+					$('.products').html('<li class="muted">No products match your search.</li>');
+				}
 			}
 		});
 	});

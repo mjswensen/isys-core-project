@@ -17,13 +17,15 @@ public class ProductList implements Action {
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		String query = request.getParameter("q");
-		List<ConceptualProduct> prods = BusinessObjectDAO.getInstance().searchForList("ConceptualProduct", new SearchCriteria("name", "%" + query + "%", SearchCriteria.LIKE), new SearchCriteria("description", "%" + query + "%", SearchCriteria.LIKE));
+		List<ConceptualProduct> prods = BusinessObjectDAO.getInstance().searchForList("ConceptualProduct", new SearchCriteria("name", "%" + query + "%", SearchCriteria.LIKE));
 		JSONArray json = new JSONArray();
 		
 		for(ConceptualProduct cp : prods) {
 			JSONObject obj = new JSONObject();
+			obj.put("id", cp.getId());
 			obj.put("name", cp.getName());
 			obj.put("description", cp.getDescription());
+			obj.put("manufacturer", cp.getManufacturer());
 			json.put(obj);
 		}
 		
