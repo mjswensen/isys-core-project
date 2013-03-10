@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS transaction;
 DROP TABLE IF EXISTS computer;
 DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS store;
+DROP TABLE IF EXISTS membership;
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS physicalproduct;
 DROP TABLE IF EXISTS conceptualproduct;
@@ -180,9 +181,26 @@ CREATE TABLE customer (
   email VARCHAR(50),
   address TEXT,
   password VARCHAR(50),
-  validationcode CHAR(36),
-  valid tinyint(4) DEFAULT 0,
+  validationcode CHAR(40),
+  valid TINYINT(4) DEFAULT 0,
   FOREIGN KEY (id) REFERENCES businessobject (id)
+);
+
+
+
+# Create table customer ;
+# ------------------------------------------------------------ ;
+
+
+CREATE TABLE membership (
+  id CHAR(40) PRIMARY KEY,
+  customerid CHAR(40),
+  creditcard VARCHAR(20),
+  startdate DATETIME,
+  expiredate DATETIME,
+  trial TINYINT(4) DEFAULT 0,
+  FOREIGN KEY (id) REFERENCES businessobject (id),
+  FOREIGN KEY (customerid) REFERENCES customer (id)
 );
 
 
@@ -318,6 +336,7 @@ VALUES
   ('conceptualProduct3','edu.byu.isys413.data.ConceptualProduct'),
   ('customer1','edu.byu.isys413.data.Customer'),
   ('customer2','edu.byu.isys413.data.Customer'),
+  ('membership1','edu.byu.isys413.data.Membership'),
   ('debitCredit1','edu.byu.isys413.data.DebitCredit'),
   ('debitCredit2','edu.byu.isys413.data.DebitCredit'),
   ('debitCredit3','edu.byu.isys413.data.DebitCredit'),
@@ -452,6 +471,14 @@ VALUES
   ('customer1','Jeff','Johnson','801-148-1844','cust1@me.com','627 N 300 W\nProvo, UT 84601','pass','validatethiscode', 1),
   ('customer2','Bennett','Swensen','801-444-1234','cust2@me.com','645 N 300 W\nProvo, UT 84601','passy','validatethisnewcode', 0);
 
+
+# Populate table customer ;
+# ------------------------------------------------------------ ;
+
+
+INSERT INTO `membership` (`id`, `customerid`, `creditcard`, `startdate`, `expiredate`, `trial`)
+VALUES
+  ('membership1','customer1','1234123412341234','2013-03-06 16:30:00', NULL, 0);
 
 
 # Populate table transaction ;

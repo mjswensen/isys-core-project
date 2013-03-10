@@ -23,34 +23,41 @@
 </div>
 <div class="modal hide fade" id="new-account">
 	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">&times;</button>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3>New Account</h3>
 	</div>
 	<div class="modal-body">
-		<form action="confirmation-sent.html" method="get">
+		<form action="edu.byu.isys413.data.actions.CreateAndVerifyAccount.action" method="post">
 			<fieldset>
-				<label for="name">Name</label>
-				<input type="text" name="name">
+				<legend>Personal</legend>
+				<label for="firstname">First Name</label>
+				<input type="text" name="firstname" required>
+				<label for="lastname">First Name</label>
+				<input type="text" name="lastname" required>
 				<label for="phone">Phone</label>
 				<input type="text" name="phone">
 				<label for="email">Email</label>
-				<input type="text" name="email">
+				<input type="text" name="email" required>
+				<span class="help-block">Your email address will be your username to log into the site.</span>
+				<label for="password">Password</label>
+				<input type="password" name="password" required>
+				<legend>Shipping</legend>
 				<label for="address1">Address</label>
-				<input type="text" name="address1">
+				<input type="text" name="address1" required>
 				<label for="address2">Address Line 2</label>
 				<input type="text" name="address2">
 				<label for="city">City</label>
-				<input type="text" name="city">
+				<input type="text" name="city" required>
 				<label for="state">State</label>
-				<input type="text" name="state">
+				<input type="text" name="state" required>
 				<label for="zip">Zip</label>
-				<input type="text" name="zip">
+				<input type="text" name="zip" required>
+				<legend>Billing</legend>
 				<label for="creditcard">Credit Card Number</label>
-				<input type="text" name="creditcard">
+				<input type="text" name="creditcard" required>
 			</fieldset>
 			<fieldset>
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="submit" class="btn btn-primary pull-right">Submit</button>
 			</fieldset>
 		</form>
 	</div>

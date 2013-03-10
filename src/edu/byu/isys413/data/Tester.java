@@ -295,6 +295,9 @@ public class Tester {
 		cust.setPhone("324-230-0234");
 		cust.setEmail("bff@msn.com");
 		cust.setAddress("465 N 300 E Provo UT 87364");
+		cust.setPassword("pass");
+		cust.setValidationCode("abcdef");
+		cust.setValid(true);
 		cust.save();
 	
 		// Test read from cache
@@ -310,9 +313,49 @@ public class Tester {
 		assertEquals(cust.getPhone(), cust3.getPhone());
 		assertEquals(cust.getEmail(), cust3.getEmail());
 		assertEquals(cust.getAddress(), cust3.getAddress());
+		assertEquals(cust.getPassword(), cust3.getPassword());
+		assertEquals(cust.getValidationCode(), cust3.getValidationCode());
+		assertEquals(cust.isValid(), cust3.isValid());
 		
 		// Test delete
 		BusinessObjectDAO.getInstance().delete(cust);
+	}
+	
+	/** Test the membership and its relationship to Customer. */
+	@Test
+	public void TestMembership() throws Exception {
+		// Grab associated objects
+		Customer cust = BusinessObjectDAO.getInstance().read("customer2");
+		
+		// Test create/save
+		Membership memb = BusinessObjectDAO.getInstance().create("Membership", "1membership");
+		memb.setCustomer(cust);
+		memb.setCreditCard("4321432143214321");
+		memb.setStartDate(new Date());
+		memb.setTrial(false);
+		memb.save();
+
+		// Test relationship with customer
+		assertSame(memb.getCustomer(), cust);
+		assertSame(cust.getMembership(), memb);
+		
+		// Test read from cache
+		Membership memb2 = BusinessObjectDAO.getInstance().read("1membership");
+		assertSame(memb, memb2);
+		
+		// Test read from DB without cache
+		Cache.getInstance().clear();
+		Membership memb3 = BusinessObjectDAO.getInstance().read("1membership");
+		assertEquals(memb.getId(), memb3.getId());
+		assertEquals(memb.getCustomerId(), memb3.getCustomerId());
+		assertEquals(SDF.format(memb.getStartDate()), SDF.format(memb3.getStartDate()));
+		// Not testing expire date as of yet.
+		assertSame(memb.isTrial(), memb3.isTrial());
+		
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(memb);
+		
 	}
 	
 	/**

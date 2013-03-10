@@ -12,6 +12,12 @@ public class Customer extends BusinessObject {
 	private String email;
 	@BusinessObjectField
 	private String address;
+	@BusinessObjectField
+	private String password;
+	@BusinessObjectField
+	private String validationCode;
+	@BusinessObjectField
+	private boolean valid;
 	
 	/** Creates a new instance of BusinessObject */
 	public Customer(String id) {
@@ -90,6 +96,59 @@ public class Customer extends BusinessObject {
 	public void setAddress(String address) {
 		this.address = address;
 		setDirty();
+	}
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+		setDirty();
+	}
+
+	/**
+	 * @return the validationCode
+	 */
+	public String getValidationCode() {
+		return validationCode;
+	}
+
+	/**
+	 * @param validationCode the validationCode to set
+	 */
+	public void setValidationCode(String validationCode) {
+		this.validationCode = validationCode;
+		setDirty();
+	}
+
+	/**
+	 * @return the valid
+	 */
+	public boolean isValid() {
+		return valid;
+	}
+
+	/**
+	 * @param valid the valid to set
+	 */
+	public void setValid(boolean valid) {
+		this.valid = valid;
+		setDirty();
+	}
+	
+	/**
+	 * @return the membership associated with this customer, if any.
+	 * @throws DataException
+	 */
+	public Membership getMembership() throws DataException {
+		return BusinessObjectDAO.getInstance().searchForBO("Membership", new SearchCriteria("customerid", id));
 	}
 
 }
