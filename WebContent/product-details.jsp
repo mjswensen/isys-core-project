@@ -24,7 +24,7 @@ List<PhysicalProduct> pps = (List<PhysicalProduct>) request.getAttribute("pps");
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="new-product">
-					<form action="edu.byu.isys413.actions.Purchase.action" method="get">
+					<form action="edu.byu.isys413.data.actions.Purchase.action" method="get">
 						<fieldset>
 							<legend>New</legend>
 							<label for="storeproductid">Store - Quantity</label>
@@ -43,7 +43,7 @@ List<PhysicalProduct> pps = (List<PhysicalProduct>) request.getAttribute("pps");
 					</form>
 				</div>
 				<div class="tab-pane" id="used-product">
-					<form action="edu.byu.isys413.actions.Purchase.action" method="get">
+					<form action="edu.byu.isys413.data.actions.Purchase.action" method="get">
 						<fieldset>
 							<legend>Used</legend>
 							<label for="physicalproductid">Product - Location</label>

@@ -27,11 +27,14 @@ public class Purchase implements Action {
 		try {
 			if(request.getParameter("storeproductid") != null && !request.getParameter("storeproductid").equals("")) {
 				
-				String spId = request.getParameter("storeproductId");
+				String spId = request.getParameter("storeproductid");
 				int qty = Integer.parseInt(request.getParameter("quantity"));
 				
 				// Get the objects needed to create the transaction
 				StoreProduct sp = BusinessObjectDAO.getInstance().read(spId);
+				
+				// Check to be sure the product is in stock and that there is enough quantity on hand
+				if(qty > sp.getQuantityOnHand()) throw new Exception("There are not enough of the selected product in the selected store. Please go back and try again.");
 				
 				// Create and save initially the transaction
 				Transaction trans = BusinessObjectDAO.getInstance().create("Transaction");
@@ -89,7 +92,7 @@ public class Purchase implements Action {
 			return "message.jsp";
 		}
 		
-		request.setAttribute("message", "Your purchase was processed successfully!");
+		request.setAttribute("message", "Your purchase was processed successfully! <a href=\"products.jsp\">Continue shopping</a>");
 		request.setAttribute("messageType", "success");
 		return "message.jsp";
 	}
