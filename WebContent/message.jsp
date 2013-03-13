@@ -1,4 +1,6 @@
-<jsp:include page="/header.jsp"/>
+<jsp:include page="/header.jsp">
+	<jsp:param name="title" value="Message" />
+</jsp:include>
 
 <div class="container">
 	<div class="row">
