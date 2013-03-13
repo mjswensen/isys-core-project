@@ -13,6 +13,9 @@ import edu.byu.isys413.data.*;
 
 public class ProductList implements Action {
 
+	/** No-arg constructor per Dr. Albrecht's instruction in Action.java */
+	public ProductList() {}
+	
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		

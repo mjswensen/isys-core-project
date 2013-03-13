@@ -12,7 +12,7 @@
 			<ul class="media-list products">
 				<li class="media">
 					<div class="media-body">
-						<h4 class="muted">Search for products using the field above.</h4>
+						<p class="lead muted">Search for products using the field above.</p>
 					</div>
 				</li>
 			</ul>

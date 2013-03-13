@@ -10,11 +10,25 @@ import edu.byu.isys413.data.*;
 
 public class CreateAndVerifyAccount implements Action {
 
+	/** No-arg constructor per Dr. Albrecht's instruction in Action.java */
+	public CreateAndVerifyAccount() {}
+
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		if(request.getParameter("vc") != null && !request.getParameter("vc").equals("")) {
 			// The user is arriving here via the emailed verification link.
+			
+			String vc = request.getParameter("vc");
+			Customer cust = BusinessObjectDAO.getInstance().searchForBO("Customer", new SearchCriteria("validationcode", vc));
+			if(cust == null) {
+				// Incorrect verification code provided
+				request.setAttribute("message", "Incorrect verification code provided.");
+				request.setAttribute("messageType", "error");
+				return "message.jsp";
+			}
+			
+			request.getSession().setAttribute("cust", cust);
 			
 			return "products.jsp";
 		} else {
