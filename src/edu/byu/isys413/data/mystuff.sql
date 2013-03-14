@@ -6,6 +6,7 @@ SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS generalledger;
 DROP TABLE IF EXISTS storeproduct;
+DROP TABLE IF EXISTS rental;
 DROP TABLE IF EXISTS sale;
 DROP TABLE IF EXISTS revenuesource;
 DROP TABLE IF EXISTS commission;
@@ -17,6 +18,8 @@ DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS store;
 DROP TABLE IF EXISTS membership;
 DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS forsale;
+DROP TABLE IF EXISTS forrent;
 DROP TABLE IF EXISTS physicalproduct;
 DROP TABLE IF EXISTS conceptualrental;
 DROP TABLE IF EXISTS conceptualproduct;
@@ -162,8 +165,6 @@ CREATE TABLE physicalproduct (
   FOREIGN KEY (conceptualproductid) REFERENCES conceptualproduct (id)
 );
 
-
-
 # Create table storeproduct ;
 # ------------------------------------------------------------ ;
 
@@ -172,7 +173,7 @@ CREATE TABLE storeproduct (
   id CHAR(40) PRIMARY KEY,
   conceptualproductid CHAR(40),
   storeid CHAR(40),
-  quantityonhand int(11),
+  quantityonhand INT(11),
   shelflocation VARCHAR(50),
   FOREIGN KEY (id) REFERENCES businessobject (id),
   FOREIGN KEY (conceptualproductid) REFERENCES conceptualproduct (id),
@@ -316,6 +317,53 @@ CREATE TABLE sale (
 
 
 
+# Create table rental ;
+# ------------------------------------------------------------ ;
+
+
+CREATE TABLE rental (
+  id CHAR(40) PRIMARY KEY,
+  forrentid CHAR(40),
+  dateout DATETIME,
+  datein DATETIME,
+  datedue DATETIME,
+  workordernumber VARCHAR(50),
+  remindersent TINYINT(4),
+  FOREIGN KEY (id) REFERENCES revenuesource (id)
+);
+
+
+# Create table forrent ;
+# ------------------------------------------------------------ ;
+
+CREATE TABLE forrent (
+  id CHAR(40) PRIMARY KEY,
+  currentrentalid CHAR(40),
+  timesrented INT(11),
+  FOREIGN KEY (id) REFERENCES physicalproduct (id),
+  FOREIGN KEY (currentrentalid) REFERENCES rental(id)
+);
+
+
+# Now that both rental and forrent tables are created, and since they reference each other, add FK to rental for forrentid. ;
+# ------------------------------------------------------------ ;
+
+
+ALTER TABLE rental ADD FOREIGN KEY (forrentid) REFERENCES forrent (id);
+
+
+
+# Create table forsale ;
+# ------------------------------------------------------------ ;
+
+
+CREATE TABLE forsale (
+  id CHAR(40) PRIMARY KEY,
+  new TINYINT(4),
+  FOREIGN KEY (id) REFERENCES physicalproduct (id)
+);
+
+
 # Create table generalledger ;
 # ------------------------------------------------------------ ;
 
@@ -367,10 +415,14 @@ VALUES
   ('glAccount4','edu.byu.isys413.data.GeneralLedger'),
   ('glAccount5','edu.byu.isys413.data.GeneralLedger'),
   ('journalEntry1','edu.byu.isys413.data.JournalEntry'),
-  ('physicalProduct1','edu.byu.isys413.data.PhysicalProduct'),
-  ('physicalProduct2','edu.byu.isys413.data.PhysicalProduct'),
-  ('physicalProduct3','edu.byu.isys413.data.PhysicalProduct'),
+  ('forSale1','edu.byu.isys413.data.ForSale'),
+  ('forSale2','edu.byu.isys413.data.ForSale'),
+  ('forRent1','edu.byu.isys413.data.ForRent'),
+  ('forRent2','edu.byu.isys413.data.ForRent'),
+  ('forRent3','edu.byu.isys413.data.ForRent'),
   ('sale1','edu.byu.isys413.data.Sale'),
+  ('rental1','edu.byu.isys413.data.Rental'),
+  ('rental2','edu.byu.isys413.data.Rental'),
   ('store1','edu.byu.isys413.data.Store'),
   ('store2','edu.byu.isys413.data.Store'),
   ('store3','edu.byu.isys413.data.Store'),
@@ -439,9 +491,11 @@ VALUES
   ('conceptualProduct2',29.49),
   ('conceptualProduct3',9.99),
   ('conceptualRental1',399.99),
-  ('physicalProduct1',499.99),
-  ('physicalProduct2',399.99),
-  ('physicalProduct3',399.99);
+  ('forSale1',499.99),
+  ('forSale2',499.99),
+  ('forRent1',399.99),
+  ('forRent2',399.99),
+  ('forRent3',399.99);
 
 
 
@@ -474,10 +528,21 @@ VALUES
 
 INSERT INTO `physicalproduct` (`id`, `storeid`, `conceptualproductid`, `serialnum`, `shelflocation`, `purchased`, `cost`, `available`, `commissionrate`, `type`)
 VALUES
-  ('physicalProduct1','store1','conceptualProduct1','JSDF79SF9S8CX','Aisle 5','2012-12-03 08:00:00',300.00,1,0.04,'ForSale'),
-  ('physicalProduct2','store1','conceptualRental1','URLSUFS74WLSG','Aisle 1','2012-11-07 10:30:00',200.00,1,0.04,'ForRent'),
-  ('physicalProduct3','store1','conceptualRental1','POIR52CSUWARE','Aisle 1','2012-11-07 10:30:00',200.00,0,0.04,'ForRent');
+  ('forSale1','store1','conceptualProduct1','JSDF79SF9S8CX','Aisle 5','2012-12-03 08:00:00',300.00,1,0.04,'ForSale'),
+  ('forSale2','store2','conceptualProduct1','UF8ASCSDJFA8C','Aisle 5','2012-12-03 08:00:00',300.00,1,0.04,'ForSale'),
+  ('forRent1','store1','conceptualRental1','URLSUFS74WLSG','Aisle 1','2012-11-07 10:30:00',200.00,0,0.04,'ForRent'),
+  ('forRent2','store1','conceptualRental1','POIR52CSUWARE','Aisle 1','2012-11-07 10:30:00',200.00,0,0.04,'ForRent'),
+  ('forRent3','store1','conceptualRental1','7S9FJSLKDFA7C','Aisle 1','2012-11-07 10:30:00',200.00,1,0.04,'ForRent');
 
+
+# Populate table forsale ;
+# ------------------------------------------------------------ ;
+
+
+INSERT INTO `forsale` (`id`, `new`)
+VALUES
+  ('forSale1',1),
+  ('forSale2',1);
 
 
 # Populate table storeproduct ;
@@ -563,7 +628,9 @@ VALUES
 
 INSERT INTO `revenuesource` (`id`, `transactionid`, `chargeamount`, `type`)
 VALUES
-  ('sale1','transaction1',532.49,'Sale');
+  ('sale1','transaction1',532.49,'Sale'),
+  ('rental1','transaction1',25.5,'Rental'),
+  ('rental2','transaction1',14.75,'Rental');
 
 
 
@@ -573,7 +640,35 @@ VALUES
 
 INSERT INTO `sale` (`id`, `productid`, `quantity`)
 VALUES
-  ('sale1','physicalProduct1',1);
+  ('sale1','forSale1',1);
+
+
+# Populate table forrent ;
+# ------------------------------------------------------------ ;
+
+INSERT INTO `forrent` (`id`, `timesrented`, `currentrentalid`)
+VALUES
+  ('forRent1',5,NULL),
+  ('forRent2',2,NULL),
+  ('forRent3',0,NULL);
+
+
+# Populate table rental ;
+# ------------------------------------------------------------ ;
+
+
+INSERT INTO `rental` (`id`, `forrentid`, `dateout`, `datein`, `datedue`, `workordernumber`, `remindersent`)
+VALUES
+  ('rental1','forRent1','2013-03-10 12:53:23',NULL,'2013-03-14 20:00:00',NULL,0),
+  ('rental2','forRent2','2013-03-03 10:45:02',NULL,'2013-03-12 20:00:00',NULL,0);
+
+
+# Now that both rental and forrent tables are created, and since they reference each other, add FK to rental for forrentid. ;
+# ------------------------------------------------------------ ;
+
+
+UPDATE forrent SET currentrentalid = 'rental1' WHERE id = 'forRent1';
+UPDATE forrent SET currentrentalid = 'rental2' WHERE id = 'forRent2';
 
 
 
