@@ -6,6 +6,7 @@ SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS generalledger;
 DROP TABLE IF EXISTS storeproduct;
+DROP TABLE IF EXISTS fee;
 DROP TABLE IF EXISTS rental;
 DROP TABLE IF EXISTS sale;
 DROP TABLE IF EXISTS revenuesource;
@@ -352,6 +353,19 @@ CREATE TABLE forrent (
 ALTER TABLE rental ADD FOREIGN KEY (forrentid) REFERENCES forrent (id);
 
 
+# Create table fee ;
+# ------------------------------------------------------------ ;
+
+
+CREATE TABLE fee (
+  id CHAR(40) PRIMARY KEY,
+  rentalid CHAR(40),
+  amount NUMERIC(10,2),
+  waived TINYINT(4),
+  FOREIGN KEY (id) REFERENCES revenuesource (id),
+  FOREIGN KEY (rentalid) REFERENCES rental (id)
+);
+
 
 # Create table forsale ;
 # ------------------------------------------------------------ ;
@@ -423,6 +437,7 @@ VALUES
   ('sale1','edu.byu.isys413.data.Sale'),
   ('rental1','edu.byu.isys413.data.Rental'),
   ('rental2','edu.byu.isys413.data.Rental'),
+  ('fee1','edu.byu.isys413.data.Fee'),
   ('store1','edu.byu.isys413.data.Store'),
   ('store2','edu.byu.isys413.data.Store'),
   ('store3','edu.byu.isys413.data.Store'),
@@ -630,7 +645,8 @@ INSERT INTO `revenuesource` (`id`, `transactionid`, `chargeamount`, `type`)
 VALUES
   ('sale1','transaction1',532.49,'Sale'),
   ('rental1','transaction1',25.5,'Rental'),
-  ('rental2','transaction1',14.75,'Rental');
+  ('rental2','transaction1',14.75,'Rental'),
+  ('fee1','transaction1',35,'Fee');
 
 
 
@@ -670,6 +686,14 @@ VALUES
 UPDATE forrent SET currentrentalid = 'rental1' WHERE id = 'forRent1';
 UPDATE forrent SET currentrentalid = 'rental2' WHERE id = 'forRent2';
 
+
+# Populate table fee ;
+# ------------------------------------------------------------ ;
+
+
+INSERT INTO `fee` (`id`, `rentalid`, `amount`, `waived`)
+VALUES
+  ('fee1','rental2',35,0);
 
 
 # Populate table generalledger ;

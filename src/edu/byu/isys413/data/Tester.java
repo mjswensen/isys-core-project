@@ -395,7 +395,7 @@ public class Tester {
 		Store store = BusinessObjectDAO.getInstance().read("store1");
 		Employee emp = BusinessObjectDAO.getInstance().read("employee1");
 		ConceptualProduct prod1 = BusinessObjectDAO.getInstance().read("conceptualProduct3");
-		PhysicalProduct prod2 = BusinessObjectDAO.getInstance().read("physicalProduct1");
+		PhysicalProduct prod2 = BusinessObjectDAO.getInstance().read("forSale1");
 		
 		// Test create
 		Transaction trans = BusinessObjectDAO.getInstance().create("Transaction", "1transaction");
