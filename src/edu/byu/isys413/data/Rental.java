@@ -17,6 +17,8 @@ public class Rental extends RevenueSource {
 	@BusinessObjectField
 	private boolean reminderSent;
 	
+	private final long DAY_IN_MILLIS = 1000L * 60L * 60L * 24L;
+	
 	/** Creates a new instance of Rental/RevenueSource/BusinessObject */
 	public Rental(String id) {
 		super(id);
@@ -127,5 +129,38 @@ public class Rental extends RevenueSource {
 		this.reminderSent = reminderSent;
 		setDirty();
 	}
+	
+	/**
+	 * @return whether or not the rental was turned in late
+	 */
+	public boolean isLate() {
+		return dateIn.after(dateDue);
+	}
 
+	/**
+	 * @return the length of the rental in days.
+	 */
+	public int getRentalPeriod() {
+		long length = dateDue.getTime() - dateOut.getTime();
+		return Math.round(length / DAY_IN_MILLIS);
+	}
+	
+	/**
+	 * @return the number of days late the rental was returned.
+	 */
+	public int getLatePeriod() {
+		long length = dateIn.getTime() - dateDue.getTime();
+		return Math.round(length / DAY_IN_MILLIS);
+	}
+	
+	@Override
+	public double getChargeAmount() {
+		try {
+			String crId = getForRent().getConceptualProduct().getId();
+			ConceptualRental cr = BusinessObjectDAO.getInstance().read(crId);
+			return cr.getPricePerDay() * getRentalPeriod();
+		} catch(DataException e) {
+			return super.getChargeAmount();
+		}
+	}
 }

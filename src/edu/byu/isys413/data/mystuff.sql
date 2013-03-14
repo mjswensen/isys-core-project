@@ -329,7 +329,7 @@ CREATE TABLE rental (
   datein DATETIME,
   datedue DATETIME,
   workordernumber VARCHAR(50),
-  remindersent TINYINT(4),
+  remindersent TINYINT(4) DEFAULT 0,
   FOREIGN KEY (id) REFERENCES revenuesource (id)
 );
 

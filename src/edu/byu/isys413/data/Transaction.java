@@ -187,26 +187,42 @@ public class Transaction extends BusinessObject {
 	}
 	
 	/**
-	 * @return sales associated with this transaction
+	 * @return Sales associated with this transaction
 	 * @throws DataException
 	 */
 	public List<Sale> getSales() throws DataException {
 		List<Sale> allSales = BusinessObjectDAO.getInstance().searchForAll("Sale");
-		List<Sale> sales = new LinkedList<Sale>();
-		for(Sale s : allSales) {
-			if(s.getTransactionId() == id) sales.add(s);
-		}
-		return sales;
+        List<Sale> sales = new LinkedList<Sale>();
+        for(Sale s : allSales) {
+                if(s.getTransactionId() == id) sales.add(s);
+        }
+        return sales;
 	}
 	
 	/**
-	 * Retrieves associated sales from DB and calculates totals. Getters for totals will call this if null.
+	 * @return Rentals associated with this transaction
+	 * @throws DataException
+	 */
+	public List<Rental> getRentals() throws DataException {
+		List<Rental> allRentals = BusinessObjectDAO.getInstance().searchForAll("Rental");
+		List<Rental> rentals = new LinkedList<Rental>();
+		for(Rental r : allRentals) {
+			if(r.getTransactionId() == id) rentals.add(r);
+		}
+		return rentals;
+	}
+	
+	/**
+	 * Retrieves associated sales from DB and calculates totals.
 	 * @throws DataException
 	 */
 	public void calculateTotals() throws DataException {
 		double subtotal = 0.0, tax, total;
 		for(Sale s : getSales()) {
 			subtotal += s.getChargeAmount();
+		}
+		for(Rental r : getRentals()) {
+			subtotal += r.getChargeAmount();
 		}
 		tax = subtotal * getStore().getSalesTaxRate();
 		total = tax + subtotal;
@@ -223,22 +239,24 @@ public class Transaction extends BusinessObject {
 	public void finalizeAndSave() throws DataException {
 		calculateTotals();
 		// Update inventory
-		ConceptualProduct cp;
-		PhysicalProduct pp;
 		for(Sale s : getSales()) {
 			if(s.getProduct().getClass().getSimpleName().equals("ConceptualProduct")) {
-				cp = BusinessObjectDAO.getInstance().read(s.getProductId());
+				ConceptualProduct cp = BusinessObjectDAO.getInstance().read(s.getProductId());
 				StoreProduct sp = BusinessObjectDAO.getInstance().searchForBO("StoreProduct", new SearchCriteria("conceptualproductid", cp.getId()), new SearchCriteria("storeid", getStoreId()));
 				if(sp != null) {
 					sp.subtractQuantityOnHand(s.getQuantity());
 					sp.save();
 				}
 			}
-			if(s.getProduct().getClass().getSimpleName().equals("PhysicalProduct")) {
-				pp = BusinessObjectDAO.getInstance().read(s.getProductId());
-				pp.setAvailable(false);
-				pp.save();
+			if(s.getProduct().getClass().getSimpleName().equals("ForSale")) {
+				ForSale fs = BusinessObjectDAO.getInstance().read(s.getProductId());
+				fs.setAvailable(false);
+				fs.save();
 			}
+		}
+		for(Rental r : getRentals()) {
+			r.getForRent().setAvailable(false);
+			r.save();
 		}
 		
 		// Create journal entry
@@ -268,7 +286,6 @@ public class Transaction extends BusinessObject {
 		taxPayable.save();
 		
 		// Create commission
-		
 		Commission comm = BusinessObjectDAO.getInstance().create("Commission");
 		comm.setTransaction(this);
 		comm.save();
@@ -299,17 +316,18 @@ public class Transaction extends BusinessObject {
 	 */
 	public double getCommissionAmount() throws DataException {
 		double commissionAmount = 0.0;
-		ConceptualProduct cp;
-		PhysicalProduct pp;
 		for(Sale s : getSales()) {
 			if(s.getProduct().getClass().getSimpleName().equals("ConceptualProduct")) {
-				cp = BusinessObjectDAO.getInstance().read(s.getProductId());
+				ConceptualProduct cp = BusinessObjectDAO.getInstance().read(s.getProductId());
 				commissionAmount += cp.getPrice() * cp.getCommissionRate();
 			}
-			if(s.getProduct().getClass().getSimpleName().equals("PhysicalProduct")) {
-				pp = BusinessObjectDAO.getInstance().read(s.getProductId());
-				commissionAmount += pp.getPrice() * (pp.getCommissionRate() + pp.getConceptualProduct().getCommissionRate());
+			if(s.getProduct().getClass().getSimpleName().equals("ForSale")) {
+				ForSale fs = BusinessObjectDAO.getInstance().read(s.getProductId());
+				commissionAmount += fs.getPrice() * fs.getFullCommissionRate();
 			}
+		}
+		for(Rental r : getRentals()) {
+			commissionAmount += r.getForRent().getFullCommissionRate() + r.getChargeAmount();
 		}
 		return commissionAmount;
 	}

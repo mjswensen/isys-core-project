@@ -194,5 +194,13 @@ public class PhysicalProduct extends Product {
 		this.type = type;
 		setDirty();
 	}
+	
+	/**
+	 * @return the full commission rate for the sale or rental of this physical product
+	 * @throws DataException
+	 */
+	public double getFullCommissionRate() throws DataException {
+		return getCommissionRate() + getConceptualProduct().getCommissionRate();
+	}
 
 }

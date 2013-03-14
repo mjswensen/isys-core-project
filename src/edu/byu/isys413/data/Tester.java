@@ -283,6 +283,18 @@ public class Tester {
 		// Previous three test cases test ability to rewrite a new record with same ID.
 	}
 	
+	/** Test the ForRent and its 1-1 relationship with Rental */
+	@Test
+	public void TestForRent() throws Exception {
+		
+	}
+	
+	/** Test the ForSale */
+	@Test
+	public void TestForSale() {
+		
+	}
+	
 	/** Test the StoreProduct (tests the M-M relationship between Stores and ConceptualProducts). */
 	@Test
 	public void TestStoreProduct() throws Exception {
@@ -383,88 +395,6 @@ public class Tester {
 		
 	}
 	
-	/**
-	 * Test the Transaction and Sale.
-	 * Tests the 1-M relationship between transactions and sales.
-	 * Also tests Commission.
-	 * */
-	@Test
-	public void TestTransaction() throws Exception {
-		// Grab associated objects
-		Customer cust = BusinessObjectDAO.getInstance().read("customer1");
-		Store store = BusinessObjectDAO.getInstance().read("store1");
-		Employee emp = BusinessObjectDAO.getInstance().read("employee1");
-		ConceptualProduct prod1 = BusinessObjectDAO.getInstance().read("conceptualProduct3");
-		PhysicalProduct prod2 = BusinessObjectDAO.getInstance().read("forSale1");
-		
-		// Test create
-		Transaction trans = BusinessObjectDAO.getInstance().create("Transaction", "1transaction");
-		trans.setCustomer(cust);
-		trans.setStore(store);
-		trans.setEmployee(emp);
-		trans.setDate(new Date());
-		trans.save();
-		
-		// Test adding sales to the transaction.
-		Sale sale = BusinessObjectDAO.getInstance().create("Sale", "1sale");
-		sale.setProduct(prod1);
-		sale.setQuantity(5);
-		sale.setTransaction(trans);
-		sale.save();
-		Sale sale2 = BusinessObjectDAO.getInstance().create("Sale", "2sale");
-		sale2.setProduct(prod2);
-		sale2.setQuantity(1);
-		sale2.setTransaction(trans);
-		sale2.save();
-		
-		// Test finalizing the transaction.
-		trans.finalizeAndSave();
-		
-		Commission comm = BusinessObjectDAO.getInstance().searchForBO("Commission", new SearchCriteria("transactionid", trans.getId()));
-		assertTrue(comm.getAmount() - trans.getCommissionAmount() < 0.1);
-		assertTrue(comm.getAmount() > 0);
-		assertSame(comm.getEmployee(), trans.getEmployee());
-		
-		JournalEntry je = BusinessObjectDAO.getInstance().searchForBO("JournalEntry", new SearchCriteria("transactionid", trans.getId()));
-		assertEquals(je.getDebitCredits().size(), 5);
-		assertTrue(je.getDebitCredits().get(0).getAmount() - trans.getTotal() < 0.1);
-		
-		// Test subtotal, tax, and total
-		double subtotal = prod1.getPrice() * sale.getQuantity() + prod2.getPrice() * sale2.getQuantity();
-		assertTrue(trans.getSubtotal() - subtotal < 0.1);
-		double tax = subtotal * store.getSalesTaxRate();
-		assertTrue(trans.getTax() - tax < 0.1);
-		double total = tax + subtotal;
-		assertTrue(trans.getTotal() - total < 0.1);
-		
-		// Test read from cache
-		Transaction trans2 = BusinessObjectDAO.getInstance().read("1transaction");
-		assertSame(trans, trans2);
-		
-		// Test read from DB
-		Cache.getInstance().clear();
-		Transaction trans3 = BusinessObjectDAO.getInstance().read("1transaction");
-		assertEquals(trans.getId(), trans3.getId());
-		assertSame(trans.getCustomer(), trans3.getCustomer());
-		assertSame(trans.getStore(), trans3.getStore());
-		assertSame(trans.getEmployee(), trans3.getEmployee());
-		assertEquals(SDF.format(trans.getDate()), SDF.format(trans3.getDate()));
-		assertTrue(trans.getSubtotal() - trans3.getSubtotal() < 0.1);
-		assertTrue(trans.getTax() - trans3.getTax() < 0.1);
-		assertTrue(trans.getTotal() - trans3.getTotal() < 0.1);
-		assertEquals(trans.getSales().size(), trans3.getSales().size());
-		
-		// Test delete.
-		for(DebitCredit drcr : je.getDebitCredits()) {
-			BusinessObjectDAO.getInstance().delete(drcr);
-		}
-		BusinessObjectDAO.getInstance().delete(je);
-		BusinessObjectDAO.getInstance().delete(comm);
-		BusinessObjectDAO.getInstance().delete(sale);
-		BusinessObjectDAO.getInstance().delete(sale2);
-		BusinessObjectDAO.getInstance().delete(trans3);
-	}
-	
 	/** Test the Sale. */
 	@Test
 	public void TestSale() throws Exception {
@@ -495,6 +425,141 @@ public class Tester {
 		
 		// Test delete
 		BusinessObjectDAO.getInstance().delete(s3);
+	}
+	
+	/** Test the Rental. */
+	@Test
+	public void TestRental() throws Exception {
+		// Grab associated objects
+		Transaction t = BusinessObjectDAO.getInstance().read("transaction1");
+		ForRent fr = BusinessObjectDAO.getInstance().read("forRent3");
+		
+		// Test create
+		Rental r = BusinessObjectDAO.getInstance().create("Rental", "1rental");
+		r.setForRent(fr);
+		r.setDateOut(new Date());
+		r.setDateDue(new Date(System.currentTimeMillis() + 1000L * 60L * 60L * 24L * 7L));// 1 week rental period
+		r.setDateIn(new Date(System.currentTimeMillis() + 1000L * 60L * 60L * 24L * 10L));// 3 days late
+		r.setReminderSent(false);
+		r.setTransaction(t);
+		r.save();
+		
+		// Test time period calculation methods
+		assertEquals(r.getRentalPeriod(), 7);
+		assertTrue(r.isLate());
+		assertEquals(r.getLatePeriod(), 3);
+		
+		// Test read from cache
+		Rental r2 = BusinessObjectDAO.getInstance().read("1rental");
+		assertSame(r, r2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Rental r3 = BusinessObjectDAO.getInstance().read("1rental");
+		assertEquals(r.getId(), r3.getId());
+		assertEquals(SDF.format(r.getDateOut()), SDF.format(r3.getDateOut()));
+		assertEquals(SDF.format(r.getDateDue()), SDF.format(r3.getDateDue()));
+		assertEquals(SDF.format(r.getDateIn()), SDF.format(r3.getDateIn()));
+		assertSame(r.isReminderSent(), r3.isReminderSent());
+		assertSame(r.getTransaction(), r3.getTransaction());
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(r);
+	}
+	
+	/**
+	 * Test the Transaction and Sale.
+	 * Tests the 1-M relationship between transactions and sales.
+	 * Tests the 1-M relationship between transactions and rentals.
+	 * Also tests Commission.
+	 * */
+	@Test
+	public void TestTransaction() throws Exception {
+		// Grab associated objects
+		Customer cust = BusinessObjectDAO.getInstance().read("customer1");
+		Store store = BusinessObjectDAO.getInstance().read("store1");
+		Employee emp = BusinessObjectDAO.getInstance().read("employee1");
+		ConceptualProduct prod = BusinessObjectDAO.getInstance().read("conceptualProduct3");
+		ForSale fs = BusinessObjectDAO.getInstance().read("forSale1");
+		ForRent fr = BusinessObjectDAO.getInstance().read("forRent3");
+		
+		// Test create
+		Transaction trans = BusinessObjectDAO.getInstance().create("Transaction", "1transaction");
+		trans.setCustomer(cust);
+		trans.setStore(store);
+		trans.setEmployee(emp);
+		trans.setDate(new Date());
+		trans.save();
+		
+		// Test adding sales to the transaction.
+		Sale sale = BusinessObjectDAO.getInstance().create("Sale", "1sale");
+		sale.setProduct(prod);
+		sale.setQuantity(5);
+		sale.setTransaction(trans);
+		sale.save();
+		Sale sale2 = BusinessObjectDAO.getInstance().create("Sale", "2sale");
+		sale2.setProduct(fs);
+		sale2.setQuantity(1);
+		sale2.setTransaction(trans);
+		sale2.save();
+		
+		// Test adding rentals to the transaction.
+		Rental rent = BusinessObjectDAO.getInstance().create("Rental", "1rental");
+		rent.setForRent(fr);
+		rent.setDateOut(new Date());
+		rent.setDateDue(new Date(System.currentTimeMillis() + 1000L * 60L * 60L * 24L * 7L));// Due in a week
+		rent.setReminderSent(false);
+		rent.setTransaction(trans);
+		rent.save();
+		
+		// Test finalizing the transaction.
+		trans.finalizeAndSave();
+		
+		Commission comm = BusinessObjectDAO.getInstance().searchForBO("Commission", new SearchCriteria("transactionid", trans.getId()));
+		assertTrue(comm.getAmount() - trans.getCommissionAmount() < 0.1);
+		assertTrue(comm.getAmount() > 0);
+		assertSame(comm.getEmployee(), trans.getEmployee());
+		
+		JournalEntry je = BusinessObjectDAO.getInstance().searchForBO("JournalEntry", new SearchCriteria("transactionid", trans.getId()));
+		assertEquals(je.getDebitCredits().size(), 5);
+		assertTrue(je.getDebitCredits().get(0).getAmount() - trans.getTotal() < 0.1);
+		
+		// Test subtotal, tax, and total
+		double subtotal = sale.getChargeAmount() + sale2.getChargeAmount() + rent.getChargeAmount();
+		assertTrue(trans.getSubtotal() - subtotal < 0.1);
+		double tax = subtotal * store.getSalesTaxRate();
+		assertTrue(trans.getTax() - tax < 0.1);
+		double total = tax + subtotal;
+		assertTrue(trans.getTotal() - total < 0.1);
+		
+		// Test read from cache
+		Transaction trans2 = BusinessObjectDAO.getInstance().read("1transaction");
+		assertSame(trans, trans2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Transaction trans3 = BusinessObjectDAO.getInstance().read("1transaction");
+		assertEquals(trans.getId(), trans3.getId());
+		assertSame(trans.getCustomer(), trans3.getCustomer());
+		assertSame(trans.getStore(), trans3.getStore());
+		assertSame(trans.getEmployee(), trans3.getEmployee());
+		assertEquals(SDF.format(trans.getDate()), SDF.format(trans3.getDate()));
+		assertTrue(trans.getSubtotal() - trans3.getSubtotal() < 0.1);
+		assertTrue(trans.getTax() - trans3.getTax() < 0.1);
+		assertTrue(trans.getTotal() - trans3.getTotal() < 0.1);
+		assertEquals(trans.getSales().size(), trans3.getSales().size());
+		assertEquals(trans.getRentals().size(), trans3.getRentals().size());
+		
+		// Test delete.
+		for(DebitCredit drcr : je.getDebitCredits()) {
+			BusinessObjectDAO.getInstance().delete(drcr);
+		}
+		BusinessObjectDAO.getInstance().delete(je);
+		BusinessObjectDAO.getInstance().delete(comm);
+		BusinessObjectDAO.getInstance().delete(sale);
+		BusinessObjectDAO.getInstance().delete(sale2);
+		BusinessObjectDAO.getInstance().delete(rent);
+		BusinessObjectDAO.getInstance().delete(trans3);
 	}
 	
 	/** Test the Journal Entry. */
