@@ -359,7 +359,7 @@ ALTER TABLE rental ADD FOREIGN KEY (forrentid) REFERENCES forrent (id);
 
 CREATE TABLE forsale (
   id CHAR(40) PRIMARY KEY,
-  new TINYINT(4),
+  used TINYINT(4),
   FOREIGN KEY (id) REFERENCES physicalproduct (id)
 );
 
@@ -539,10 +539,10 @@ VALUES
 # ------------------------------------------------------------ ;
 
 
-INSERT INTO `forsale` (`id`, `new`)
+INSERT INTO `forsale` (`id`, `used`)
 VALUES
-  ('forSale1',1),
-  ('forSale2',1);
+  ('forSale1',0),
+  ('forSale2',0);
 
 
 # Populate table storeproduct ;
