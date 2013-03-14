@@ -215,6 +215,31 @@ public class Tester {
 		BusinessObjectDAO.getInstance().delete(p4);
 	}
 	
+	/** Test the ConceptualRental BO (Also tests the ConceptualProduct BO and the Product BO) */
+	@Test
+	public void TestConceptualRental() throws Exception {
+		// Test create
+		ConceptualRental cr = BusinessObjectDAO.getInstance().create("ConceptualRental", "1conceptualRental");
+		cr.setPricePerDay(12.5);
+		cr.setReplacementPrice(450.0);
+		// Will not test methods inherited from ConceptualProduct, as those are tested elsewhere
+		cr.save();
+		
+		// Test read from cache
+		ConceptualRental cr2 = BusinessObjectDAO.getInstance().read("1conceptualRental");
+		assertSame(cr, cr2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		ConceptualRental cr3 = BusinessObjectDAO.getInstance().read("1conceptualRental");
+		assertEquals(cr.getId(), cr3.getId());
+		assertTrue(cr.getPricePerDay() - cr3.getPricePerDay() < 0.1);
+		assertTrue(cr.getReplacementPrice() - cr3.getReplacementPrice() < 0.1);
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(cr);
+	}
+	
 	/** Test the PhysicalProduct BO (Also tests the Product BO) */
 	@Test
 	public void TestPhysicalProduct() throws Exception {
@@ -231,7 +256,7 @@ public class Tester {
 		p.setShelfLocation("Top 4th");
 		p.setPurchased(new Date());
 		p.setCost(400.0);
-		p.setStatus("new");
+		p.setType("ForSale");
 		p.setCommissionRate(0.04);
 		p.save();
 		
@@ -250,7 +275,7 @@ public class Tester {
 		assertEquals(p.getShelfLocation(), p3.getShelfLocation());
 		assertEquals(SDF.format(p.getPurchased()), SDF.format(p3.getPurchased()));
 		assertTrue(p.getCost() - p3.getCost() < 0.1);
-		assertEquals(p.getStatus(), p3.getStatus());
+		assertEquals(p.getType(), p3.getType());
 		assertTrue(p.getCommissionRate() - p3.getCommissionRate() < 0.1);
 		
 		// Test delete

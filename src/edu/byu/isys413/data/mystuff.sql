@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS store;
 DROP TABLE IF EXISTS membership;
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS physicalproduct;
+DROP TABLE IF EXISTS conceptualrental;
 DROP TABLE IF EXISTS conceptualproduct;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS businessobject;
@@ -130,6 +131,16 @@ CREATE TABLE conceptualproduct (
 );
 
 
+# Create table conceptualrental ;
+# ------------------------------------------------------------ ;
+
+CREATE TABLE conceptualrental (
+  id CHAR(40) PRIMARY KEY,
+  priceperday NUMERIC(10,2),
+  replacementprice NUMERIC(10,2),
+  FOREIGN KEY (id) REFERENCES conceptualproduct (id)
+);
+
 
 # Create table physicalproduct ;
 # ------------------------------------------------------------ ;
@@ -143,8 +154,9 @@ CREATE TABLE physicalproduct (
   shelflocation VARCHAR(100),
   purchased DATETIME,
   cost NUMERIC(10,2),
-  status VARCHAR(100),
+  available TINYINT(4),
   commissionrate NUMERIC(6,5),
+  type ENUM('ForSale','ForRent'),
   FOREIGN KEY (id) REFERENCES product (id),
   FOREIGN KEY (storeid) REFERENCES store (id),
   FOREIGN KEY (conceptualproductid) REFERENCES conceptualproduct (id)
@@ -334,6 +346,7 @@ VALUES
   ('conceptualProduct1','edu.byu.isys413.data.ConceptualProduct'),
   ('conceptualProduct2','edu.byu.isys413.data.ConceptualProduct'),
   ('conceptualProduct3','edu.byu.isys413.data.ConceptualProduct'),
+  ('conceptualRental1','edu.byu.isys413.data.ConceptualRental'),
   ('customer1','edu.byu.isys413.data.Customer'),
   ('customer2','edu.byu.isys413.data.Customer'),
   ('membership1','edu.byu.isys413.data.Membership'),
@@ -355,6 +368,8 @@ VALUES
   ('glAccount5','edu.byu.isys413.data.GeneralLedger'),
   ('journalEntry1','edu.byu.isys413.data.JournalEntry'),
   ('physicalProduct1','edu.byu.isys413.data.PhysicalProduct'),
+  ('physicalProduct2','edu.byu.isys413.data.PhysicalProduct'),
+  ('physicalProduct3','edu.byu.isys413.data.PhysicalProduct'),
   ('sale1','edu.byu.isys413.data.Sale'),
   ('store1','edu.byu.isys413.data.Store'),
   ('store2','edu.byu.isys413.data.Store'),
@@ -423,7 +438,10 @@ VALUES
   ('conceptualProduct1',499.99),
   ('conceptualProduct2',29.49),
   ('conceptualProduct3',9.99),
-  ('physicalProduct1',499.99);
+  ('conceptualRental1',399.99),
+  ('physicalProduct1',499.99),
+  ('physicalProduct2',399.99),
+  ('physicalProduct3',399.99);
 
 
 
@@ -433,9 +451,20 @@ VALUES
 
 INSERT INTO `conceptualproduct` (`id`, `name`, `description`, `manufacturer`, `averagecost`, `commissionrate`, `sku`, `categoryid`, `vendorid`)
 VALUES
-  ('conceptualProduct1','EOS','Entry-level digital camera.','Canon',300.00,0.05,NULL,NULL,NULL),
+  ('conceptualProduct1','EOS','Entry-level digital camera','Canon',300.00,0.05,NULL,NULL,NULL),
   ('conceptualProduct2','Keychain','MyStuff logo keychain','Rocky',10.00,0.01,'123456789',NULL,NULL),
-  ('conceptualProduct3','Analog Film','Medium roll of film','Canon',5.00,0.02,'234567891',NULL,NULL);
+  ('conceptualProduct3','Analog Film','Medium roll of film','Canon',5.00,0.02,'234567891',NULL,NULL),
+  ('conceptualRental1','Nikon 500','Intermediate digital camera','Nikon',200.00,0.06,NULL,NULL,NULL);
+
+
+
+# Populate table conceptualproduct ;
+# ------------------------------------------------------------ ;
+
+
+INSERT INTO `conceptualrental` (`id`, `priceperday`, `replacementprice`)
+VALUES
+  ('conceptualRental1',25.00,449.99);
 
 
 
@@ -443,9 +472,11 @@ VALUES
 # ------------------------------------------------------------ ;
 
 
-INSERT INTO `physicalproduct` (`id`, `storeid`, `conceptualproductid`, `serialnum`, `shelflocation`, `purchased`, `cost`, `status`, `commissionrate`)
+INSERT INTO `physicalproduct` (`id`, `storeid`, `conceptualproductid`, `serialnum`, `shelflocation`, `purchased`, `cost`, `available`, `commissionrate`, `type`)
 VALUES
-  ('physicalProduct1','store1','conceptualProduct1','JSDF79SF9S8CX','Aisle 5','2012-12-03 08:00:00',300.00,NULL,0.04);
+  ('physicalProduct1','store1','conceptualProduct1','JSDF79SF9S8CX','Aisle 5','2012-12-03 08:00:00',300.00,1,0.04,'ForSale'),
+  ('physicalProduct2','store1','conceptualRental1','URLSUFS74WLSG','Aisle 1','2012-11-07 10:30:00',200.00,1,0.04,'ForRent'),
+  ('physicalProduct3','store1','conceptualRental1','POIR52CSUWARE','Aisle 1','2012-11-07 10:30:00',200.00,0,0.04,'ForRent');
 
 
 

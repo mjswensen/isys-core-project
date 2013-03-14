@@ -17,9 +17,11 @@ public class PhysicalProduct extends Product {
 	@BusinessObjectField
 	private double cost;
 	@BusinessObjectField
-	private String status;
+	private boolean available;
 	@BusinessObjectField
 	private double commissionRate;
+	@BusinessObjectField
+	private String type;
 	
 	/** Creates a new instance of Product/BusinessObject */
 	public PhysicalProduct(String id) {
@@ -149,17 +151,17 @@ public class PhysicalProduct extends Product {
 	}
 
 	/**
-	 * @return the status
+	 * @return the available
 	 */
-	public String getStatus() {
-		return status;
+	public boolean isAvailable() {
+		return available;
 	}
 
 	/**
-	 * @param status the status to set
+	 * @param available the available to set
 	 */
-	public void setStatus(String status) {
-		this.status = status;
+	public void setAvailable(boolean available) {
+		this.available = available;
 		setDirty();
 	}
 
@@ -175,6 +177,21 @@ public class PhysicalProduct extends Product {
 	 */
 	public void setCommissionRate(double commissionRate) {
 		this.commissionRate = commissionRate;
+		setDirty();
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set. Should be either "ForRent" or "ForSale"
+	 */
+	public void setType(String type) {
+		this.type = type;
 		setDirty();
 	}
 

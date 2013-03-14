@@ -236,7 +236,7 @@ public class Transaction extends BusinessObject {
 			}
 			if(s.getProduct().getClass().getSimpleName().equals("PhysicalProduct")) {
 				pp = BusinessObjectDAO.getInstance().read(s.getProductId());
-				pp.setStatus("sold");
+				pp.setAvailable(false);
 				pp.save();
 			}
 		}
