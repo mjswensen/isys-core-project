@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import edu.byu.isys413.data.web.*;
 import edu.byu.isys413.data.*;
 
+import javax.mail.*;
+
 public class CreateAndVerifyAccount implements Action {
 
 	/** No-arg constructor per Dr. Albrecht's instruction in Action.java */
@@ -74,8 +76,19 @@ public class CreateAndVerifyAccount implements Action {
 			c.setValidationCode(validationCode);
 			c.setValid(false);
 			
-			// TODO: send email.
-			System.out.println(validationCode);
+			StringBuilder msg = new StringBuilder();
+			msg.append("Dear ");
+			msg.append(c.getFirstName());
+			msg.append(", \n\n");
+			msg.append("Thank you for signing up for our site. To verify your account, please visit the URL below:\n\n");
+			msg.append("http://localhost:8080/MyStuffSprint/edu.byu.isys413.actions.CreateAndVerifyAccount.action?vc=");
+			msg.append(validationCode);
+			msg.append("\n\n");
+			msg.append("Best,\n");
+			msg.append("MyStuff");
+			
+			// Send email
+			BatchEmail.send("smtp.mail.for.testing@gmail.com", "SMTP Mailer", c.getEmail(), "Verify Your Online Account", msg.toString());
 			
 			// Save Customer and Membership objects
 			c.save();

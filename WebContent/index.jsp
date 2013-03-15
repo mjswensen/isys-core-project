@@ -32,13 +32,13 @@
 				<legend>Personal</legend>
 				<label for="firstname">First Name</label>
 				<input type="text" name="firstname" required>
-				<label for="lastname">First Name</label>
+				<label for="lastname">Last Name</label>
 				<input type="text" name="lastname" required>
 				<label for="phone">Phone</label>
 				<input type="text" name="phone">
 				<label for="email">Email</label>
 				<input type="text" name="email" required>
-				<span class="help-block">Your email address will be your username to log into the site.</span>
+				<span class="help-block">Your email address will be your username to log into this site.</span>
 				<label for="password">Password</label>
 				<input type="password" name="password" required>
 				<legend>Shipping</legend>
