@@ -1,5 +1,6 @@
 package edu.byu.isys413.data.actions;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +21,16 @@ public class ProductDetails implements Action {
 		ConceptualProduct cp = BusinessObjectDAO.getInstance().searchForBO("ConceptualProduct", new SearchCriteria("id", cpId));
 		List<StoreProduct> sps = cp.getStoreProducts();
 		List<PhysicalProduct> pps = BusinessObjectDAO.getInstance().searchForList("PhysicalProduct", new SearchCriteria("conceptualproductid", cpId));
+		List<ForSale> fss = new LinkedList<ForSale>();
+		for(PhysicalProduct pp : pps) {
+			if(pp.isAvailable() && pp.getType().equals("ForSale")) {
+				fss.add((ForSale) BusinessObjectDAO.getInstance().searchForBO("ForSale", new SearchCriteria("id", pp.getId())));
+			}
+		}
 		
 		request.setAttribute("cp", cp);
 		request.setAttribute("sps", sps);
-		request.setAttribute("pps", pps);
+		request.setAttribute("fss", fss);
 		
 		return "product-details.jsp";
 	}

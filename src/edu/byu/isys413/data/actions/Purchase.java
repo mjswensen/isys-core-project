@@ -54,25 +54,25 @@ public class Purchase implements Action {
 				// Finalize transaction
 				trans.finalizeAndSave();
 				
-			} else if(request.getParameter("physicalproductid") != null && !request.getParameter("physicalproductid").equals("")) {
+			} else if(request.getParameter("forsaleid") != null && !request.getParameter("forsaleid").equals("")) {
 				
-				String ppId = request.getParameter("physicalproductid");
+				String fsId = request.getParameter("forsaleid");
 				
 				// Get the objects needed to create the transaction
-				PhysicalProduct pp = BusinessObjectDAO.getInstance().read(ppId);
+				ForSale fs = BusinessObjectDAO.getInstance().read(fsId);
 				
 				// Create and save initially the transaction
 				Transaction trans = BusinessObjectDAO.getInstance().create("Transaction");
 				trans.setCustomer(cust);
-				trans.setStore(pp.getStore());
-				trans.setEmployee(pp.getStore().getManager());
+				trans.setStore(fs.getStore());
+				trans.setEmployee(fs.getStore().getManager());
 				trans.setDate(new Date());
 				trans.save();
 				
 				// Create sale and add it to transaction
 				Sale sale = BusinessObjectDAO.getInstance().create("Sale");
 				sale.setTransaction(trans);
-				sale.setProduct(pp);
+				sale.setProduct(fs);
 				sale.setQuantity(1);
 				sale.save();
 				

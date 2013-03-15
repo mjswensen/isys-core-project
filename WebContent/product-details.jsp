@@ -9,7 +9,7 @@
 
 ConceptualProduct cp = (ConceptualProduct) request.getAttribute("cp");
 List<StoreProduct> sps = (List<StoreProduct>) request.getAttribute("sps");
-List<PhysicalProduct> pps = (List<PhysicalProduct>) request.getAttribute("pps");
+List<ForSale> fss = (List<ForSale>) request.getAttribute("fss");
 
 %>
 
@@ -46,10 +46,10 @@ List<PhysicalProduct> pps = (List<PhysicalProduct>) request.getAttribute("pps");
 					<form action="edu.byu.isys413.data.actions.Purchase.action" method="get">
 						<fieldset>
 							<legend>Used</legend>
-							<label for="physicalproductid">Product - Location</label>
-							<select name="physicalproductid">
-								<% for(PhysicalProduct pp : pps) { %>
-								<option value="<%= pp.getId() %>"><%= pp.getStore().getLocation() + " (Serial: " + pp.getSerialNum() + ")" %></option>
+							<label for="forsaleid">Product - Location</label>
+							<select name="forsaleid">
+								<% for(ForSale fs : fss) { %>
+								<option value="<%= fs.getId() %>"><%= fs.getStore().getLocation() + " (Serial: " + fs.getSerialNum() + ")" %></option>
 								<% } %>
 							</select>
 						</fieldset>
