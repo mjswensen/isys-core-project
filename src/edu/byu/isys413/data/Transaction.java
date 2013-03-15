@@ -213,6 +213,19 @@ public class Transaction extends BusinessObject {
 	}
 	
 	/**
+	 * @return Fees associated with this transaction
+	 * @throws DataException
+	 */
+	public List<Fee> getFees() throws DataException {
+		List<Fee> allFees = BusinessObjectDAO.getInstance().searchForAll("Fee");
+		List<Fee> fees = new LinkedList<Fee>();
+		for(Fee f : allFees) {
+			if(f.getTransactionId() == id) fees.add(f);
+		}
+		return fees;
+	}
+	
+	/**
 	 * Retrieves associated sales from DB and calculates totals.
 	 * @throws DataException
 	 */
@@ -223,6 +236,9 @@ public class Transaction extends BusinessObject {
 		}
 		for(Rental r : getRentals()) {
 			subtotal += r.getChargeAmount();
+		}
+		for(Fee f : getFees()) {
+			subtotal += f.getChargeAmount();
 		}
 		tax = subtotal * getStore().getSalesTaxRate();
 		total = tax + subtotal;

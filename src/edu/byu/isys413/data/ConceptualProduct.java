@@ -166,4 +166,12 @@ public class ConceptualProduct extends Product {
 		}
 		return stores;
 	}
+
+	/**
+	 * @return The conceptual rental child of this conceptual product, if any.
+	 * @throws DataException
+	 */
+	public ConceptualRental getConceputalRental() throws DataException {
+		return BusinessObjectDAO.getInstance().searchForBO("ConceptualRental", new SearchCriteria("id", id));
+	}
 }

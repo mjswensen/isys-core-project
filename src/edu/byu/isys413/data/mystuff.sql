@@ -361,7 +361,7 @@ CREATE TABLE fee (
   id CHAR(40) PRIMARY KEY,
   rentalid CHAR(40),
   amount NUMERIC(10,2),
-  waived TINYINT(4),
+  waived TINYINT(4) DEFAULT 0,
   FOREIGN KEY (id) REFERENCES revenuesource (id),
   FOREIGN KEY (rentalid) REFERENCES rental (id)
 );

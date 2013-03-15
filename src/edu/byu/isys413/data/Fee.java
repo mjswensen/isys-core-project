@@ -38,7 +38,7 @@ public class Fee extends RevenueSource {
 	}
 	
 	/**
-	 * @param the rental to set
+	 * @param the rental to set.
 	 */
 	public void setRental(Rental rental) {
 		this.rentalId = rental.getId();
@@ -73,6 +73,25 @@ public class Fee extends RevenueSource {
 	public void setWaived(boolean waived) {
 		this.waived = waived;
 		setDirty();
+	}
+	
+	/**
+	 * Calculates the late fee amount.
+	 * @throws DataException
+	 */
+	public void calculateAmount() throws DataException {
+		Rental r = getRental();
+		ConceptualRental cr = r.getForRent().getConceptualProduct().getConceputalRental();
+		setAmount(r.getLatePeriod() * cr.getPricePerDay());
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.byu.isys413.data.RevenueSource#getChargeAmount()
+	 * Only included for consistency's sake.
+	 */
+	@Override
+	public double getChargeAmount() {
+		return amount;
 	}
 
 }

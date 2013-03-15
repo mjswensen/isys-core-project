@@ -17,7 +17,7 @@ public class Rental extends RevenueSource {
 	@BusinessObjectField
 	private boolean reminderSent;
 	
-	private final long DAY_IN_MILLIS = 1000L * 60L * 60L * 24L;
+	public final long DAY_IN_MILLIS = 1000L * 60L * 60L * 24L;
 	
 	/** Creates a new instance of Rental/RevenueSource/BusinessObject */
 	public Rental(String id) {
@@ -156,8 +156,8 @@ public class Rental extends RevenueSource {
 	@Override
 	public double getChargeAmount() {
 		try {
-			String crId = getForRent().getConceptualProduct().getId();
-			ConceptualRental cr = BusinessObjectDAO.getInstance().read(crId);
+			ConceptualRental cr = getForRent().getConceptualProduct().getConceputalRental();
+			if(cr == null) throw new DataException("There was no ConceptualRental associated with the ForRent.");
 			return cr.getPricePerDay() * getRentalPeriod();
 		} catch(DataException e) {
 			return super.getChargeAmount();

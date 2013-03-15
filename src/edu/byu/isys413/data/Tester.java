@@ -474,8 +474,8 @@ public class Tester {
 		Rental r = BusinessObjectDAO.getInstance().create("Rental", "1rental");
 		r.setForRent(fr);
 		r.setDateOut(new Date());
-		r.setDateDue(new Date(System.currentTimeMillis() + 1000L * 60L * 60L * 24L * 7L));// 1 week rental period
-		r.setDateIn(new Date(System.currentTimeMillis() + 1000L * 60L * 60L * 24L * 10L));// 3 days late
+		r.setDateDue(new Date(System.currentTimeMillis() + r.DAY_IN_MILLIS * 7L));// 1 week rental period
+		r.setDateIn(new Date(System.currentTimeMillis() + r.DAY_IN_MILLIS * 10L));// 3 days late
 		r.setReminderSent(false);
 		r.setTransaction(t);
 		r.save();
@@ -501,6 +501,43 @@ public class Tester {
 		
 		// Test delete
 		BusinessObjectDAO.getInstance().delete(r);
+	}
+	
+	/** Tests the Fee and its association to Rental */
+	@Test
+	public void TestFee() throws Exception {
+		// Create associated BO
+		Rental r = BusinessObjectDAO.getInstance().create("Rental", "1rental");
+		r.setDateOut(new Date());
+		r.setDateDue(new Date(System.currentTimeMillis() + r.DAY_IN_MILLIS * 7L));// 1 week rental period
+		r.setDateIn(new Date(System.currentTimeMillis() + r.DAY_IN_MILLIS * 10L));// 3 days late
+		r.setForRentId("forRent1");// Shortcut for testing purposes
+		r.save();
+		
+		// Test create
+		Fee f = BusinessObjectDAO.getInstance().create("Fee", "1fee");
+		f.setRental(r);
+		f.calculateAmount();
+		assertTrue(f.getAmount() - r.getLatePeriod() * r.getForRent().getConceptualProduct().getConceputalRental().getPricePerDay() < 0.1);
+		f.setWaived(false);
+		f.save();
+		
+		// Test read from cache
+		Fee f2 = BusinessObjectDAO.getInstance().read("1fee");
+		assertSame(f, f2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Fee f3 = BusinessObjectDAO.getInstance().read("1fee");
+		assertEquals(f.getId(), f3.getId());
+		assertSame(f.getRental(), f3.getRental());
+		assertTrue(f.getAmount() - f3.getAmount() < 0.1);
+		assertTrue(!f3.isWaived());
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(f);
+		BusinessObjectDAO.getInstance().delete(r);
+		
 	}
 	
 	/**
