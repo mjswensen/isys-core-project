@@ -1,4 +1,4 @@
-<jsp:directive.page import="edu.byu.isys413.data.*"/>
+<jsp:directive.page import="edu.byu.isys413.data.models.*"/>
 <jsp:directive.page import="java.util.List"/>
 
 <jsp:include page="/header.jsp">

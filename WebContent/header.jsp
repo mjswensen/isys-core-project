@@ -1,4 +1,4 @@
-<jsp:directive.page import="edu.byu.isys413.data.*"/>
+<jsp:directive.page import="edu.byu.isys413.data.models.*"/>
 <%
 
 Customer cust = null;

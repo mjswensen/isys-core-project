@@ -5,10 +5,9 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.byu.isys413.data.models.*;
+import edu.byu.isys413.data.util.BatchEmail;
 import edu.byu.isys413.data.web.*;
-import edu.byu.isys413.data.*;
-
-import javax.mail.*;
 
 public class CreateAndVerifyAccount implements Action {
 

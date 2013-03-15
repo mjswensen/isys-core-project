@@ -5,8 +5,8 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.byu.isys413.data.models.*;
 import edu.byu.isys413.data.web.*;
-import edu.byu.isys413.data.*;
 
 public class Purchase implements Action {
 

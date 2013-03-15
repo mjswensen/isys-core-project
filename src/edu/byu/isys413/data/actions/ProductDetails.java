@@ -5,8 +5,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import edu.byu.isys413.data.models.*;
 import edu.byu.isys413.data.web.*;
-import edu.byu.isys413.data.*;
 
 public class ProductDetails implements Action {
 
