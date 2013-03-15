@@ -57,5 +57,13 @@ public class ForRent extends PhysicalProduct {
 		this.timesRented = timesRented;
 		setDirty();
 	}
+	
+	/**
+	 * Increases the times rented by one.
+	 */
+	public void incrementTimesRented() {
+		this.timesRented++;
+		setDirty();
+	}
 
 }

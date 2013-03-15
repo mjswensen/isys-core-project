@@ -286,13 +286,49 @@ public class Tester {
 	/** Test the ForRent and its 1-1 relationship with Rental */
 	@Test
 	public void TestForRent() throws Exception {
+		// Test create
+		ForRent fr = BusinessObjectDAO.getInstance().create("ForRent", "1forRent");
+		fr.setTimesRented(4);
+		fr.incrementTimesRented();
+		assertEquals(fr.getTimesRented(), 5);
+		// All other methods are inherited and/or are tested in other tests
+		fr.save();
 		
+		// Test read from cache
+		ForRent fr2 = BusinessObjectDAO.getInstance().read("1forRent");
+		assertSame(fr, fr2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		ForRent fr3 = BusinessObjectDAO.getInstance().read("1forRent");
+		assertEquals(fr.getId(), fr3.getId());
+		assertEquals(fr.getTimesRented(), fr3.getTimesRented());
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(fr);
 	}
 	
 	/** Test the ForSale */
 	@Test
-	public void TestForSale() {
+	public void TestForSale() throws Exception {
+		// Test create
+		ForSale fs = BusinessObjectDAO.getInstance().create("ForSale","1forSale");
+		fs.setUsed(true);
+		// All other methods are inherited and/or are tested in other tests
+		fs.save();
 		
+		// Test read from cache
+		ForSale fs2 = BusinessObjectDAO.getInstance().read("1forSale");
+		assertSame(fs, fs2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		ForSale fs3 = BusinessObjectDAO.getInstance().read("1forSale");
+		assertEquals(fs.getId(), fs3.getId());
+		assertTrue(fs.isUsed());
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(fs);
 	}
 	
 	/** Test the StoreProduct (tests the M-M relationship between Stores and ConceptualProducts). */
@@ -427,7 +463,7 @@ public class Tester {
 		BusinessObjectDAO.getInstance().delete(s3);
 	}
 	
-	/** Test the Rental. */
+	/** Test the Rental and its 1-1 relationship with ForRent */
 	@Test
 	public void TestRental() throws Exception {
 		// Grab associated objects
