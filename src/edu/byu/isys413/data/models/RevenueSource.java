@@ -1,5 +1,10 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * A revenue source in the system.
+ * 
+ * @author mswensen
+ */
 public class RevenueSource extends BusinessObject {
 
 	@BusinessObjectField

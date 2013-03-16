@@ -3,6 +3,11 @@ package edu.byu.isys413.data.models;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A store.
+ * 
+ * @author mswensen
+ */
 public class Store extends BusinessObject {
 
 	@BusinessObjectField

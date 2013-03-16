@@ -1,5 +1,10 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * Physical product for rent in the system.
+ * 
+ * @author mswensen
+ */
 public class ForRent extends PhysicalProduct {
 
 	@BusinessObjectField

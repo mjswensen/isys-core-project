@@ -2,6 +2,11 @@ package edu.byu.isys413.data.models;
 
 import java.util.Date;
 
+/**
+ * A rental revenue source.
+ * 
+ * @author mswensen
+ */
 public class Rental extends RevenueSource {
 
 	@BusinessObjectField
@@ -204,6 +209,9 @@ public class Rental extends RevenueSource {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.byu.isys413.data.models.RevenueSource#getChargeAmount()
+	 */
 	@Override
 	public double getChargeAmount() {
 		try {

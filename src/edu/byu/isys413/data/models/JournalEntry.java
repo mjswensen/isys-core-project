@@ -3,6 +3,11 @@ package edu.byu.isys413.data.models;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Represents an accounting journal entry.
+ * 
+ * @author mswensen
+ */
 public class JournalEntry extends BusinessObject {
 
 	@BusinessObjectField

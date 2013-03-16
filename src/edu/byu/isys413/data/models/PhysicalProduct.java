@@ -2,6 +2,11 @@ package edu.byu.isys413.data.models;
 
 import java.util.Date;
 
+/**
+ * A physical product in the system.
+ * 
+ * @author mswensen
+ */
 public class PhysicalProduct extends Product {
 
 	@BusinessObjectField

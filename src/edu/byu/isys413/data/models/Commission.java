@@ -2,6 +2,11 @@ package edu.byu.isys413.data.models;
 
 import java.util.Date;
 
+/**
+ * Commissions for sales and rentals.
+ * 
+ * @author mswensen
+ */
 public class Commission extends BusinessObject {
 
 	@BusinessObjectField

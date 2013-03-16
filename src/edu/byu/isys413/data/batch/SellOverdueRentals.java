@@ -11,6 +11,12 @@ import edu.byu.isys413.data.models.Rental;
 import edu.byu.isys413.data.models.Sale;
 import edu.byu.isys413.data.models.Transaction;
 
+/**
+ * Program to be run nightly to charge the credit card of customers once
+ * their rental is overdue 10 days (the replacement price).
+ * 
+ * @author mswensen
+ */
 public class SellOverdueRentals {
 
 	/**

@@ -3,6 +3,11 @@ package edu.byu.isys413.data.models;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Conceptual product (See data model)
+ * 
+ * @author mswensen
+ */
 public class ConceptualProduct extends Product {
 	
 	@BusinessObjectField

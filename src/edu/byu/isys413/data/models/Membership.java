@@ -2,6 +2,11 @@ package edu.byu.isys413.data.models;
 
 import java.util.Date;
 
+/**
+ * A customer's membership.
+ * 
+ * @author mswensen
+ */
 public class Membership extends BusinessObject {
 	
 	@BusinessObjectField
@@ -15,6 +20,7 @@ public class Membership extends BusinessObject {
 	@BusinessObjectField
 	private boolean trial;
 
+	/** Creates a new instance of BusinessObject */
 	public Membership(String id) {
 		super(id);
 	}

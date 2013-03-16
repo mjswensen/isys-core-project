@@ -1,5 +1,10 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * A sale.
+ * 
+ * @author mswensen
+ */
 public class Sale extends RevenueSource {
 	
 	@BusinessObjectField
@@ -59,6 +64,9 @@ public class Sale extends RevenueSource {
 		setDirty();
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.byu.isys413.data.models.RevenueSource#getChargeAmount()
+	 */
 	@Override
 	public double getChargeAmount() {
 		try {

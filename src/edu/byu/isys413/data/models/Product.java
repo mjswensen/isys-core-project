@@ -1,5 +1,10 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * A product in the system.
+ * 
+ * @author mswensen
+ */
 public class Product extends BusinessObject {
 
 	@BusinessObjectField

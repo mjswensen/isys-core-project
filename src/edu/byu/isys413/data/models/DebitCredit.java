@@ -1,8 +1,11 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * Represents a debit or credit accounting entry.
+ * 
+ * @author mswensen
+ */
 public class DebitCredit extends BusinessObject {
-	
-//	public enum Type { DR("DR"), CR("CR") }
 	
 	@BusinessObjectField
 	private String journalEntryId;

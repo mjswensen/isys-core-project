@@ -5,6 +5,11 @@ import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.Rental;
 
+/**
+ * Program to be run nightly to remind customers to return their overdue rentals.
+ * 
+ * @author mswensen
+ */
 public class RemindLateRentals {
 
 	/**

@@ -1,5 +1,10 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * Fees for things such as late rentals.
+ * 
+ * @author mswensen
+ */
 public class Fee extends RevenueSource {
 
 	@BusinessObjectField

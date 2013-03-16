@@ -1,5 +1,10 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * Represents computers the system knows about.
+ * 
+ * @author mswensen
+ */
 public class Computer extends BusinessObject {
 
 	@BusinessObjectField

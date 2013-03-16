@@ -1,5 +1,10 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * Represents a customer in the system.
+ * 
+ * @author mswensen
+ */
 public class Customer extends BusinessObject {
 
 	@BusinessObjectField

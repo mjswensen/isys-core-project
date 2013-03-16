@@ -4,6 +4,11 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A transaction. Made up of revenue sources and other relevant data.
+ * 
+ * @author mswensen
+ */
 public class Transaction extends BusinessObject {
 
 	@BusinessObjectField

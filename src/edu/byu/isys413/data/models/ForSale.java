@@ -1,5 +1,10 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * Physical product for sale in the system.
+ * 
+ * @author mswensen
+ */
 public class ForSale extends PhysicalProduct {
 
 	@BusinessObjectField

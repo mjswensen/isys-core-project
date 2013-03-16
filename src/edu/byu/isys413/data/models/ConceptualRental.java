@@ -1,5 +1,10 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * Conceptual rental (see data model).
+ * 
+ * @author mswensen
+ */
 public class ConceptualRental extends ConceptualProduct {
 
 	@BusinessObjectField

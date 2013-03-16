@@ -1,8 +1,11 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * The general ledger.
+ * 
+ * @author mswensen
+ */
 public class GeneralLedger extends BusinessObject {
-
-//	public static enum Type { DR, CR }
 	
 	@BusinessObjectField
 	private String account;

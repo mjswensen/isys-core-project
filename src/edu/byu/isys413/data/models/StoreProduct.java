@@ -1,5 +1,10 @@
 package edu.byu.isys413.data.models;
 
+/**
+ * The combination of a conceptual product and a store.
+ * 
+ * @author mswensen
+ */
 public class StoreProduct extends BusinessObject {
 
 	@BusinessObjectField
@@ -108,6 +113,9 @@ public class StoreProduct extends BusinessObject {
 		setDirty();
 	}
 	
+	/**
+	 * @param amount the amount of QOH to subtract.
+	 */
 	public void subtractQuantityOnHand(int amount) {
 		setQuantityOnHand(quantityOnHand - amount);
 		setDirty();

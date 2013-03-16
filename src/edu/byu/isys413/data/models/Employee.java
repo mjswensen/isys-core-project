@@ -1,20 +1,11 @@
-/////////////////////////////////////////////////////////////////
-///   This file is an example of an Object Relational Mapping in
-///   the ISys Core at Brigham Young University.  Students
-///   may use the code as part of the 413 course in their
-///   milestones following this one, but no permission is given
-///   to use this code is any other way.  Since we will likely
-///   use this code again in a future year, please DO NOT post
-///   the code to a web site, share it with others, or pass
-///   it on in any way.
-
-
 package edu.byu.isys413.data.models;
 
 import java.util.Date;
 
 /**
  * An employee.
+ * 
+ * @author mswensen
  */
 public class Employee extends BusinessObject {
 
