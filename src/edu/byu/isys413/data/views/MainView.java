@@ -67,9 +67,9 @@ public class MainView {
 		mntmProcessTransaction.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				SaleView saleView = new SaleView(display);
-				saleView.open();
-				saleView.layout();
+				TransactionView transactionView = new TransactionView(display);
+				transactionView.open();
+				transactionView.layout();
 			}
 		});
 		mntmProcessTransaction.setText("Process Transaction...");

@@ -146,6 +146,15 @@ public class Rental extends RevenueSource {
 	}
 	
 	/**
+	 * Convenience method for setting the rental period rather than the due date directly.
+	 * @param days
+	 */
+	public void setRentalPeriod(int days) {
+		dateDue = new Date(dateOut.getTime() + DAY_IN_MILLIS * (long) days);
+		setDirty();
+	}
+	
+	/**
 	 * @return the number of days late the rental was returned.
 	 */
 	public int getLatePeriod() {

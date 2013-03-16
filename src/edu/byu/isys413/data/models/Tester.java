@@ -283,6 +283,7 @@ public class Tester {
 		// Test delete
 		BusinessObjectDAO.getInstance().delete(p);
 		// Previous three test cases test ability to rewrite a new record with same ID.
+		
 	}
 	
 	/** Test the ForRent and its 1-1 relationship with Rental */
@@ -290,6 +291,7 @@ public class Tester {
 	public void TestForRent() throws Exception {
 		// Test create
 		ForRent fr = BusinessObjectDAO.getInstance().create("ForRent", "1forRent");
+		fr.setSerialNum("frSerialNum");
 		fr.setTimesRented(4);
 		fr.incrementTimesRented();
 		assertEquals(fr.getTimesRented(), 5);
@@ -306,8 +308,16 @@ public class Tester {
 		assertEquals(fr.getId(), fr3.getId());
 		assertEquals(fr.getTimesRented(), fr3.getTimesRented());
 		
+		// Test ability to search for a ForRent by serial number
+		Cache.getInstance().clear();
+		ForRent fr4 = BusinessObjectDAO.getInstance().searchForBO("PhysicalProduct", new SearchCriteria("serialnum","frSerialNum"));
+		assertNotNull(fr4);
+		assertEquals(fr4.getId(), fr.getId());
+		assertEquals(fr4.getTimesRented(), 5);
+		
 		// Test delete
 		BusinessObjectDAO.getInstance().delete(fr);
+		
 	}
 	
 	/** Test the ForSale */
@@ -480,12 +490,15 @@ public class Tester {
 		r.setDateIn(new Date(System.currentTimeMillis() + r.DAY_IN_MILLIS * 10L));// 3 days late
 		r.setReminderSent(false);
 		r.setTransaction(t);
-		r.save();
-		
 		// Test time period calculation methods
 		assertEquals(r.getRentalPeriod(), 7);
 		assertTrue(r.isLate());
 		assertEquals(r.getLatePeriod(), 3);
+		r.setRentalPeriod(5);// 5 day rental period now
+		assertEquals(r.getRentalPeriod(), 5);
+		assertTrue(r.isLate());
+		assertEquals(r.getLatePeriod(), 5);
+		r.save();
 		
 		// Test read from cache
 		Rental r2 = BusinessObjectDAO.getInstance().read("1rental");

@@ -1,5 +1,6 @@
 package edu.byu.isys413.data.views;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -33,24 +34,29 @@ import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.Customer;
 import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.Employee;
+import edu.byu.isys413.data.models.Rental;
 import edu.byu.isys413.data.models.Sale;
 import edu.byu.isys413.data.models.Store;
 import edu.byu.isys413.data.models.Transaction;
 
-public class SaleView extends Shell {
+public class TransactionView extends Shell {
 	private Text txtFirstname;
 	private Text txtLastname;
 	private Text txtAddress;
 	private Text txtEmail;
 	private Text txtPhone;
-	private Table table;
+	private Table tableSales;
 	private Text txtSubtotal;
 	private Text txtTax;
 	private Text txtTotal;
 	
-	private TableViewer tableViewer;
+	private TableViewer tableViewerSales;
+	private TableViewer tableViewerRentals;
 	
 	private Transaction t;
+	private Table tableRentals;
+	
+	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
 
 	/**
 	 * Launch the application.
@@ -76,9 +82,9 @@ public class SaleView extends Shell {
 	 * Create the shell.
 	 * @param display
 	 */
-	public SaleView(final Display display) {
+	public TransactionView(final Display display) {
 		super(display, SWT.SHELL_TRIM);
-		setSize(708, 450);
+		setSize(710, 540);
 		setText("Sales Transaction");
 		setLayout(new GridLayout(2, false));
 		
@@ -167,18 +173,17 @@ public class SaleView extends Shell {
 		Button btnEditCustomer = new Button(grpCustomer, SWT.NONE);
 		btnEditCustomer.setText("Edit Customer");
 		
-		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
-		table.setLinesVisible(true);
-		table.setHeaderVisible(true);
-		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		tableViewerSales = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
+		tableSales = tableViewerSales.getTable();
+		tableSales.setLinesVisible(true);
+		tableSales.setHeaderVisible(true);
+		tableSales.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
-		TableViewerColumn tableViewerColumnItemDesc = new TableViewerColumn(tableViewer, SWT.NONE);
-		TableColumn tblclmnName = tableViewerColumnItemDesc.getColumn();
+		TableViewerColumn tableViewerColumnItemName = new TableViewerColumn(tableViewerSales, SWT.NONE);
+		TableColumn tblclmnName = tableViewerColumnItemName.getColumn();
 		tblclmnName.setWidth(197);
 		tblclmnName.setText("Name");
-		
-		tableViewerColumnItemDesc.setLabelProvider(new ColumnLabelProvider() {
+		tableViewerColumnItemName.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				Sale s = (Sale)element;
@@ -190,10 +195,89 @@ public class SaleView extends Shell {
 			}
 		});
 		
-		TableViewerColumn tableViewerColumnItemPrice = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn tableViewerColumnItemPrice = new TableViewerColumn(tableViewerSales, SWT.NONE);
 		TableColumn tblclmnPrice = tableViewerColumnItemPrice.getColumn();
 		tblclmnPrice.setWidth(71);
 		tblclmnPrice.setText("Price");
+		new Label(this, SWT.NONE);
+		
+		tableViewerRentals = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
+		tableRentals = tableViewerRentals.getTable();
+		tableRentals.setLinesVisible(true);
+		tableRentals.setHeaderVisible(true);
+		GridData gd_tableRentals = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd_tableRentals.heightHint = 123;
+		tableRentals.setLayoutData(gd_tableRentals);
+		
+		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewerRentals, SWT.NONE);
+		TableColumn tblclmnName_1 = tableViewerColumn.getColumn();
+		tblclmnName_1.setWidth(178);
+		tblclmnName_1.setText("Name");
+		tableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Rental r = (Rental)element;
+				try {
+					return r.getForRent().getConceptualProduct().getName();
+				} catch (DataException e) {
+					return "Unable to get product name.";
+				}
+			}
+		});
+		
+		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
+		TableColumn tblclmnDateOut = tableViewerColumn_1.getColumn();
+		tblclmnDateOut.setWidth(57);
+		tblclmnDateOut.setText("Date Out");
+		tableViewerColumn_1.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Rental r = (Rental)element;
+				return sdf.format(r.getDateOut());
+			}
+		});
+		
+		TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
+		TableColumn tblclmnDateDue = tableViewerColumn_2.getColumn();
+		tblclmnDateDue.setWidth(59);
+		tblclmnDateDue.setText("Date Due");
+		tableViewerColumn_2.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Rental r = (Rental)element;
+				return sdf.format(r.getDateDue());
+			}
+		});
+		
+		TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
+		TableColumn tblclmnPricePerDay = tableViewerColumn_3.getColumn();
+		tblclmnPricePerDay.setWidth(78);
+		tblclmnPricePerDay.setText("Price Per Day");
+		tableViewerColumn_3.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Rental r = (Rental)element;
+				try {
+					return "$" + r.getForRent().getConceptualProduct().getConceputalRental().getPricePerDay();
+				} catch (DataException e) {
+					return "Unable to get price per day.";
+				}
+			}
+		});
+		
+		TableViewerColumn tableViewerColumn_4 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
+		TableColumn tblclmnItemTotal_1 = tableViewerColumn_4.getColumn();
+		tblclmnItemTotal_1.setWidth(61);
+		tblclmnItemTotal_1.setText("Item Total");
+		tableViewerColumn_4.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Rental r = (Rental)element;
+				return "$" + r.getChargeAmount();
+			}
+		});
+		
+		
 		new Label(this, SWT.NONE);
 		
 		tableViewerColumnItemPrice.setLabelProvider(new ColumnLabelProvider() {
@@ -208,7 +292,7 @@ public class SaleView extends Shell {
 			}
 		});
 		
-		TableViewerColumn tableViewerColumnQuantity = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn tableViewerColumnQuantity = new TableViewerColumn(tableViewerSales, SWT.NONE);
 		TableColumn tblclmnQuantity = tableViewerColumnQuantity.getColumn();
 		tblclmnQuantity.setWidth(76);
 		tblclmnQuantity.setText("Quantity");
@@ -221,7 +305,7 @@ public class SaleView extends Shell {
 			}
 		});
 		
-		TableViewerColumn tableViewerColumnItemTotal = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn tableViewerColumnItemTotal = new TableViewerColumn(tableViewerSales, SWT.NONE);
 		TableColumn tblclmnItemTotal = tableViewerColumnItemTotal.getColumn();
 		tblclmnItemTotal.setWidth(90);
 		tblclmnItemTotal.setText("Item Total");
@@ -247,6 +331,7 @@ public class SaleView extends Shell {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				final ScanProductView spv = new ScanProductView(display);
+				spv.setTransaction(t);
 				spv.open();
 				spv.layout();
 				spv.addShellListener(new ShellListener() {
@@ -254,17 +339,7 @@ public class SaleView extends Shell {
 					public void shellActivated(ShellEvent arg0) {}
 					@Override
 					public void shellClosed(ShellEvent arg0) {
-						try {
-							Sale s = BusinessObjectDAO.getInstance().create("Sale");
-							s.setTransaction(t);
-							s.setProduct(spv.getProduct());
-							s.setQuantity(spv.getQuantity());
-							s.save();
-							spv.dispose();
-						} catch (DataException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+						updateProductsView();
 					}
 					@Override
 					public void shellDeactivated(ShellEvent arg0) {}
@@ -288,7 +363,7 @@ public class SaleView extends Shell {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				// Get selection from the table and remove it in the database. Then update the view.
-				IStructuredSelection sel = (IStructuredSelection)tableViewer.getSelection();
+				IStructuredSelection sel = (IStructuredSelection)tableViewerSales.getSelection();
 				Sale toRemove = (Sale)sel.getFirstElement();
 				try {
 					BusinessObjectDAO.getInstance().delete(toRemove);
@@ -382,11 +457,17 @@ public class SaleView extends Shell {
 	
 	private void updateProductsView() {
 		try {
-			// Update products table
+			// Update Sales table
 			List<Sale> sales = t.getSales();
-			tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-			tableViewer.setInput(sales);
-			tableViewer.refresh();
+			tableViewerSales.setContentProvider(ArrayContentProvider.getInstance());
+			tableViewerSales.setInput(sales);
+			tableViewerSales.refresh();
+			
+			// Update Rentals table
+			List<Rental> rentals = t.getRentals();
+			tableViewerRentals.setContentProvider(ArrayContentProvider.getInstance());
+			tableViewerRentals.setInput(rentals);
+			tableViewerRentals.refresh();
 			
 			// Update totals display
 			t.calculateTotals();

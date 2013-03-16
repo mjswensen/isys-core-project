@@ -1,5 +1,7 @@
 package edu.byu.isys413.data.views;
 
+import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -15,18 +17,19 @@ import org.eclipse.swt.widgets.Group;
 import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.ConceptualProduct;
 import edu.byu.isys413.data.models.DataException;
-import edu.byu.isys413.data.models.PhysicalProduct;
-import edu.byu.isys413.data.models.Product;
+import edu.byu.isys413.data.models.ForRent;
+import edu.byu.isys413.data.models.ForSale;
+import edu.byu.isys413.data.models.Rental;
+import edu.byu.isys413.data.models.Sale;
 import edu.byu.isys413.data.models.SearchCriteria;
+import edu.byu.isys413.data.models.Transaction;
 
 public class ScanProductView extends Shell {
-	private Text txtSku;
-	private Text txtSerialnumber;
 	
-	private Product p;
-	private Text txtQty;
-	private int quantity = 1;
+	private Transaction t;
 
+	private Label labelErrorMsg;
+	
 	/**
 	 * Launch the application.
 	 * @param args
@@ -59,13 +62,13 @@ public class ScanProductView extends Shell {
 		GridData gd_grpStandard = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_grpStandard.widthHint = 380;
 		grpStandard.setLayoutData(gd_grpStandard);
-		grpStandard.setText("Standard");
+		grpStandard.setText("Purchase Standard");
 		grpStandard.setLayout(new GridLayout(3, false));
 		
 		Label lblSku = new Label(grpStandard, SWT.NONE);
 		lblSku.setText("SKU:");
 		
-		txtSku = new Text(grpStandard, SWT.BORDER);
+		final Text txtSku = new Text(grpStandard, SWT.BORDER);
 		txtSku.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		new Label(grpStandard, SWT.NONE);
 		
@@ -73,52 +76,117 @@ public class ScanProductView extends Shell {
 		lblQuantity.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblQuantity.setText("Quantity:");
 		
-		txtQty = new Text(grpStandard, SWT.BORDER);
+		final Text txtQty = new Text(grpStandard, SWT.BORDER);
 		txtQty.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnGo = new Button(grpStandard, SWT.NONE);
-		btnGo.addMouseListener(new MouseAdapter() {
+		Button btnGoStoreProduct = new Button(grpStandard, SWT.NONE);
+		btnGoStoreProduct.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				try {
 					ConceptualProduct cp = BusinessObjectDAO.getInstance().searchForBO("ConceptualProduct", new SearchCriteria("sku", txtSku.getText()));
-					p = (Product)cp;
-					quantity = Integer.parseInt(txtQty.getText());
-					close();
+					int qty = Integer.parseInt(txtQty.getText());
+					if(cp != null) {
+						Sale s = BusinessObjectDAO.getInstance().create("Sale");
+						s.setTransaction(t);
+						s.setProduct(cp);
+						s.setQuantity(qty);
+						s.save();
+						close();
+					} else {
+						throw new DataException("The SKU provided is not valid.");
+					}
 				} catch (DataException e1) {
-					// TODO
+					setErrorMsg(e1.getMessage());
 				}
 			}
 		});
-		btnGo.setText("Go");
+		btnGoStoreProduct.setText("Go");
 		
 		Group grpHighend = new Group(this, SWT.NONE);
 		grpHighend.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		grpHighend.setText("High-end");
+		grpHighend.setText("Purchase High-end");
 		grpHighend.setLayout(new GridLayout(3, false));
 		
 		Label lblSerialNumber = new Label(grpHighend, SWT.NONE);
 		lblSerialNumber.setText("Serial Number:");
 		
-		txtSerialnumber = new Text(grpHighend, SWT.BORDER);
-		GridData gd_txtSerialnumber = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gd_txtSerialnumber.widthHint = 227;
-		txtSerialnumber.setLayoutData(gd_txtSerialnumber);
+		final Text txtForSaleSerialnumber = new Text(grpHighend, SWT.BORDER);
+		GridData gd_txtForSaleSerialnumber = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		gd_txtForSaleSerialnumber.widthHint = 227;
+		txtForSaleSerialnumber.setLayoutData(gd_txtForSaleSerialnumber);
 		
-		Button btnGo_1 = new Button(grpHighend, SWT.NONE);
-		btnGo_1.addMouseListener(new MouseAdapter() {
+		Button btnGoForSale = new Button(grpHighend, SWT.NONE);
+		btnGoForSale.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				try {
-					PhysicalProduct pp = BusinessObjectDAO.getInstance().searchForBO("PhysicalProduct", new SearchCriteria("serialnum", txtSerialnumber.getText()));
-					p = (Product)pp;
-					close();
+					ForSale fs = BusinessObjectDAO.getInstance().searchForBO("PhysicalProduct", new SearchCriteria("serialnum", txtForSaleSerialnumber.getText()));
+					if(fs != null) {
+						Sale s = BusinessObjectDAO.getInstance().create("Sale");
+						s.setTransaction(t);
+						s.setProduct(fs);
+						s.setQuantity(1);
+						s.save();
+						close();
+					} else {
+						throw new DataException("The serial number provided is not for sale.");
+					}
 				} catch (DataException e1) {
-					// TODO
+					setErrorMsg(e1.getMessage());
 				}
 			}
 		});
-		btnGo_1.setText("Go");
+		btnGoForSale.setText("Go");
+		
+		Group grpRental = new Group(this, SWT.NONE);
+		grpRental.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		grpRental.setText("Rental");
+		grpRental.setLayout(new GridLayout(3, false));
+		
+		Label lblSerialNumber_1 = new Label(grpRental, SWT.NONE);
+		lblSerialNumber_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblSerialNumber_1.setText("Serial Number:");
+		
+		final Text txtForRentSerialnumber = new Text(grpRental, SWT.BORDER);
+		txtForRentSerialnumber.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(grpRental, SWT.NONE);
+		
+		Label lblRentalPeriodin = new Label(grpRental, SWT.NONE);
+		lblRentalPeriodin.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblRentalPeriodin.setText("Rental Period (in Days):");
+		
+		final Text txtRentalPeriod = new Text(grpRental, SWT.BORDER);
+		txtRentalPeriod.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		
+		Button btnGoForRent = new Button(grpRental, SWT.NONE);
+		btnGoForRent.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				try {
+					ForRent fr = BusinessObjectDAO.getInstance().searchForBO("PhysicalProduct", new SearchCriteria("serialnum", txtForRentSerialnumber.getText()));
+					int days = Integer.parseInt(txtRentalPeriod.getText());
+					if(fr != null) {
+						if(!fr.isAvailable()) throw new DataException("That rental is not available.");
+						Rental r = BusinessObjectDAO.getInstance().create("Rental");
+						r.setForRent(fr);
+						r.setTransaction(t);
+						r.setDateOut(new Date());
+						r.setRentalPeriod(days);
+						r.setReminderSent(false);
+						r.save();
+						close();
+					} else {
+						throw new DataException("The serial number provided is not for rent.");
+					}
+				} catch (DataException e1) {
+					setErrorMsg(e1.getMessage());
+				}
+			}
+		});
+		btnGoForRent.setText("Go");
+		
+		labelErrorMsg = new Label(this, SWT.NONE);
 		createContents();
 	}
 
@@ -132,19 +200,21 @@ public class ScanProductView extends Shell {
 	}
 	
 	/**
-	 * @return the product selected by the window (either via sku or serial number). called by a close listener to return product back to SaleView.
+	 * Sets the transaction so that this window may manipulate it.
+	 * @param t
 	 */
-	public Product getProduct() {
-		return p;
-	}
-	
-	/**
-	 * @return the quantity of the conceptual product.
-	 */
-	public int getQuantity() {
-		return quantity;
+	public void setTransaction(Transaction t) {
+		this.t = t;
 	}
 
+	/**
+	 * Displays an error to the user if there was a problem selecting the product.
+	 * @param msg
+	 */
+	public void setErrorMsg(String msg) {
+		labelErrorMsg.setText(msg);
+	}
+	
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
