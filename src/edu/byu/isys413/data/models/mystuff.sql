@@ -438,6 +438,7 @@ VALUES
   ('sale1','edu.byu.isys413.data.models.Sale'),
   ('rental1','edu.byu.isys413.data.models.Rental'),
   ('rental2','edu.byu.isys413.data.models.Rental'),
+  ('rental3','edu.byu.isys413.data.models.Rental'),
   ('fee1','edu.byu.isys413.data.models.Fee'),
   ('store1','edu.byu.isys413.data.models.Store'),
   ('store2','edu.byu.isys413.data.models.Store'),
@@ -649,6 +650,7 @@ VALUES
   ('sale1','transaction1',532.49,'Sale'),
   ('rental1','transaction1',25.5,'Rental'),
   ('rental2','transaction1',14.75,'Rental'),
+  ('rental3','transaction1',28.50,'Rental'),
   ('fee1','transaction1',35,'Fee');
 
 
@@ -679,8 +681,9 @@ VALUES
 
 INSERT INTO `rental` (`id`, `forrentid`, `dateout`, `datein`, `datedue`, `workordernumber`, `remindersent`)
 VALUES
-  ('rental1','forRent1','2013-03-10 12:53:23',NULL,'2013-03-14 20:00:00',NULL,0),
-  ('rental2','forRent2','2013-03-03 10:45:02',NULL,'2013-03-12 20:00:00',NULL,0);
+  ('rental1','forRent1','2013-03-10 12:53:23',NULL,'2013-03-19 20:00:00',NULL,0),
+  ('rental2','forRent2','2013-03-03 10:45:02',NULL,'2013-03-12 20:00:00',NULL,0),
+  ('rental3','forRent4','2013-03-01 08:30:42',NULL,'2013-03-08 20:00:00',NULL,0);
 
 
 # Now that both rental and forrent tables are created, and since they reference each other, add FK to rental for forrentid. ;
