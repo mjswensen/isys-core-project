@@ -434,6 +434,7 @@ VALUES
   ('forRent1','edu.byu.isys413.data.models.ForRent'),
   ('forRent2','edu.byu.isys413.data.models.ForRent'),
   ('forRent3','edu.byu.isys413.data.models.ForRent'),
+  ('forRent4','edu.byu.isys413.data.models.ForRent'),
   ('sale1','edu.byu.isys413.data.models.Sale'),
   ('rental1','edu.byu.isys413.data.models.Rental'),
   ('rental2','edu.byu.isys413.data.models.Rental'),
@@ -510,7 +511,8 @@ VALUES
   ('forSale2',499.99),
   ('forRent1',399.99),
   ('forRent2',399.99),
-  ('forRent3',399.99);
+  ('forRent3',399.99),
+  ('forRent4',399.99);;
 
 
 
@@ -547,7 +549,8 @@ VALUES
   ('forSale2','store2','conceptualProduct1','UF8ASCSDJFA8C','Aisle 5','2012-12-03 08:00:00',300.00,1,0.04,'ForSale'),
   ('forRent1','store1','conceptualRental1','URLSUFS74WLSG','Aisle 1','2012-11-07 10:30:00',200.00,0,0.04,'ForRent'),
   ('forRent2','store1','conceptualRental1','POIR52CSUWARE','Aisle 1','2012-11-07 10:30:00',200.00,0,0.04,'ForRent'),
-  ('forRent3','store1','conceptualRental1','7S9FJSLKDFA7C','Aisle 1','2012-11-07 10:30:00',200.00,1,0.04,'ForRent');
+  ('forRent3','store1','conceptualRental1','7S9FJSLKDFA7C','Aisle 1','2012-11-07 10:30:00',200.00,1,0.04,'ForRent'),
+  ('forRent4','store1','conceptualRental1','ABC123','Aisle 1','2012-11-07 10:30:00',200.00,1,0.04,'ForRent');
 
 
 # Populate table forsale ;
@@ -666,7 +669,8 @@ INSERT INTO `forrent` (`id`, `timesrented`, `currentrentalid`)
 VALUES
   ('forRent1',5,NULL),
   ('forRent2',2,NULL),
-  ('forRent3',0,NULL);
+  ('forRent3',0,NULL),
+  ('forRent4',0,NULL);
 
 
 # Populate table rental ;

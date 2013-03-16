@@ -65,5 +65,14 @@ public class ForRent extends PhysicalProduct {
 		this.timesRented++;
 		setDirty();
 	}
+	
+	/**
+	 * Convenience method for making a ForRent available again in the rental pool.
+	 */
+	public void makeAvailable() {
+		currentRentalId = null;
+		available = true;
+		setDirty();
+	}
 
 }

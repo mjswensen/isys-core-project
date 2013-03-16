@@ -315,6 +315,11 @@ public class Tester {
 		assertEquals(fr4.getId(), fr.getId());
 		assertEquals(fr4.getTimesRented(), 5);
 		
+		// Test ability to make a ForRent available again (when turned in)
+		fr4.makeAvailable();
+		assertNull(fr4.getCurrentRentalId());
+		assertTrue(fr4.isAvailable());
+		
 		// Test delete
 		BusinessObjectDAO.getInstance().delete(fr);
 		
@@ -600,8 +605,18 @@ public class Tester {
 		rent.setTransaction(trans);
 		rent.save();
 		
+		int oldTimesRented = fr.getTimesRented();
+		
 		// Test finalizing the transaction.
 		trans.finalizeAndSave();
+		
+		// Make sure all the loose ends got tied up.
+		assertFalse(fr.isAvailable());
+		assertSame(fr.getCurrentRental(), rent);
+		assertEquals(fr.getCurrentRentalId(), rent.getId());
+		assertSame(rent.getForRent(), fr);
+		assertEquals(rent.getForRentId(), fr.getId());
+		assertEquals(fr.getTimesRented(), oldTimesRented + 1);
 		
 		Commission comm = BusinessObjectDAO.getInstance().searchForBO("Commission", new SearchCriteria("transactionid", trans.getId()));
 		assertTrue(comm.getAmount() - trans.getCommissionAmount() < 0.1);
@@ -646,6 +661,8 @@ public class Tester {
 		BusinessObjectDAO.getInstance().delete(comm);
 		BusinessObjectDAO.getInstance().delete(sale);
 		BusinessObjectDAO.getInstance().delete(sale2);
+		fr.makeAvailable();
+		fr.save();
 		BusinessObjectDAO.getInstance().delete(rent);
 		BusinessObjectDAO.getInstance().delete(trans3);
 	}

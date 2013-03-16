@@ -17,7 +17,7 @@ public class PhysicalProduct extends Product {
 	@BusinessObjectField
 	private double cost;
 	@BusinessObjectField
-	private boolean available;
+	protected boolean available;
 	@BusinessObjectField
 	private double commissionRate;
 	@BusinessObjectField

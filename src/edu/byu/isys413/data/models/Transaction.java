@@ -271,8 +271,12 @@ public class Transaction extends BusinessObject {
 			}
 		}
 		for(Rental r : getRentals()) {
-			r.getForRent().setAvailable(false);
+			ForRent fr = r.getForRent();
+			fr.setAvailable(false);
+			fr.setCurrentRental(r);
+			fr.incrementTimesRented();
 			r.save();
+			fr.save();
 		}
 		
 		// Create journal entry
