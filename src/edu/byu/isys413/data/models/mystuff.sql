@@ -683,7 +683,7 @@ INSERT INTO `rental` (`id`, `forrentid`, `dateout`, `datein`, `datedue`, `workor
 VALUES
   ('rental1','forRent1','2013-03-10 12:53:23',NULL,'2013-03-19 20:00:00',NULL,0),
   ('rental2','forRent2','2013-03-03 10:45:02',NULL,'2013-03-12 20:00:00',NULL,0),
-  ('rental3','forRent4','2013-03-01 08:30:42',NULL,'2013-03-08 20:00:00',NULL,0);
+  ('rental3','forRent4','2013-02-01 08:30:42',NULL,'2013-02-08 20:00:00',NULL,0);
 
 
 # Now that both rental and forrent tables are created, and since they reference each other, add FK to rental for forrentid. ;

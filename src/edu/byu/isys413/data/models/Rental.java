@@ -131,10 +131,14 @@ public class Rental extends RevenueSource {
 	}
 	
 	/**
-	 * @return whether or not the rental was turned in late
+	 * @return whether or not the rental was turned in late or is overdue
 	 */
 	public boolean isLate() {
-		return dateIn.after(dateDue);
+		if(dateIn != null) {
+			return dateIn.after(dateDue);
+		} else {
+			return dateDue.getTime() < System.currentTimeMillis();
+		}
 	}
 
 	/**
@@ -155,10 +159,15 @@ public class Rental extends RevenueSource {
 	}
 	
 	/**
-	 * @return the number of days late the rental was returned.
+	 * @return the number of days late the rental was returned, or the number of days overdue if not yet returned.
 	 */
 	public int getLatePeriod() {
-		long length = dateIn.getTime() - dateDue.getTime();
+		long length;
+		if(dateIn != null) {
+			length = dateIn.getTime() - dateDue.getTime();
+		} else {
+			length = System.currentTimeMillis() - dateDue.getTime();
+		}
 		return Math.round(length / DAY_IN_MILLIS);
 	}
 	

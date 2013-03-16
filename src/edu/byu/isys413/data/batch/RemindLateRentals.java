@@ -16,7 +16,7 @@ public class RemindLateRentals {
 			List<Rental> rentals = BusinessObjectDAO.getInstance().searchForAll("Rental");
 			int counter = 0;
 			for(Rental r : rentals) {
-				if(r.getDateDue().getTime() < System.currentTimeMillis() && !r.isReminderSent() && r.getDateIn() == null) {
+				if(r.isLate() && !r.isReminderSent() && r.getDateIn() == null) {
 					// Email here
 					r.setReminderSent(true);
 					r.save();
