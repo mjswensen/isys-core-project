@@ -27,11 +27,12 @@ public class CreateAndVerifyAccount implements Action {
 				request.setAttribute("message", "Incorrect verification code provided.");
 				request.setAttribute("messageType", "error");
 				return "message.jsp";
+			} else {
+				cust.setValid(true);
+				cust.save();
+				request.getSession().setAttribute("cust", cust);
+				return "products.jsp";
 			}
-			
-			request.getSession().setAttribute("cust", cust);
-			
-			return "products.jsp";
 		} else {
 			// The user is arriving here to create the account initially.
 			
@@ -80,7 +81,7 @@ public class CreateAndVerifyAccount implements Action {
 			msg.append(c.getFirstName());
 			msg.append(", \n\n");
 			msg.append("Thank you for signing up for our site. To verify your account, please visit the URL below:\n\n");
-			msg.append("http://localhost:8080/MyStuffSprint/edu.byu.isys413.actions.CreateAndVerifyAccount.action?vc=");
+			msg.append("http://localhost:8080/MyStuffSprint/edu.byu.isys413.data.actions.CreateAndVerifyAccount.action?vc=");
 			msg.append(validationCode);
 			msg.append("\n\n");
 			msg.append("Best,\n");
