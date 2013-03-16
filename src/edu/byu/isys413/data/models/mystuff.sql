@@ -712,7 +712,7 @@ VALUES
   ('glAccount1','Cash',25000.00,'DR'),
   ('glAccount2','Commission Payable',3300.00,'CR'),
   ('glAccount3','Commission Expense',0.00,'DR'),
-  ('glAccount4','Sales Revenue',125000.00,'CR'),
+  ('glAccount4','Revenue',125000.00,'CR'),
   ('glAccount5','Tax Payable',15000.00,'CR');
 
 

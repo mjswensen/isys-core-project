@@ -293,7 +293,7 @@ public class Transaction extends BusinessObject {
 		
 		DebitCredit salesRevenue = BusinessObjectDAO.getInstance().create("DebitCredit");
 		salesRevenue.setJournalEntry(je);
-		salesRevenue.setGlAccount("Sales Revenue");
+		salesRevenue.setGlAccount("Revenue");
 		salesRevenue.setType("CR");
 		salesRevenue.setAmount(subtotal);
 		salesRevenue.save();
