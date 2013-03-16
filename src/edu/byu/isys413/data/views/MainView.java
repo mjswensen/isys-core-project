@@ -74,6 +74,17 @@ public class MainView {
 		});
 		mntmProcessTransaction.setText("Process Transaction...");
 		
+		MenuItem mntmReturnRental = new MenuItem(menu_1, SWT.NONE);
+		mntmReturnRental.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				RentalReturnView rentalReturnView = new RentalReturnView(display);
+				rentalReturnView.open();
+				rentalReturnView.layout();
+			}
+		});
+		mntmReturnRental.setText("Return Rental...");
+		
 		MenuItem mntmManagement = new MenuItem(menu, SWT.CASCADE);
 		mntmManagement.setText("Management");
 		

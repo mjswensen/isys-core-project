@@ -171,6 +171,39 @@ public class Rental extends RevenueSource {
 		return Math.round(length / DAY_IN_MILLIS);
 	}
 	
+	/**
+	 * Returns the rental. If the rental is late, a new transaction is created with the late fees.
+	 */
+	public void returnRental() {
+		try {
+			setDateIn(new Date());
+			save();
+			ForRent fr = getForRent();
+			fr.makeAvailable();
+			fr.save();
+			if(isLate()) {
+				Transaction t = BusinessObjectDAO.getInstance().create("Transaction");
+				t.setCustomer(getTransaction().getCustomer());
+				t.setStore(getTransaction().getStore());
+				t.setEmployee(getTransaction().getEmployee());
+				t.setDate(new Date());
+				t.save();
+				
+				Fee f = BusinessObjectDAO.getInstance().create("Fee");
+				f.setTransaction(t);
+				f.setRental(this);
+				f.calculateAmount();
+				f.setWaived(false);
+				f.save();
+				
+				t.finalizeAndSave();
+			}
+		} catch(DataException e) {
+			// TODO
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public double getChargeAmount() {
 		try {
