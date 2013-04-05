@@ -34,7 +34,7 @@ public class ProductList implements Action {
 		
 		request.setAttribute("json", json);
 		
-		return "product-list.jsp";
+		return "json.jsp";
 	}
 
 }

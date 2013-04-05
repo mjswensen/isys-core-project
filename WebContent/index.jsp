@@ -8,6 +8,7 @@
 			<form action="edu.byu.isys413.data.actions.Login.action" method="post">
 				<legend>Log in</legend>
 				<fieldset>
+					<input type="hidden" name="format" value="html">
 					<label for="email">Email*</label>
 					<input type="text" name="email" required>
 					<label for="password">Password*</label>
