@@ -5,7 +5,7 @@ package edu.byu.isys413.data.models;
  * 
  * @author mswensen
  */
-public class PrintOrder extends BusinessObject {
+public class PrintOrder extends RevenueSource {
 
 	@BusinessObjectField
 	private String pictureId;
@@ -95,4 +95,19 @@ public class PrintOrder extends BusinessObject {
 		this.quantity = quantity;
 		setDirty();
 	}
+
+	/* (non-Javadoc)
+	 * @see edu.byu.isys413.data.models.RevenueSource#getChargeAmount()
+	 */
+	@Override
+	public double getChargeAmount() {
+		try {
+			return getPrint().getPrice();
+		} catch (DataException e) {
+			e.printStackTrace();
+			// If there's no print associated witht the print order, the price will be free.
+			return 0.0;
+		}
+	}
+	
 }

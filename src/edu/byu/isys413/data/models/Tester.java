@@ -836,5 +836,93 @@ public class Tester {
 		// Test delete
 		BusinessObjectDAO.getInstance().delete(gl3);
 	}
+	
+	/** Test the Picture. */
+	@Test
+	public void TestPicture() throws Exception {
+		// Get related objects
+		Customer c = BusinessObjectDAO.getInstance().read("customer1");
+		
+		// Create
+		Picture p = BusinessObjectDAO.getInstance().create("Picture", "1picture");
+		p.setCustomer(c);
+		p.setCaption("My Super Awesome Photo");
+		p.setPicData("TestPicData");
+		p.save();
+		
+		// Test read from cache
+		Picture p2 = BusinessObjectDAO.getInstance().read("1picture");
+		assertSame(p, p2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Picture p3 = BusinessObjectDAO.getInstance().read("1picture");
+		assertEquals(p.getId(), p3.getId());
+		assertSame(p.getCustomer(), p3.getCustomer());
+		assertEquals(p.getCaption(), p3.getCaption());
+		assertEquals(p.getPicData(), p3.getPicData());
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(p3);
+	}
 
+	
+	/** Test the Print. */
+	@Test
+	public void TestPrint() throws Exception {
+		// Create
+		Print p = BusinessObjectDAO.getInstance().create("Print", "1print");
+		p.setPrice(3.5);
+		p.setSize("24in x 36in");
+		p.setType("Large Print");
+		p.save();
+		
+		// Test read from cache
+		Print p2 = BusinessObjectDAO.getInstance().read("1print");
+		assertSame(p, p2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		Print p3 = BusinessObjectDAO.getInstance().read("1print");
+		assertEquals(p.getId(), p3.getId());
+		assertTrue(p.getPrice() - p3.getPrice() < 0.1);
+		assertEquals(p.getSize(), p3.getSize());
+		assertEquals(p.getType(), p3.getType());
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(p3);
+	}
+	
+	/** Test the PrintOrder. */
+	@Test
+	public void TestPrintOrder() throws Exception {
+		// Get related objects
+		Picture pic = BusinessObjectDAO.getInstance().read("picture1");
+		Print print = BusinessObjectDAO.getInstance().read("print1");
+		Transaction t = BusinessObjectDAO.getInstance().read("transaction1");
+		
+		// Test create
+		PrintOrder po = BusinessObjectDAO.getInstance().create("PrintOrder", "1printorder");
+		po.setTransaction(t);
+		po.setPicture(pic);
+		po.setPrint(print);
+		po.setQuantity(1);
+		po.save();
+		
+		// Test read from cache
+		PrintOrder po2 = BusinessObjectDAO.getInstance().read("1printorder");
+		assertSame(po, po2);
+		
+		// Test read from DB
+		Cache.getInstance().clear();
+		PrintOrder po3 = BusinessObjectDAO.getInstance().read("1printorder");
+		assertEquals(po.getId(), po3.getId());
+		assertSame(po.getTransaction(), po3.getTransaction());
+		assertSame(po.getPicture(), po3.getPicture());
+		assertSame(po.getPrint(), po3.getPrint());
+		assertTrue(po.getQuantity() - po3.getQuantity() < 0.1);
+		
+		// Test delete
+		BusinessObjectDAO.getInstance().delete(po3);
+	}
 }

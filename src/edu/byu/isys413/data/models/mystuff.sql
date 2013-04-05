@@ -415,7 +415,7 @@ CREATE TABLE picture (
 CREATE TABLE print (
   id CHAR(40) PRIMARY KEY,
   price NUMERIC(10,2),
-  size VARCHAR(10),
+  size VARCHAR(45),
   type VARCHAR(45),
   FOREIGN KEY (id) REFERENCES businessobject (id)
 );
