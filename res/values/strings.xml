@@ -31,4 +31,6 @@
 
     <string name="view_picture">View Picture</string>
 
+    <string name="empty_string"></string>
+
 </resources>

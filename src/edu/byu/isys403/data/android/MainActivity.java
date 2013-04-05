@@ -22,13 +22,13 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 public class MainActivity extends Activity {
 
 	ViewFlipper vf = null;
 	HttpClient client = null;
-	String server = "192.168.0.13";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,12 +46,13 @@ public class MainActivity extends Activity {
     
     public void loginSubmit(View view) {
     	try {
-	    	HttpPost request = new HttpPost("http://" + server + ":8080/MyStuffSprint/edu.byu.isys413.data.actions.Login.action");
+	    	HttpPost request = new HttpPost("http://10.0.2.2:8080/MyStuffSprint/edu.byu.isys413.data.actions.Login.action");
 	    	List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-//	    	EditText editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+	    	EditText email = (EditText) findViewById(R.id.editTextEmail);
+	    	EditText password = (EditText) findViewById(R.id.editTextPassword);
 	    	nameValuePairs.add(new BasicNameValuePair("format", "json"));
-	    	nameValuePairs.add(new BasicNameValuePair("email", "cust1@me.com"));
-	        nameValuePairs.add(new BasicNameValuePair("password", "pass"));
+	    	nameValuePairs.add(new BasicNameValuePair("email", email.getText().toString()));
+	        nameValuePairs.add(new BasicNameValuePair("password", password.getText().toString()));
 	        request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 	        HttpResponse response = client.execute(request);
 	        StatusLine statusLine = response.getStatusLine();
@@ -66,7 +67,12 @@ public class MainActivity extends Activity {
 					builder.append(line);
 				}
 				JSONObject json = new JSONObject(builder.toString());
-				System.out.println(json.getString("status"));
+				if(json.getString("status").equals("success")) {
+					vf.showNext();
+				} else {
+					TextView loginStatus = (TextView) findViewById(R.id.textViewLoginStatus);
+					loginStatus.setText("Bummer. The email/password you provided didn't work.");
+				}
 	        } else {
 	        	throw new Exception("Got a response other than 200.");
 	        }
