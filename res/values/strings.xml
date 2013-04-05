@@ -5,4 +5,30 @@
 
     <string name="hello_world">Hello world!</string>
 
+    <string name="my_pics">My Pics</string>
+
+    <string name="add_picture">Add Picture</string>
+
+    <string name="buy_prints">Buy Prints</string>
+
+    <string name="email">Email</string>
+
+    <string name="password">Password</string>
+
+    <string name="log_in">Log In</string>
+
+    <string name="back">Back</string>
+
+    <string name="buy_print">Buy Print</string>
+
+    <string name="confirm">Confirm</string>
+
+    <string name="caption">Caption</string>
+
+    <string name="log_out">Log Out</string>
+
+    <string name="upload">Upload</string>
+
+    <string name="view_picture">View Picture</string>
+
 </resources>
