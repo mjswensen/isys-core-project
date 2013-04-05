@@ -4,6 +4,9 @@
 
 SET foreign_key_checks = 0;
 
+DROP TABLE IF EXISTS printorder;
+DROP TABLE IF EXISTS print;
+DROP TABLE IF EXISTS picture;
 DROP TABLE IF EXISTS generalledger;
 DROP TABLE IF EXISTS storeproduct;
 DROP TABLE IF EXISTS fee;
@@ -391,6 +394,47 @@ CREATE TABLE generalledger (
 );
 
 
+# Create table picture ;
+# ------------------------------------------------------------ ;
+
+
+CREATE TABLE picture (
+  id CHAR(40) PRIMARY KEY,
+  customerid CHAR(40),
+  caption VARCHAR(100),
+  picdata LONGTEXT,
+  FOREIGN KEY (id) REFERENCES businessobject (id),
+  FOREIGN KEY (customerid) REFERENCES customer (id)
+);
+
+
+
+# Create table print ;
+# ------------------------------------------------------------ ;
+
+CREATE TABLE print (
+  id CHAR(40) PRIMARY KEY,
+  price NUMERIC(10,2),
+  size VARCHAR(10),
+  type VARCHAR(45),
+  FOREIGN KEY (id) REFERENCES businessobject (id)
+);
+
+
+# Create table printorder ;
+# ------------------------------------------------------------ ;
+
+
+CREATE TABLE printorder (
+  id CHAR(40) PRIMARY KEY,
+  pictureid CHAR(40),
+  printid CHAR(40),
+  quantity INT(11),
+  FOREIGN KEY (id) REFERENCES revenuesource (id),
+  FOREIGN KEY (pictureid) REFERENCES picture (id),
+  FOREIGN KEY (printid) REFERENCES print (id)
+);
+
 
 # ------------------------------------------------------------ ;
 # Populate tables with testing data ;
@@ -449,7 +493,10 @@ VALUES
   ('storeProduct3','edu.byu.isys413.data.models.StoreProduct'),
   ('storeProduct4','edu.byu.isys413.data.models.StoreProduct'),
   ('storeProduct5','edu.byu.isys413.data.models.StoreProduct'),
-  ('transaction1','edu.byu.isys413.data.models.Transaction');
+  ('transaction1','edu.byu.isys413.data.models.Transaction'),
+  ('picture1','edu.byu.isys413.data.models.Picture'),
+  ('print1','edu.byu.isys413.data.models.Print'),
+  ('printorder1','edu.byu.isys413.data.models.PrintOrder');
 
 
 
@@ -530,7 +577,7 @@ VALUES
 
 
 
-# Populate table conceptualproduct ;
+# Populate table conceptualrental ;
 # ------------------------------------------------------------ ;
 
 
@@ -587,7 +634,7 @@ VALUES
   ('customer2','Bennett','Swensen','801-444-1234','cust2@me.com','645 N 300 W\nProvo, UT 84601','passy','validatethisnewcode', 0);
 
 
-# Populate table customer ;
+# Populate table membership ;
 # ------------------------------------------------------------ ;
 
 
@@ -650,8 +697,9 @@ VALUES
   ('sale1','transaction1',532.49,'Sale'),
   ('rental1','transaction1',25.5,'Rental'),
   ('rental2','transaction1',14.75,'Rental'),
-  ('rental3','transaction1',28.50,'Rental'),
-  ('fee1','transaction1',35,'Fee');
+  ('rental3','transaction1',28.5,'Rental'),
+  ('fee1','transaction1',35,'Fee'),
+  ('printorder1','transaction1',2.8,'PrintOrder');
 
 
 
@@ -715,4 +763,29 @@ VALUES
   ('glAccount4','Revenue',125000.00,'CR'),
   ('glAccount5','Tax Payable',15000.00,'CR');
 
+
+# Populate table picture ;
+# ------------------------------------------------------------ ;
+
+
+INSERT INTO `picture` (`id`, `customerid`, `caption`, `picdata`)
+VALUES
+  ('picture1','customer1','Awesome Sunset','iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADBklEQVR4Xm2TW2gcZRiGn/+fybqb1WxwY5O0ioraEw2CSFtCoaeLemGJYEQKFQVr1Zb1QNFeKO1NbS9KQCMqRBQPKYIYSrR6oaVUaiOeErKtiFVITYybTXZn9jA7O+dxMnsjwQde+H7ejwe+i5+VnN5P+qvTdw/mxx956/rl3Jczl3Lnpj57aHj81B0Dxx8nyQoE/+HzE6v39g8cOJld378JVYXQhQAIVbAsFq9+O3np3PtHB1/Tzq8U8M3Q+kO7Hnv5TZm5UdJcgMButV4AbggkINmLq5edr8+cevLBY/OjABLg01cyu3Y+/NQbsq0uqfwKdgV8C6NYwa4a8Yylw1KeNsVO7N57cOSjI6ktAHL5rq39e04qKUelNgeOBZ5Js1xh8uIfkaAGbhO8KIEN+nWSKVKb79tx4vh2VDH6Unrnvv0HLsh2H4QAKUEE5Cf+olo22Lb7dgQqRsWjXvPo7WqPz7LNwB/94sOtsifb1S9pgNXAXprHnp2E0i+o9Sk2rJlD6FMEhR+4cHachd+nwC6DZXADlrKqI7tFTUjRQ7MK3hLN4j8Yms6t93SzcV0GAqDpUvy7hlbS2NGXhsI0yCwkbiEtldWqZ0cb2gz4VW5KtFEwJNQdkAoEIQDtisKezWvoSCXBcsGZB8XAc5qeOHs0nRvo6x4WSQUUydxSiNOocNedneATJYCQFrYPTgBegB/NYzNLT8hCrTGhl20zLk2X2zISX8ny2zUDvWTSrNmYFYtywWBxwQCnJVmsu1rJdn+UxRJXrhSNMQyPWNIwWdvp09PZRaWRoqBJSlUIPUlHmxrvhFHyeuOTiyWuCYDXn2HTA73ZsXWrUmsJgTAEAQgFQgG+D14UP4y7vGZNn69WB4+8zZ+CFuKdw2zflr15eEM22adI4uU4AUAIQuBG76u6+fNlrf5cboTvARRacP9PzBY2Nr8rNVxfIrulFBkUKVwEdc8PZuvuzETJ+GCybr764gjT/D+t7zz0NPe+d0ju+zinvnDmsPr8u8/KR4cO0rfcsYJ/AQsIehGEorXGAAAAAElFTkSuQmCC');
+
+
+# Populate table print ;
+# ------------------------------------------------------------ ;
+
+INSERT INTO `print` (`id`, `price`, `size`, `type`)
+VALUES
+  ('print1',0.5,'4in x 6in','Small Photo');
+
+
+# Populate table printorder ;
+# ------------------------------------------------------------ ;
+
+
+INSERT INTO `printorder` (`id`, `pictureid`, `printid`, `quantity`)
+VALUES
+  ('printorder1','picture1','print1',1);
 
