@@ -17,7 +17,6 @@ public class RevenueSource extends BusinessObject {
 	/** Creates a new instance of BusinessObject */
 	public RevenueSource(String id) {
 		super(id);
-		type = "Sale";
 	}
 
 	/**
