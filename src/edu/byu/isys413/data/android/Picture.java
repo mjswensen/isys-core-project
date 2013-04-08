@@ -93,9 +93,11 @@ public class Picture {
 	public String toString() {
 		StringBuilder bldr = new StringBuilder();
 		if(selected) {
-			bldr.append("\u2713");
-			bldr.append(" ");
+			bldr.append("\u2713");// Checkmark
+		} else {
+			bldr.append("\u0009");// Tab
 		}
+		bldr.append("\u0009");// Tab
 		bldr.append(caption);
 		return bldr.toString();
 	}
