@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,18 +18,20 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.app.ListActivity;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
 
 public class MainActivity extends Activity {
 
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
     
     public void loginSubmit(View view) {
     	try {
-	    	HttpPost request = new HttpPost("http://10.0.2.2:8080/MyStuffSprint/edu.byu.isys413.data.actions.Login.action");
+	    	HttpPost request = new HttpPost(getUrlFromAction("Login"));
 	    	List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    	EditText email = (EditText) findViewById(R.id.editTextEmail);
 	    	EditText password = (EditText) findViewById(R.id.editTextPassword);
@@ -96,7 +96,41 @@ public class MainActivity extends Activity {
 					pics.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 						@Override
 						public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-							System.out.println("Long clicked. Item position: " + position);
+							try {
+								Picture pic = (Picture) parent.getItemAtPosition(position);
+								HttpPost request = new HttpPost(getUrlFromAction("PicData"));
+								List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+								nameValuePairs.add(new BasicNameValuePair("picId", pic.getGuid()));
+								request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+						        HttpResponse response = client.execute(request);
+						        StatusLine statusLine = response.getStatusLine();
+						        int statusCode = statusLine.getStatusCode();
+						        if(statusCode == 200) {
+						        	HttpEntity entity = response.getEntity();
+									InputStream content = entity.getContent();
+									StringBuilder builder = new StringBuilder();
+									BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+									String line;
+									while ((line = reader.readLine()) != null) {
+										builder.append(line);
+									}
+									JSONObject json = new JSONObject(builder.toString());
+									// Get the pic data, decode it, and show it in the view.
+									String picData = json.getString("picData");
+									byte[] picDataBytes = Base64.decode(picData, Base64.DEFAULT);
+						        	ImageView showPicture = (ImageView) findViewById(R.id.imageViewShowPicture);
+						        	showPicture.setImageBitmap(BitmapFactory.decodeByteArray(picDataBytes, 0, picDataBytes.length));
+						        	// Show the caption in the view, too.
+						        	TextView showPictureCaption = (TextView) findViewById(R.id.textViewShowPictureCaption);
+						        	showPictureCaption.setText(pic.getCaption());
+						        	// Finally, show the ShowPicture view.
+						        	vf.showNext();
+						        } else {
+						        	throw new Exception("Got a response other than 200.");
+						        }
+							} catch(Exception e) {
+								e.printStackTrace();
+							}
 							return true;// See http://developer.android.com/reference/android/widget/AdapterView.OnItemLongClickListener.html
 						}
 					});
@@ -111,5 +145,13 @@ public class MainActivity extends Activity {
     	} catch(Exception e) {
     		e.printStackTrace();
     	}
+    }
+    
+    private String getUrlFromAction(String action) {
+    	StringBuilder bldr = new StringBuilder();
+    	bldr.append("http://10.0.2.2:8080/MyStuffSprint/edu.byu.isys413.data.actions.");
+    	bldr.append(action);
+    	bldr.append(".action");
+    	return bldr.toString();
     }
 }
