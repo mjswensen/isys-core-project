@@ -89,14 +89,15 @@ public class MainActivity extends Activity {
 					pics.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 						@Override
 						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-							System.out.println("Clicked. Item position: " + position);
+							Picture pic = (Picture) parent.getItemAtPosition(position);
+							pic.toggleSelected();
 						}
 					});
 					pics.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 						@Override
 						public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 							System.out.println("Long clicked. Item position: " + position);
-							return true;
+							return true;// See http://developer.android.com/reference/android/widget/AdapterView.OnItemLongClickListener.html
 						}
 					});
 					vf.showNext();

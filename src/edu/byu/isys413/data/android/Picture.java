@@ -79,11 +79,24 @@ public class Picture {
 		this.selected = selected;
 	}
 	
+	/**
+	 * Toggles whether or not the picture is selected.
+	 */
+	public void toggleSelected() {
+		selected = !selected;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return caption;
+		StringBuilder bldr = new StringBuilder();
+		if(selected) {
+			bldr.append("\u2713");
+			bldr.append(" ");
+		}
+		bldr.append(caption);
+		return bldr.toString();
 	}
 }
