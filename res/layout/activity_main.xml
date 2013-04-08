@@ -86,8 +86,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:choiceMode="multipleChoice"
+                android:clickable="true"
                 android:focusable="false"
-                android:focusableInTouchMode="false" >
+                android:focusableInTouchMode="false"
+                android:longClickable="true" >
 
             </ListView>
 

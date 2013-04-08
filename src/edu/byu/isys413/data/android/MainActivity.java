@@ -25,6 +25,7 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -36,7 +37,6 @@ public class MainActivity extends Activity {
 
 	ViewFlipper vf = null;
 	HttpClient client = null;
-//	Map<String, String> picMap = new TreeMap<String, String>();
 	List<Picture> picList = new ArrayList<Picture>();
 	
     @Override
@@ -86,6 +86,19 @@ public class MainActivity extends Activity {
 					}
 					ListView pics = (ListView) findViewById(R.id.listViewPics);
 					pics.setAdapter(new ArrayAdapter(this, R.layout.pic_in_list, picList));
+					pics.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+						@Override
+						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+							System.out.println("Clicked. Item position: " + position);
+						}
+					});
+					pics.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+						@Override
+						public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+							System.out.println("Long clicked. Item position: " + position);
+							return true;
+						}
+					});
 					vf.showNext();
 				} else {
 					TextView loginStatus = (TextView) findViewById(R.id.textViewLoginStatus);
@@ -98,12 +111,4 @@ public class MainActivity extends Activity {
     		e.printStackTrace();
     	}
     }
-    
-//    private List<String> getCaptionsFromPicList() {
-//    	List<String> captions = new ArrayList<String>();
-//    	for(Picture pic : picList) {
-//    		captions.add(pic.getCaption());
-//    	}
-//    	return captions;
-//    }
 }
