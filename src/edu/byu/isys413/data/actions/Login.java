@@ -1,8 +1,11 @@
 package edu.byu.isys413.data.actions;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import edu.byu.isys413.data.models.*;
@@ -27,8 +30,20 @@ public class Login implements Action {
 			if(cust == null) {
 				json.put("status", "fail");
 			} else {
+				// Create session
+				request.getSession().setAttribute("cust", cust);
+				// Create JSON array of customer's pictures.
+				JSONArray ja = new JSONArray();
+				List<Picture> pics = BusinessObjectDAO.getInstance().searchForList("Picture", new SearchCriteria("customerid", cust.getId()));
+				for(Picture pic : pics) {
+					JSONObject picJo = new JSONObject();
+					picJo.put("id", pic.getId());
+					picJo.put("caption", pic.getCaption());
+					ja.put(picJo);
+				}
+				// Add status and pictures to JSON object
 				json.put("status", "success");
-				// Get images here.
+				json.put("pics", ja);
 			}
 			request.setAttribute("json", json);
 			return "json.jsp";
