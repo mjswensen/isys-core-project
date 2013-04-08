@@ -26,10 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textEmailAddress" >
-
-                <requestFocus />
-            </EditText>
+                android:inputType="textEmailAddress" />
 
             <TextView
                 android:id="@+id/textViewPassword"
@@ -88,7 +85,10 @@
                 android:id="@+id/listViewPics"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:choiceMode="multipleChoice" >
+                android:choiceMode="multipleChoice"
+                android:focusable="false"
+                android:focusableInTouchMode="false" >
+
             </ListView>
 
             <LinearLayout
