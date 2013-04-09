@@ -22,6 +22,8 @@ import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.Employee;
 import edu.byu.isys413.data.models.SearchCriteria;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 
 public class LoginView extends Shell {
 	private Text txtNetid;
@@ -67,36 +69,22 @@ public class LoginView extends Shell {
 		lblPassword.setText("Password:");
 		
 		txtPassword = new Text(this, SWT.BORDER | SWT.PASSWORD);
+		txtPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.keyCode == 13) {
+					login();
+				}
+			}
+		});
 		txtPassword.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(this, SWT.NONE);
 		
 		Button btnLogIn = new Button(this, SWT.NONE);
 		btnLogIn.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void mouseUp(MouseEvent e) {
-				String netId = txtNetid.getText();
-				String passwd = txtPassword.getText();
-				try {
-		            @SuppressWarnings("rawtypes")
-					Hashtable env = new Hashtable();
-		            env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-		            env.put(Context.PROVIDER_URL, "ldaps://ldap.byu.edu/");
-		            env.put(Context.SECURITY_AUTHENTICATION, "simple");
-		            env.put(Context.SECURITY_PRINCIPAL, "uid=" + netId + ", ou=People, o=byu.edu");
-		            env.put(Context.SECURITY_CREDENTIALS, passwd);
-		            @SuppressWarnings("unused")
-					DirContext ctx = new InitialDirContext(env);
-		            Employee emp = BusinessObjectDAO.getInstance().searchForBO("Employee", new SearchCriteria("netid", netId));
-		            AppData.getInstance().setLoggedIn(true);
-		            AppData.getInstance().setEmployee(emp);
-		            dispose();
-		        } catch (NamingException e1) {
-		            // TODO: extra: display some feedback to the user.
-		        } catch (DataException e1) {
-		        	// TODO: extra: display some feedback to the user.
-				}
-				
+				login();
 			}
 		});
 		btnLogIn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -110,7 +98,32 @@ public class LoginView extends Shell {
 	protected void createContents() {
 		setText("Log In");
 		setSize(325, 135);
-
+	}
+	
+	/**
+	 * Grabs the input from the user and attempts
+	 */
+	private void login() {
+		String netId = txtNetid.getText();
+		String passwd = txtPassword.getText();
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+            env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+            env.put(Context.PROVIDER_URL, "ldaps://ldap.byu.edu/");
+            env.put(Context.SECURITY_AUTHENTICATION, "simple");
+            env.put(Context.SECURITY_PRINCIPAL, "uid=" + netId + ", ou=People, o=byu.edu");
+            env.put(Context.SECURITY_CREDENTIALS, passwd);
+            @SuppressWarnings("unused")
+			DirContext ctx = new InitialDirContext(env);
+            Employee emp = BusinessObjectDAO.getInstance().searchForBO("Employee", new SearchCriteria("netid", netId));
+            AppData.getInstance().setLoggedIn(true);
+            AppData.getInstance().setEmployee(emp);
+            dispose();
+        } catch (NamingException e1) {
+            // TODO: extra: display some feedback to the user.
+        } catch (DataException e1) {
+        	// TODO: extra: display some feedback to the user.
+		}
 	}
 
 	@Override
