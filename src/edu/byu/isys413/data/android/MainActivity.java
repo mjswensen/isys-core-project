@@ -21,6 +21,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -105,13 +106,15 @@ public class MainActivity extends Activity {
 				}
 				JSONObject json = new JSONObject(builder.toString());
 				if(json.getString("status").equals("success")) {
-					// Get the pics out of the JSON array
-					JSONArray picsJa = json.getJSONArray("pics");
-					for(int i = 0; i < picsJa.length(); i++) {
-						JSONObject picJo = picsJa.getJSONObject(i);
-						Picture pic = new Picture(picJo.getString("id"), picJo.getString("caption"));
-						picList.add(pic);
-					}
+//					// Get the pics out of the JSON array
+//					JSONArray picsJa = json.getJSONArray("pics");
+//					for(int i = 0; i < picsJa.length(); i++) {
+//						JSONObject picJo = picsJa.getJSONObject(i);
+//						Picture pic = new Picture(picJo.getString("id"), picJo.getString("caption"));
+//						picList.add(pic);
+//					}
+					populatePicListFromJson(json);
+					// Assign the picList to the ListView
 					ListView pics = (ListView) findViewById(R.id.listViewPics);
 					pics.setAdapter(new ArrayAdapter(this, R.layout.pic_in_list, picList));
 					pics.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -173,6 +176,18 @@ public class MainActivity extends Activity {
     	} catch(Exception e) {
     		e.printStackTrace();
     	}
+    }
+    
+    private void populatePicListFromJson(JSONObject json) throws JSONException {
+    	// Empty the picList
+    	picList.clear();
+    	// Get the pics out of the JSON array
+		JSONArray picsJa = json.getJSONArray("pics");
+		for(int i = 0; i < picsJa.length(); i++) {
+			JSONObject picJo = picsJa.getJSONObject(i);
+			Picture pic = new Picture(picJo.getString("id"), picJo.getString("caption"));
+			picList.add(pic);
+		}
     }
     
     /**
@@ -280,7 +295,10 @@ public class MainActivity extends Activity {
 					builder.append(line);
 				}
 				JSONObject json = new JSONObject(builder.toString());
-				System.out.println(json.toString());
+				populatePicListFromJson(json);
+				// We need to notify the adapter that the dataset changed.
+				ListView pics = (ListView) findViewById(R.id.listViewPics);
+				pics.invalidateViews();
 	        	showListView();
 	        } else {
 	        	throw new Exception("Got a response other than 200.");
