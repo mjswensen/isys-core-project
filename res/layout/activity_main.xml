@@ -158,6 +158,7 @@
                     android:id="@+id/buttonShowPictureBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="showListView"
                     android:text="@string/back" />
 
                 <Button

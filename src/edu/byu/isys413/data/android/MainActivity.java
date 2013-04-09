@@ -32,12 +32,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-
 public class MainActivity extends Activity {
 
 	ViewFlipper vf = null;
 	HttpClient client = null;
 	List<Picture> picList = new ArrayList<Picture>();
+	
+	// These correspond to the order the layouts appear in the ViewFlipper in activity_main.xml.
+	static int LOGIN_VIEW = 0;
+	static int PIC_LIST_VIEW = 1;
+	static int SHOW_PIC_VIEW = 2;
+	static int UPLOAD_PIC_VIEW = 3;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,16 @@ public class MainActivity extends Activity {
         return true;
     }
     
-    public void loginSubmit(View view) {
+    /**
+     * This method does the following:
+     * 	- Posts the credentials to the server
+     * 	- If valid user, list of pic captions is displayed
+     * 	- click and long click listeners are attached to the items in the list view.
+     * 		- long click moves user to next view where a preview of the image is displayed
+     * 		- regular click toggles whether the picture is selected or not for eventual purchase
+     * @param view
+     */
+    public void loginSubmit(final View view) {
     	try {
 	    	HttpPost request = new HttpPost(getUrlFromAction("Login"));
 	    	List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -124,7 +138,7 @@ public class MainActivity extends Activity {
 						        	TextView showPictureCaption = (TextView) findViewById(R.id.textViewShowPictureCaption);
 						        	showPictureCaption.setText(pic.getCaption());
 						        	// Finally, show the ShowPicture view.
-						        	vf.showNext();
+						        	showShowPictureView(view);
 						        } else {
 						        	throw new Exception("Got a response other than 200.");
 						        }
@@ -134,7 +148,7 @@ public class MainActivity extends Activity {
 							return true;// See http://developer.android.com/reference/android/widget/AdapterView.OnItemLongClickListener.html
 						}
 					});
-					vf.showNext();
+					showListView(view);
 				} else {
 					TextView loginStatus = (TextView) findViewById(R.id.textViewLoginStatus);
 					loginStatus.setText("Bummer. The email/password you provided didn't work.");
@@ -147,11 +161,23 @@ public class MainActivity extends Activity {
     	}
     }
     
+    /**
+     * @param action
+     * @return The full URL for that action
+     */
     private String getUrlFromAction(String action) {
     	StringBuilder bldr = new StringBuilder();
     	bldr.append("http://10.0.2.2:8080/MyStuffSprint/edu.byu.isys413.data.actions.");
     	bldr.append(action);
     	bldr.append(".action");
     	return bldr.toString();
+    }
+    
+    public void showListView(View view) {
+    	vf.setDisplayedChild(PIC_LIST_VIEW);
+    }
+    
+    public void showShowPictureView(View view) {
+    	vf.setDisplayedChild(SHOW_PIC_VIEW);
     }
 }
