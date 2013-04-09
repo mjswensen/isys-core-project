@@ -1,5 +1,5 @@
 /**
- * 
+ * GEBERAL INFO WINDOW
  */
 package edu.byu.isys413.data.views;
 
@@ -32,16 +32,17 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-import edu.byu.isys413.data.BusinessObjectDAO;
-import edu.byu.isys413.data.Customer;
-import edu.byu.isys413.data.DataException;
-import edu.byu.isys413.data.Employee;
-import edu.byu.isys413.data.Store;
-import edu.byu.isys413.data.StoreProduct;
-import org.eclipse.swt.graphics.Image;
+import edu.byu.isys413.data.models.BusinessObjectDAO;
+import edu.byu.isys413.data.models.Customer;
+import edu.byu.isys413.data.models.DataException;
+import edu.byu.isys413.data.models.Employee;
+import edu.byu.isys413.data.models.Store;
+import edu.byu.isys413.data.models.StoreProduct;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 
-/**TODO: Add a description
+
+/**TODO: This window allows you to manage everything from customers to computers
  *
  * @author Morgan S. Young
  *
@@ -62,7 +63,7 @@ public class GeneralInfoWindow extends Dialog {
 	private Text storeProdSearchBox;
 	private Text empSearchBox;
 	private Text custSearchBox;
-	private static int tab = 0; //TODO: learn how to start a dialog with a tab selected
+	private static int tab = 0;
 	private Text conRentSearch;
 	private Table conRentTable;
 	private Table physRentTable;
@@ -117,6 +118,7 @@ public class GeneralInfoWindow extends Dialog {
 //========== Customer Tab ==========
 		
 		CTabItem custTab = new CTabItem(tabFolder, SWT.NONE);
+		custTab.setImage(SWTResourceManager.getImage(GeneralInfoWindow.class, "/images/customers.png"));
 		custTab.setText("Customers");
 		
 		Composite composite_13 = new Composite(tabFolder, SWT.NONE);
@@ -168,7 +170,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
-				return cust.getCustLastName() + ", " + cust.getCustFirstName() + " " + cust.getCustMiddleName();
+				return cust.getLastName() + ", " + cust.getFirstName();
 			}
 		});
 		TableColumn tblclmnName_2 = tableViewerColumn_4.getColumn();
@@ -180,7 +182,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
-				return cust.getCustPhone();
+				return cust.getPhone();
 			}
 		});
 		TableColumn tblclmnPhoneNimber = tableViewerColumn_9.getColumn();
@@ -204,50 +206,39 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
-				return cust.getCustAddress();
+				return cust.getAddress();
 			}
 		});
 		TableColumn tblclmnAddress_1 = tableViewerColumn_5.getColumn();
 		tblclmnAddress_1.setWidth(120);
 		tblclmnAddress_1.setText("Address");
 		
-		TableViewerColumn tableViewerColumn_7 = new TableViewerColumn(CustTableViewer, SWT.NONE);
-		tableViewerColumn_7.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) 
-			{
-				Customer cust = (Customer) element;
-				return cust.getCustState();
-			}
-		});
-		TableColumn tblclmnState_1 = tableViewerColumn_7.getColumn();
-		tblclmnState_1.setWidth(100);
-		tblclmnState_1.setText("State");
-		
-		TableViewerColumn tableViewerColumn_8 = new TableViewerColumn(CustTableViewer, SWT.NONE);
-		tableViewerColumn_8.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) 
-			{
-				Customer cust = (Customer) element;
-				return cust.getCustZip();
-			}
-		});
-		TableColumn tblclmnZipCode_1 = tableViewerColumn_8.getColumn();
-		tblclmnZipCode_1.setWidth(100);
-		tblclmnZipCode_1.setText("Zip Code");
-		
-		TableViewerColumn tableViewerColumn_6 = new TableViewerColumn(CustTableViewer, SWT.NONE);
-		tableViewerColumn_6.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) 
-			{
-				Customer cust = (Customer) element;
-				return cust.getCustCity();
-			}
-		});
-		TableColumn tblclmnCity_1 = tableViewerColumn_6.getColumn();
-		tblclmnCity_1.setWidth(100);
-		tblclmnCity_1.setText("City");
-		
 		TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(CustTableViewer, SWT.NONE);
+		tableViewerColumn_3.setLabelProvider(new ColumnLabelProvider() {
+			
+			public String getText(Object element) 
+			{
+				Customer cust = (Customer) element;
+				String answer = "NO";
+				
+				try 
+				{
+					if(cust.getMembership() == null)
+					{
+						
+						answer = "YES";
+					}
+				} 
+				
+				catch (DataException ex) 
+				{
+					System.out.println("Problem with Membership");
+					ex.printStackTrace();
+				}
+				
+				return answer;
+			}
+		});
 		TableColumn isMember = tableViewerColumn_3.getColumn();
 		isMember.setWidth(100);
 		isMember.setText("Membership?");
@@ -258,7 +249,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
-				return cust.getCustPassword();
+				return cust.getPassword();
 			}
 		});
 		TableColumn tblclmnOnlinePassword = tableViewerColumn_50.getColumn();
@@ -284,7 +275,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
-				return Boolean.toString(cust.isIsValidated());
+				return Boolean.toString(cust.isValid());
 			}
 		});
 		TableColumn tblclmnIsValidated = tableViewerColumn_52.getColumn();
@@ -388,6 +379,7 @@ public class GeneralInfoWindow extends Dialog {
 //========== Employee Tab ==========
 		
 		CTabItem empTab = new CTabItem(tabFolder, SWT.NONE);
+		empTab.setImage(SWTResourceManager.getImage(GeneralInfoWindow.class, "/images/employee.png"));
 		empTab.setText("Employees");
 		
 		Composite composite = new Composite(tabFolder, SWT.NONE);
@@ -448,7 +440,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
-				return emp.getEmpLastName() + ", " + emp.getEmpFirstName() + " " + emp.getEmpMiddleName();
+				return emp.getLastName() + ", " + emp.getFirstName() + " " + emp.getMiddleName();
 			}
 		});
 		TableColumn tblclmnName = empName.getColumn();
@@ -461,7 +453,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
-				return emp.getUserName();
+				return emp.getNetid();
 			}
 		});
 		TableColumn tblclmnUserName = tableViewerColumn_12.getColumn();
@@ -473,7 +465,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
-				return emp.getStoreID();
+				return emp.getStoreId();
 			}
 		});
 		TableColumn tblclmnStore = empStore.getColumn();
@@ -498,7 +490,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
-				return emp.getEmpPhone();
+				return emp.getPhone();
 			}
 		});
 		TableColumn tblclmnPhone = empPhone.getColumn();
@@ -522,7 +514,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
-				return emp.getPositionID();
+				return emp.getPositionId();
 			}
 		});
 		TableColumn tblclmnPodsition = empPosition.getColumn();
@@ -534,7 +526,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
-				return emp.getDivisionID();
+				return emp.getDivisionId();
 			}
 		});
 		TableColumn tblclmnDivision = empDivision.getColumn();
@@ -602,6 +594,7 @@ public class GeneralInfoWindow extends Dialog {
 //========== Store Tab ==========
 		
 		CTabItem storeTab = new CTabItem(tabFolder, SWT.NONE);
+		storeTab.setImage(SWTResourceManager.getImage(GeneralInfoWindow.class, "/images/store.png"));
 		storeTab.setText("Stores");
 		
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
@@ -684,7 +677,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				StoreProduct storeProd = (StoreProduct) element;
-				return storeProd.getConProdID();
+				return storeProd.getConceptualProductId();
 			}
 		});
 		TableColumn tblclmnStoreProdConProdID = storeProdID.getColumn();
@@ -736,7 +729,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				StoreProduct storeProd = (StoreProduct) element;
-				return Integer.toString(storeProd.getQtyOnHand());
+				return Integer.toString(storeProd.getQuantityOnHand());
 			}
 		});
 		TableColumn tblclmnStoreProdQtyOnHand = storeProdQty.getColumn();
@@ -830,7 +823,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
-				return store.getManagerID();
+				return store.getManagerId();
 			}
 		});
 		TableColumn tblclmnManager = storeManager.getColumn();
@@ -842,7 +835,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
-				return store.getStorePhone();
+				return store.getPhone();
 			}
 		});
 		TableColumn tblclmnPhone_1 = storePhone.getColumn();
@@ -854,7 +847,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
-				return store.getStoreAddress();
+				return store.getAddress();
 			}
 		});
 		TableColumn tblclmnAddress = storeAddress.getColumn();
@@ -866,7 +859,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
-				return store.getStoreCity();
+				return store.getCity();
 			}
 		});
 		TableColumn tblclmnCity = storeCity.getColumn();
@@ -878,7 +871,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
-				return store.getStoreState();
+				return store.getState();
 			}
 		});
 		TableColumn tblclmnState = storeState.getColumn();
@@ -890,7 +883,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
-				return store.getStoreZip();
+				return store.getZip();
 			}
 		});
 		TableColumn tblclmnZipCode = storeZip.getColumn();
@@ -960,6 +953,7 @@ public class GeneralInfoWindow extends Dialog {
 //========== Conceptual Products Tab ==========
 		
 		CTabItem conProdTab = new CTabItem(tabFolder, SWT.NONE);
+		conProdTab.setImage(SWTResourceManager.getImage(GeneralInfoWindow.class, "/images/conProd.png"));
 		conProdTab.setText("Products");
 		
 		Composite composite_4 = new Composite(tabFolder, SWT.NONE);
@@ -1199,6 +1193,7 @@ public class GeneralInfoWindow extends Dialog {
 		tabFolder.setSelection(tab);
 		
 		CTabItem tbtmRentalPool = new CTabItem(tabFolder, SWT.NONE);
+		tbtmRentalPool.setImage(SWTResourceManager.getImage(GeneralInfoWindow.class, "/images/rent.png"));
 		tbtmRentalPool.setText("Rentals");
 		
 		Composite composite_11 = new Composite(tabFolder, SWT.NONE);
@@ -1414,6 +1409,7 @@ public class GeneralInfoWindow extends Dialog {
 		btnExit.setText("Exit");
 		
 		CTabItem tbtmComputers = new CTabItem(tabFolder, SWT.NONE);
+		tbtmComputers.setImage(SWTResourceManager.getImage(GeneralInfoWindow.class, "/images/computer.png"));
 		tbtmComputers.setText("Computers");
 		
 	}//createContents

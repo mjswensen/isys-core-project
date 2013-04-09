@@ -3,9 +3,6 @@
  */
 package edu.byu.isys413.data.views;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -22,12 +19,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import edu.byu.isys413.data.BusinessObjectDAO;
-import edu.byu.isys413.data.Customer;
-import edu.byu.isys413.data.DataException;
-import edu.byu.isys413.data.Membership;
-import edu.byu.isys413.extra.UploadStates;
-import edu.byu.isys413.extra.UsState;
+import edu.byu.isys413.data.models.BusinessObjectDAO;
+import edu.byu.isys413.data.models.Customer;
+import edu.byu.isys413.data.models.DataException;
+import edu.byu.isys413.data.models.Membership;
 
 /**TODO: Add a description
  *
@@ -46,11 +41,7 @@ public class CustomerDialog extends Dialog {
 	
 	private Text textFirstName;
 	private Text textPhone;
-	private Text textCity;
-	private Text textZip;
 	private Text textAddress;
-	
-	List<UsState> states = new ArrayList<UsState>();
 	
 	private Text textEmail;
 	private Text textCardNumber;
@@ -101,8 +92,8 @@ public class CustomerDialog extends Dialog {
 	 */
 	private void createContents() throws DataException {
 		shell = new Shell(getParent(), SWT.APPLICATION_MODAL | SWT.CLOSE | SWT.TITLE | SWT.MIN);
-		shell.setMinimumSize(new Point(400, 535));
-		shell.setSize(400, 535);
+		shell.setMinimumSize(new Point(400, 470));
+		shell.setSize(400, 380);
 		shell.setText("My Stuff | Group 9 Sec. 1");
 		shell.setLayout(new GridLayout(2, false));
 		
@@ -160,37 +151,11 @@ public class CustomerDialog extends Dialog {
 		lbAddress.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lbAddress.setText("Address");
 		
-		textAddress = new Text(grpEmployeeInformation, SWT.BORDER);
-		GridData gd_textAddress = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		textAddress = new Text(grpEmployeeInformation, SWT.BORDER | SWT.WRAP);
+		GridData gd_textAddress = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 2);
 		gd_textAddress.widthHint = 165;
 		textAddress.setLayoutData(gd_textAddress);
-		
-		Label lblCity = new Label(grpEmployeeInformation, SWT.NONE);
-		lblCity.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblCity.setText("City");
-		
-		textCity = new Text(grpEmployeeInformation, SWT.BORDER);
-		GridData gd_textCity = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_textCity.widthHint = 100;
-		textCity.setLayoutData(gd_textCity);
-		
-		Label lblSallary = new Label(grpEmployeeInformation, SWT.NONE);
-		lblSallary.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSallary.setText("State");
-		
-		final Combo comboState = new Combo(grpEmployeeInformation, SWT.READ_ONLY);
-		GridData gd_comboState = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_comboState.widthHint = 85;
-		comboState.setLayoutData(gd_comboState);
-		
-		Label lblPosition = new Label(grpEmployeeInformation, SWT.NONE);
-		lblPosition.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblPosition.setText("Zip Code");
-		
-		textZip = new Text(grpEmployeeInformation, SWT.BORDER);
-		GridData gd_textZip = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_textZip.widthHint = 100;
-		textZip.setLayoutData(gd_textZip);
+		new Label(grpEmployeeInformation, SWT.NONE);
 		
 		Group grpOnlineValidation = new Group(grpEmployeeInformation, SWT.NONE);
 		grpOnlineValidation.setText("Online Account Information");
@@ -258,51 +223,34 @@ public class CustomerDialog extends Dialog {
 		btnSave.setLayoutData(gd_btnNewButton_11);
 		btnSave.setText("Save");
 		
-		//********** Uploading States **********
-		
-		UploadStates stateXml = new UploadStates();
-		this.states = stateXml.getStates();
-		populateCombo(comboState);
-		
 		//********** Fill in the Fields **********
 		
 		if(cust != null)
 		{
-			textFirstName.setText(cust.getCustFirstName());
-			textMiddleName.setText(cust.getCustMiddleName());
-			textlastName.setText(cust.getCustLastName());
-			textPhone.setText(cust.getCustPhone());
-			textCity.setText(cust.getCustCity());
-			textZip.setText(cust.getCustZip());
-			textAddress.setText(cust.getCustAddress());		
+			textFirstName.setText(cust.getFirstName());
+			textlastName.setText(cust.getLastName());
+			textPhone.setText(cust.getPhone());
+			textAddress.setText(cust.getAddress());		
 			textEmail.setText(cust.getEmail());
 			
-			if(cust.getCustPassword() != null)
+			if(cust.getPassword() != null)
 			{
-				lblCustPassword.setText(cust.getCustPassword());
+				lblCustPassword.setText(cust.getPassword());
 				lblValCode.setText(cust.getValidationCode());
 			}//if
 			
-			lblValidation.setText(Boolean.toString(cust.isIsValidated()));
+			lblValidation.setText(Boolean.toString(cust.isValid()));
 						
-			if(cust.getCustMembershipID() == null || cust.getCustMembershipID().equalsIgnoreCase(""))
+			if(cust.getMembership() == null)
 			{
 				btnAddMembership.setEnabled(true);
 			}//if
 			
 			else
 			{
-				textCardNumber.setText(cust.getMembership().getCardNumber());
+				textCardNumber.setText(cust.getMembership().getCreditCard());
 			}//else
 			
-			for(int i = 0; i < states.size(); i++)
-			{
-				if(states.get(i).getLongName().equalsIgnoreCase(cust.getCustState()))
-				{
-					comboState.select(i);
-					break;
-				}//if
-			}//for
 		}//if
 		
 		else
@@ -332,22 +280,17 @@ public class CustomerDialog extends Dialog {
 					if(!textCardNumber.getText().equalsIgnoreCase(""))
 					{
 						member = BusinessObjectDAO.getInstance().create("Membership");
-						member.setCust(cust);
-						member.setCardNumber(textCardNumber.getText());
-						
-						cust.setMembership(member);
+						member.setCustomer(cust);
+						member.setCreditCard(textCardNumber.getText());
 						
 						btnAddMembership.setEnabled(false);
 						
-						MiniDialog window = new MiniDialog(shell, SWT.APPLICATION_MODAL, "info", "The new membweship was added.");
-						window.open();
+						//TODO enter in a lable messace "Membership Created"
 					}//if
 					
 					else
 					{
-						MiniDialog window = new MiniDialog(shell, SWT.APPLICATION_MODAL, "warning", "The new membweship was not created. " +
-								"Please enter valid credit card number in the \"Card#\" field.");
-						window.open();
+						//TODO enter in a lable messace "Membership not Created"
 					}//else
 				}//try
 				
@@ -366,22 +309,11 @@ public class CustomerDialog extends Dialog {
 			{
 				try 
 				{
-					cust.setCustFirstName(textFirstName.getText());
-					cust.setCustMiddleName(textMiddleName.getText());
-					cust.setCustLastName(textlastName.getText());
-					cust.setCustPhone(textPhone.getText());
-					cust.setCustCity(textCity.getText());
-					cust.setCustZip(textZip.getText());
-					cust.setCustAddress(textAddress.getText());		
+					cust.setFirstName(textFirstName.getText());
+					cust.setLastName(textlastName.getText());
+					cust.setPhone(textPhone.getText());
+					cust.setAddress(textAddress.getText());		
 					cust.setEmail(textEmail.getText());
-					
-					for(UsState us: states)
-					{
-						if(us.getShortName().equalsIgnoreCase(comboState.getText()))
-						{
-							cust.setCustState(us.getLongName());
-						}//if
-					}//for
 					
 					if(member.isDirty())
 					{
@@ -417,13 +349,4 @@ public class CustomerDialog extends Dialog {
 		});
 		
 	}//createContents
-	
-	public void populateCombo(Combo combo)
-	{
-		
-		for (int i = 0; i < states.size(); i++)
-		{
-			combo.add(states.get(i).getShortName());
-		}
-	}//populateCombo
 }//CustomerDetailDialog

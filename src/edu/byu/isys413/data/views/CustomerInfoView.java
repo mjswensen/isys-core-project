@@ -22,6 +22,11 @@ public class CustomerInfoView extends Shell {
 	private Text txtAddress;
 	private Button btnSave;
 
+	
+///////////////////////// NOW OBSELETE - SEE CUSTOMER DIALOG //////////////////////////////
+	
+	
+	
 	/**
 	 * Launch the application.
 	 * @param args
