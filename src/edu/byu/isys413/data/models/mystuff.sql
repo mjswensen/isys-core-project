@@ -488,6 +488,9 @@ VALUES
   ('store2','edu.byu.isys413.data.models.Store'),
   ('store3','edu.byu.isys413.data.models.Store'),
   ('computer1','edu.byu.isys413.data.models.Computer'),
+  ('computer2','edu.byu.isys413.data.models.Computer'),
+  ('computer3','edu.byu.isys413.data.models.Computer'),
+  ('computer4','edu.byu.isys413.data.models.Computer'),
   ('storeProduct1','edu.byu.isys413.data.models.StoreProduct'),
   ('storeProduct2','edu.byu.isys413.data.models.StoreProduct'),
   ('storeProduct3','edu.byu.isys413.data.models.StoreProduct'),
@@ -521,9 +524,9 @@ VALUES
 INSERT INTO `employee` (`id`, `netid`, `firstname`, `middlename`, `lastname`, `hiredate`, `phone`, `salary`, `storeid`, `positionid`, `divisionid`)
 VALUES
   ('employee1','mswensen','Matt','Joseph','Swensen','2007-02-07','801-347-2473',65000.00,'store1',NULL,NULL),
-  ('employee2','','Mark','Leo','Jackson','2008-06-23','801-238-4721',44000.00,'store1',NULL,NULL),
-  ('employee3','','Jack','Gi','Johnson','2006-06-01','801-522-4423',49000.00,'store2',NULL,NULL),
-  ('employee4','','Andrea','LuEtta','Terribilini','2006-07-01','801-248-4441',40000.00,'store2',NULL,NULL),
+  ('employee2','vipermsy','Mark','Leo','Jackson','2008-06-23','801-238-4721',44000.00,'store1',NULL,NULL),
+  ('employee3','jmj9210','Jack','Gi','Johnson','2006-06-01','801-522-4423',49000.00,'store2',NULL,NULL),
+  ('employee4','lijuny','Andrea','LuEtta','Terribilini','2006-07-01','801-248-4441',40000.00,'store2',NULL,NULL),
   ('employee5','','Kyle','Jacob','Armstrong','2008-11-13','801-233-4111',50000.00,'store3',NULL,NULL),
   ('employee6','','Richard','Alfred','Yankee','2002-05-21','801-233-4221',64000.00,'store3',NULL,NULL);
 
@@ -543,7 +546,10 @@ UPDATE store SET managerid = 'employee5' WHERE id = 'store3';
 
 INSERT INTO `computer` (`id`, `storeid`, `mac`)
 VALUES
-  ('computer1','store1','00:26:bb:17:56:ec');
+  ('computer1','store1','00:26:bb:17:56:ec'),
+  ('computer2','store1','d8:a2:5e:8c:25:5b'),
+  ('computer3','store1','CC-AF-78-03-4C-65'),
+  ('computer4','store1','f0:b4:79:1f:ee:45');
 
 
 
