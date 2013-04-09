@@ -38,6 +38,7 @@ import edu.byu.isys413.data.models.Rental;
 import edu.byu.isys413.data.models.Sale;
 import edu.byu.isys413.data.models.Store;
 import edu.byu.isys413.data.models.Transaction;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class TransactionView extends Shell {
 	private Text txtFirstname;
@@ -57,6 +58,7 @@ public class TransactionView extends Shell {
 	private Table tableRentals;
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
+	private Text txtYesNoMembership;
 
 	/**
 	 * Launch the application.
@@ -115,6 +117,7 @@ public class TransactionView extends Shell {
 		lblFirstName.setText("First Name");
 		
 		txtFirstname = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY);
+		txtFirstname.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		txtFirstname.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblLastName = new Label(grpCustomer, SWT.NONE);
@@ -122,6 +125,7 @@ public class TransactionView extends Shell {
 		lblLastName.setText("Last Name");
 		
 		txtLastname = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY);
+		txtLastname.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		txtLastname.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblAddress = new Label(grpCustomer, SWT.NONE);
@@ -129,6 +133,7 @@ public class TransactionView extends Shell {
 		lblAddress.setText("Address");
 		
 		txtAddress = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY | SWT.MULTI);
+		txtAddress.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		GridData gd_txtAddress = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_txtAddress.heightHint = 30;
 		txtAddress.setLayoutData(gd_txtAddress);
@@ -138,6 +143,7 @@ public class TransactionView extends Shell {
 		lblEmail.setText("Email");
 		
 		txtEmail = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY);
+		txtEmail.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		txtEmail.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblPhone = new Label(grpCustomer, SWT.NONE);
@@ -145,7 +151,17 @@ public class TransactionView extends Shell {
 		lblPhone.setText("Phone");
 		
 		txtPhone = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY);
+		txtPhone.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		txtPhone.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblMembership = new Label(grpCustomer, SWT.NONE);
+		lblMembership.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblMembership.setText("Membership");
+		
+		txtYesNoMembership = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY);
+		txtYesNoMembership.setBackground(SWTResourceManager.getColor(255, 255, 255));
+		txtYesNoMembership.setEditable(false);
+		txtYesNoMembership.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnNewCustomer = new Button(grpCustomer, SWT.NONE);
 		btnNewCustomer.addMouseListener(new MouseAdapter() {
@@ -405,6 +421,12 @@ public class TransactionView extends Shell {
 		composite_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		
 		Button btnCancelTransaction = new Button(composite_3, SWT.NONE);
+		btnCancelTransaction.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				dispose();
+			}
+		});
 		btnCancelTransaction.setText("Cancel Transaction");
 		
 		Button btnSubmitTransaction = new Button(composite_3, SWT.NONE);
@@ -450,6 +472,11 @@ public class TransactionView extends Shell {
 			txtPhone.setText(c.getPhone());
 			txtAddress.setText(c.getAddress());
 			txtEmail.setText(c.getEmail());
+			if(c.getMembership() != null) {
+				txtYesNoMembership.setText("Yes");
+			} else {
+				txtYesNoMembership.setText("No");
+			}
 		} catch (Exception e) {
 			System.out.println("Not updating customer view: " + e.getMessage());
 		}

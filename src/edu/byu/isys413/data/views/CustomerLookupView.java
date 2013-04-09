@@ -1,15 +1,15 @@
 package edu.byu.isys413.data.views;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.Customer;
@@ -19,6 +19,7 @@ import edu.byu.isys413.data.models.SearchCriteria;
 public class CustomerLookupView extends Shell {
 	private Text txtLastname;
 	private Text txtPhonenumber;
+	private Label lblCustNotFound;
 
 	/**
 	 * Launch the application.
@@ -66,7 +67,7 @@ public class CustomerLookupView extends Shell {
 						AppData.getInstance().setLookupCustomer(c);
 						dispose();
 					} else {
-						// TODO: extra: show some feedback to the user that the lookup returned no results.
+						lblCustNotFound.setText("Customer not found.");
 					}
 				} catch (DataException e1) {
 					e1.printStackTrace();
@@ -101,6 +102,18 @@ public class CustomerLookupView extends Shell {
 			}
 		});
 		btnGo_1.setText("Go");
+		new Label(this, SWT.NONE);
+		new Label(this, SWT.NONE);
+		new Label(this, SWT.NONE);
+		new Label(this, SWT.NONE);
+		new Label(this, SWT.NONE);
+		new Label(this, SWT.NONE);
+		new Label(this, SWT.NONE);
+		
+		lblCustNotFound = new Label(this, SWT.NONE);
+		lblCustNotFound.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		
+		new Label(this, SWT.NONE);
 		createContents();
 	}
 
