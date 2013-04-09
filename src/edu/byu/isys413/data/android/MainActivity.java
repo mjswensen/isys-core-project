@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +38,7 @@ import android.provider.MediaStore.Images.Media;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -83,6 +85,10 @@ public class MainActivity extends Activity {
      * @param view
      */
     public void loginSubmit(final View view) {
+    	// Force the keyboard to close.
+    	InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+    	imm.hideSoftInputFromWindow(((EditText) findViewById(R.id.editTextPassword)).getWindowToken(), 0);
+    	// Post the login credentials.
     	try {
 	    	HttpPost request = new HttpPost(getUrlFromAction("Login"));
 	    	List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -106,13 +112,7 @@ public class MainActivity extends Activity {
 				}
 				JSONObject json = new JSONObject(builder.toString());
 				if(json.getString("status").equals("success")) {
-//					// Get the pics out of the JSON array
-//					JSONArray picsJa = json.getJSONArray("pics");
-//					for(int i = 0; i < picsJa.length(); i++) {
-//						JSONObject picJo = picsJa.getJSONObject(i);
-//						Picture pic = new Picture(picJo.getString("id"), picJo.getString("caption"));
-//						picList.add(pic);
-//					}
+					// Get the pics out of the JSON array
 					populatePicListFromJson(json);
 					// Assign the picList to the ListView
 					ListView pics = (ListView) findViewById(R.id.listViewPics);
@@ -299,12 +299,11 @@ public class MainActivity extends Activity {
 				// We need to notify the adapter that the dataset changed.
 				ListView pics = (ListView) findViewById(R.id.listViewPics);
 				pics.invalidateViews();
-	        	showListView();
 	        } else {
 	        	throw new Exception("Got a response other than 200.");
 	        }
     	} catch(Exception e) {
-    		
+    		// TODO: handle this.
     	}
     	
     	// Switch to pic list view.
