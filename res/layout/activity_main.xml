@@ -102,6 +102,7 @@
                     android:id="@+id/buttonAddPicture"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="beginUpload"
                     android:text="@string/add_picture" />
 
                 <Button
