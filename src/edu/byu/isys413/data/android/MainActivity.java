@@ -44,6 +44,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 public class MainActivity extends Activity {
@@ -59,6 +60,8 @@ public class MainActivity extends Activity {
 	static int UPLOAD_PIC_VIEW = 3;
 	
 	static final int UPLOAD_PHOTO_CODE = 1;
+	
+	Picture shownPic = null;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,6 +130,8 @@ public class MainActivity extends Activity {
 				        	showPictureCaption.setText(pic.getCaption());
 				        	// Finally, show the ShowPicture view.
 				        	showShowPictureView();
+				        	// Set the shownPic to the current picture, in case the user buys prints from show picture view.
+				        	shownPic = pic;
 						} catch(Exception e) {
 							e.printStackTrace();
 						}
@@ -277,6 +282,13 @@ public class MainActivity extends Activity {
     	}
     }
     
+    /**
+     * For making HTTP requests from within the application.
+     * @param action
+     * @param data
+     * @return JSONObject json
+     * @throws Exception
+     */
     public JSONObject makeRequest(String action, List<NameValuePair> data) throws Exception {
     	HttpPost request = new HttpPost(getUrlFromAction(action));
     	request.setEntity(new UrlEncodedFormEntity(data));
@@ -298,8 +310,42 @@ public class MainActivity extends Activity {
         }
     }
     
+    public void buyShownPicture(View view) {
+    	try {
+    		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+    		nameValuePairs.add(new BasicNameValuePair("guid", shownPic.getGuid()));
+			JSONObject json = makeRequest("BuyPrints", nameValuePairs);
+			// Get json message and display it in a toast.
+			Toast.makeText(this, json.getString("message"), Toast.LENGTH_LONG).show();
+			showListView();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void buySelectedPictures(View view) {
+    	try {
+    		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+    		for(Picture pic : picList) {
+    			if(pic.isSelected()) {
+    				nameValuePairs.add(new BasicNameValuePair("guid", pic.getGuid()));
+    			}
+    		}
+    		if(nameValuePairs.size() > 0) {
+    			JSONObject json = makeRequest("BuyPrints", nameValuePairs);
+    			// Get json message and display it in a toast.
+    			Toast.makeText(this, json.getString("message"), Toast.LENGTH_LONG).show();
+    			showListView();
+    		} else {
+    			throw new Exception("Cannot buy 0 prints.");
+    		}
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
     /**
-     * The following are convenince methods for using the ViewFlipper.
+     * The following are convenience methods for using the ViewFlipper.
      * Overloaded with View parameter so that they may be called
      * directly from an event handler if desired.
      */
