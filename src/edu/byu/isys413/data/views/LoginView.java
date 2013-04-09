@@ -1,6 +1,8 @@
 package edu.byu.isys413.data.views;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
@@ -64,6 +66,14 @@ public class LoginView extends Shell {
 		lblPassword.setText("Password:");
 		
 		txtPassword = new Text(this, SWT.BORDER | SWT.PASSWORD);
+		txtPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.keyCode == 13) {
+					login();
+				}
+			}
+		});
 		txtPassword.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(this, SWT.NONE);
 		
@@ -74,44 +84,13 @@ public class LoginView extends Shell {
 		
 		Button btnLogIn = new Button(this, SWT.NONE);
 		btnLogIn.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void mouseUp(MouseEvent e) {
-				String netId = txtNetid.getText();
-				String passwd = txtPassword.getText();
-				
-				LDAP ldap = new LDAP();
-				if(ldap.authenticate(netId, passwd)){
-					Employee emp = null;
-					try {
-						emp = BusinessObjectDAO.getInstance().searchForBO("Employee", new SearchCriteria("netid", netId));
-					} catch (DataException ex) {
-						ex.printStackTrace();
-					}
-					AppData.getInstance().setLoggedIn(true);
-		            AppData.getInstance().setEmployee(emp);
-		            dispose();
-				}
-				else{
-					
-					if(tryCount <3){
-						errorLabel.setText(("Incorrect username and/or password. Please try again.")); 
-						tryCount++;
-					}
-					else{
-						MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR); 
-						messageBox.setMessage("Login failed. Please try again later."); 
-						messageBox.open(); 
-						dispose();
-					}
-				}
-				
+				login();
 			}
 		});
 		btnLogIn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		btnLogIn.setText("Log In");
-		
-		
 		createContents();
 	}
 	
@@ -121,7 +100,40 @@ public class LoginView extends Shell {
 	protected void createContents() {
 		setText("Log In");
 		setSize(425, 135);
-
+	}
+	
+	/**
+	 * Grabs the input from the user and attempts
+	 */
+	private void login() {
+		String netId = txtNetid.getText();
+		String passwd = txtPassword.getText();
+		
+		LDAP ldap = new LDAP();
+		if(ldap.authenticate(netId, passwd)){
+			Employee emp = null;
+			try {
+				emp = BusinessObjectDAO.getInstance().searchForBO("Employee", new SearchCriteria("netid", netId));
+			} catch (DataException ex) {
+				ex.printStackTrace();
+			}
+			AppData.getInstance().setLoggedIn(true);
+            AppData.getInstance().setEmployee(emp);
+            dispose();
+		}
+		else{
+			
+			if(tryCount <3){
+				errorLabel.setText(("Incorrect username and/or password. Please try again.")); 
+				tryCount++;
+			}
+			else{
+				MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR); 
+				messageBox.setMessage("Login failed. Please try again later."); 
+				messageBox.open(); 
+				dispose();
+			}
+		}
 	}
 
 	@Override
