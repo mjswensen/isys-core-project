@@ -197,8 +197,7 @@
             <ImageView
                 android:id="@+id/imageViewUpload"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_search" />
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/editTextUploadCaption"
@@ -215,13 +214,16 @@
                     android:id="@+id/buttonUploadBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="showListView"
                     android:text="@string/back" />
 
                 <Button
                     android:id="@+id/buttonUploadConfirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="finishUpload"
                     android:text="@string/confirm" />
+
             </LinearLayout>
         </LinearLayout>
 

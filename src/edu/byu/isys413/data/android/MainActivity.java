@@ -27,6 +27,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -186,6 +187,10 @@ public class MainActivity extends Activity {
     	return bldr.toString();
     }
     
+    /**
+     * Sends the user to the camera to take the picture.
+     * @param view
+     */
     public void beginUpload(View view) {
     	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     	intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile()));
@@ -235,6 +240,57 @@ public class MainActivity extends Activity {
     				break;
     		}
     	}
+    }
+    
+    /**
+     * After the user has taken a photo, confirming that they want to
+     * upload it calls this method.
+     * @param view
+     */
+    public void finishUpload(View view) {
+    	// Create a string from the Base64-encoded picture.
+    	ImageView upload = (ImageView) findViewById(R.id.imageViewUpload);
+    	Bitmap bitmap = ((BitmapDrawable)upload.getDrawable()).getBitmap();
+    	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    	bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+    	byte[] byteArray = stream.toByteArray();
+    	String picData = Base64.encodeToString(byteArray, Base64.DEFAULT);
+    	
+    	// Get value of the caption.
+    	String caption = ((EditText) findViewById(R.id.editTextUploadCaption)).getText().toString();
+    	
+    	// Send to server and get updated pic list
+    	try {
+	    	HttpPost request = new HttpPost(getUrlFromAction("UploadPicture"));
+	    	List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	    	nameValuePairs.add(new BasicNameValuePair("picData", picData));
+	    	nameValuePairs.add(new BasicNameValuePair("caption", caption));
+	        request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+	        HttpResponse response = client.execute(request);
+	        StatusLine statusLine = response.getStatusLine();
+	        int statusCode = statusLine.getStatusCode();
+	        if(statusCode == 200) {
+	        	// Get updated pic list from JSON string
+	        	HttpEntity entity = response.getEntity();
+				InputStream content = entity.getContent();
+				StringBuilder builder = new StringBuilder();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+				String line;
+				while ((line = reader.readLine()) != null) {
+					builder.append(line);
+				}
+				JSONObject json = new JSONObject(builder.toString());
+				System.out.println(json.toString());
+	        	showListView();
+	        } else {
+	        	throw new Exception("Got a response other than 200.");
+	        }
+    	} catch(Exception e) {
+    		
+    	}
+    	
+    	// Switch to pic list view.
+    	showListView();
     }
     
     /**
