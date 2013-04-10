@@ -15,7 +15,7 @@
             android:orientation="vertical" >
 
             <ImageView
-                android:id="@+id/imageViewLoginLogo"
+                android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -66,12 +66,12 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:layout_height="match_parent" >
 
             <LinearLayout
+                android:id="@+id/layoutListHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
@@ -79,6 +79,7 @@
                     android:id="@+id/textViewMyPics"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/my_pics"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -89,30 +90,32 @@
                     android:layout_height="wrap_content"
                     android:onClick="logout"
                     android:text="@string/log_out" />
-
             </LinearLayout>
 
             <ListView
                 android:id="@+id/listViewPics"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="fill_parent"
+                android:layout_above="@+id/layoutListFooter"
+                android:layout_below="@id/layoutListHeader"
                 android:choiceMode="multipleChoice"
                 android:clickable="true"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:longClickable="true" >
-
             </ListView>
 
             <LinearLayout
+                android:id="@+id/layoutListFooter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom" >
+                android:layout_alignParentBottom="true" >
 
                 <Button
                     android:id="@+id/buttonAddPicture"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="beginUpload"
                     android:text="@string/add_picture" />
 
@@ -120,11 +123,12 @@
                     android:id="@+id/buttonBuyPrints"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="buySelectedPictures"
                     android:text="@string/buy_prints" />
 
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
