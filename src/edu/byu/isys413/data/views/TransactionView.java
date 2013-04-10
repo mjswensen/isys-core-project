@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -118,6 +119,14 @@ public class TransactionView extends Shell {
 		tableColumn_5.setText("Name");
 		
 		TableViewerColumn tableViewerColumn_6 = new TableViewerColumn(tableViewerSales, SWT.NONE);
+		tableViewerColumn_6.setLabelProvider(new ColumnLabelProvider() 
+		{
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tableColumn_6 = tableViewerColumn_6.getColumn();
 		tableColumn_6.setWidth(71);
 		tableColumn_6.setText("Price");

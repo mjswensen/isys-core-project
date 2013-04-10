@@ -112,8 +112,9 @@ public class LoginView extends Shell {
 		grpLoginStatus.setLayout(new GridLayout(1, false));
 		grpLoginStatus.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
 		
-		errorLabel = new Label(grpLoginStatus, SWT.NONE);
-		errorLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1));
+		errorLabel = new Label(grpLoginStatus, SWT.WRAP);
+		errorLabel.setAlignment(SWT.CENTER);
+		errorLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		errorLabel.setText("");
 		
 		composite = new Composite(this, SWT.NONE);
