@@ -5,14 +5,24 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.byu.isys413.data.models.*;
-import edu.byu.isys413.data.web.*;
+import edu.byu.isys413.data.models.BusinessObjectDAO;
+import edu.byu.isys413.data.models.Customer;
+import edu.byu.isys413.data.models.ForSale;
+import edu.byu.isys413.data.models.Sale;
+import edu.byu.isys413.data.models.StoreProduct;
+import edu.byu.isys413.data.models.Transaction;
+import edu.byu.isys413.data.web.Action;
 
+/**
+ * Purchase handles the transaction details for a purchase via the website. 
+ *
+ */
 public class Purchase implements Action {
 
 	/** No-arg constructor per Dr. Albrecht's instruction in Action.java */
 	public Purchase() {}
 	
+	/* @see edu.byu.isys413.data.web.Action#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)*/
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		

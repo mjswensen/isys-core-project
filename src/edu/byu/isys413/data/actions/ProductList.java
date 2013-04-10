@@ -8,14 +8,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import edu.byu.isys413.data.models.*;
-import edu.byu.isys413.data.web.*;
+import edu.byu.isys413.data.models.BusinessObjectDAO;
+import edu.byu.isys413.data.models.ConceptualProduct;
+import edu.byu.isys413.data.models.SearchCriteria;
+import edu.byu.isys413.data.web.Action;
 
+/**
+ * ProductList returns a list of Conceptual Producst that match a search criteria specified
+ * by a customer using the website. 
+ *
+ */
 public class ProductList implements Action {
 
 	/** No-arg constructor per Dr. Albrecht's instruction in Action.java */
 	public ProductList() {}
 	
+	/* @see edu.byu.isys413.data.web.Action#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)*/
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		

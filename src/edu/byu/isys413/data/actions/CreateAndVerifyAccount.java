@@ -5,15 +5,25 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.byu.isys413.data.models.*;
+import edu.byu.isys413.data.models.BusinessObjectDAO;
+import edu.byu.isys413.data.models.Customer;
+import edu.byu.isys413.data.models.GUID;
+import edu.byu.isys413.data.models.Membership;
+import edu.byu.isys413.data.models.SearchCriteria;
 import edu.byu.isys413.data.util.BatchEmail;
-import edu.byu.isys413.data.web.*;
+import edu.byu.isys413.data.web.Action;
 
+/**
+ * CreateAndVerifyAccount provides functionality for the creation and validation of 
+ * customer accounts via the website.  
+ *
+ */
 public class CreateAndVerifyAccount implements Action {
 
 	/** No-arg constructor per Dr. Albrecht's instruction in Action.java */
 	public CreateAndVerifyAccount() {}
 
+	/* @see edu.byu.isys413.data.web.Action#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)*/
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		

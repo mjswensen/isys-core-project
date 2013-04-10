@@ -2,11 +2,11 @@ package edu.byu.isys413.data.batch;
 
 import java.util.Date;
 import java.util.List;
+
 import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.Fee;
 import edu.byu.isys413.data.models.ForRent;
-import edu.byu.isys413.data.models.ForSale;
 import edu.byu.isys413.data.models.Rental;
 import edu.byu.isys413.data.models.Sale;
 import edu.byu.isys413.data.models.Transaction;
@@ -20,6 +20,7 @@ import edu.byu.isys413.data.models.Transaction;
 public class SellOverdueRentals {
 
 	/**
+	 * Run the program.
 	 * @param args
 	 */
 	public static void main(String[] args) {

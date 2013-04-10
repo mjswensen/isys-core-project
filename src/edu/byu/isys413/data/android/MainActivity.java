@@ -47,6 +47,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+
+/**
+ * MainActivity supports each funciton and view for the MyStuff mobile app
+ *
+ */
 public class MainActivity extends Activity {
 
 	ViewFlipper vf = null;
@@ -63,6 +68,7 @@ public class MainActivity extends Activity {
 	
 	Picture shownPic = null;
 	
+    /* @see android.app.Activity#onCreate(android.os.Bundle)*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +77,9 @@ public class MainActivity extends Activity {
         client = new DefaultHttpClient();
     }
 
+    /* @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)*/
+    /* @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)*/
+    /* @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
@@ -150,6 +159,12 @@ public class MainActivity extends Activity {
     	}
     }
     
+    /**
+     *This method uses the JSONObject retrieved from the login action to populate the 
+     *picture list  
+     * @param json
+     * @throws JSONException
+     */
     private void populatePicListFromJson(JSONObject json) throws JSONException {
     	// Empty the picList
     	picList.clear();
@@ -312,6 +327,10 @@ public class MainActivity extends Activity {
         }
     }
     
+    /**
+     *Sends shown picture data to the BuyPrints action
+     * @param view
+     */
     public void buyShownPicture(View view) {
     	try {
     		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -325,6 +344,10 @@ public class MainActivity extends Activity {
 		}
     }
     
+    /**
+     *Sends selected picture data to the BuyPrints action
+     * @param view
+     */
     public void buySelectedPictures(View view) {
     	try {
     		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();

@@ -7,11 +7,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import edu.byu.isys413.data.models.*;
+import edu.byu.isys413.data.models.BusinessObjectDAO;
+import edu.byu.isys413.data.models.Customer;
+import edu.byu.isys413.data.models.DataException;
+import edu.byu.isys413.data.models.Picture;
+import edu.byu.isys413.data.models.Print;
+import edu.byu.isys413.data.models.PrintOrder;
+import edu.byu.isys413.data.models.Store;
+import edu.byu.isys413.data.models.Transaction;
 import edu.byu.isys413.data.web.Action;
 
-public class BuyPrints implements Action {
 
+/**
+ * The BuyPrints class handles the transaction details for the purchase of photo prints 
+ * via the mobile app. 
+ * 
+ */
+public class BuyPrints implements Action {
+	
+	
+	/* @see edu.byu.isys413.data.web.Action#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)*/
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		

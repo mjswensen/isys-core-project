@@ -1,24 +1,27 @@
 package edu.byu.isys413.data.views;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.Computer;
 import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.SearchCriteria;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.wb.swt.SWTResourceManager;
 
+/**
+ * This is the main portal, and allows employees to navigate to any function in the system.
+ *
+ */
 public class MainView {
 
 	protected Shell shlMystuffMain;
@@ -236,6 +239,9 @@ public class MainView {
 
 	}
 
+	/**
+	 *Displays LoginView
+	 */
 	private void displayLoginPrompt() {
 		LoginView loginView = new LoginView(display);
 		loginView.open();
