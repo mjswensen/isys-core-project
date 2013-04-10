@@ -233,8 +233,6 @@ public class MainView {
 			System.out.println("Unable to get store from current computer.");
 			// TODO: extra: add drop-down to login window with stores.
 		}
-		
-		
 
 	}
 

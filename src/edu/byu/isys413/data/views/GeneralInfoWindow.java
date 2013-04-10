@@ -4,6 +4,7 @@
 package edu.byu.isys413.data.views;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -199,7 +200,7 @@ public class GeneralInfoWindow extends Dialog {
 			}
 		});
 		TableColumn tblclmnEmail = tableViewerColumn_10.getColumn();
-		tblclmnEmail.setWidth(200);
+		tblclmnEmail.setWidth(175);
 		tblclmnEmail.setText("Email");
 		
 		TableViewerColumn tableViewerColumn_5 = new TableViewerColumn(CustTableViewer, SWT.NONE);
@@ -243,19 +244,6 @@ public class GeneralInfoWindow extends Dialog {
 		TableColumn isMember = tableViewerColumn_3.getColumn();
 		isMember.setWidth(100);
 		isMember.setText("Membership?");
-		
-		TableViewerColumn tableViewerColumn_50 = new TableViewerColumn(CustTableViewer, SWT.NONE);
-		tableViewerColumn_50.setLabelProvider(new ColumnLabelProvider() {
-			
-			public String getText(Object element) 
-			{
-				Customer cust = (Customer) element;
-				return cust.getPassword();
-			}
-		});
-		TableColumn tblclmnOnlinePassword = tableViewerColumn_50.getColumn();
-		tblclmnOnlinePassword.setWidth(110);
-		tblclmnOnlinePassword.setText("Online Password");
 		
 		TableViewerColumn tableViewerColumn_51 = new TableViewerColumn(CustTableViewer, SWT.NONE);
 		tableViewerColumn_51.setLabelProvider(new ColumnLabelProvider() {
@@ -377,18 +365,6 @@ public class GeneralInfoWindow extends Dialog {
 		empTable.setHeaderVisible(true);
 		empTable.setLinesVisible(true);
 		
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(EmpTableViewer, SWT.NONE);
-		tableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) 
-			{
-				Employee emp = (Employee) element;
-				return emp.getId();
-			}
-		});
-		TableColumn tblclmnEmployeeId = tableViewerColumn.getColumn();
-		tblclmnEmployeeId.setWidth(200);
-		tblclmnEmployeeId.setText("Employee ID");
-		
 		TableViewerColumn empName = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		empName.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) 
@@ -398,7 +374,7 @@ public class GeneralInfoWindow extends Dialog {
 			}
 		});
 		TableColumn tblclmnName = empName.getColumn();
-		tblclmnName.setWidth(120);
+		tblclmnName.setWidth(195);
 		tblclmnName.setText("Name");
 		
 		TableViewerColumn tableViewerColumn_12 = new TableViewerColumn(EmpTableViewer, SWT.NONE);
@@ -411,7 +387,7 @@ public class GeneralInfoWindow extends Dialog {
 			}
 		});
 		TableColumn tblclmnUserName = tableViewerColumn_12.getColumn();
-		tblclmnUserName.setWidth(100);
+		tblclmnUserName.setWidth(110);
 		tblclmnUserName.setText("User Name");
 		
 		TableViewerColumn empStore = new TableViewerColumn(EmpTableViewer, SWT.NONE);
@@ -419,12 +395,16 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
-				return emp.getStoreId();
+				try {
+					return emp.getStore().getLocation();
+				} catch(DataException e) {
+					return "-";
+				}
 			}
 		});
 		TableColumn tblclmnStore = empStore.getColumn();
 		tblclmnStore.setWidth(200);
-		tblclmnStore.setText("Store ID");
+		tblclmnStore.setText("Store");
 		
 		TableViewerColumn hireDate = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		hireDate.setLabelProvider(new ColumnLabelProvider() {
@@ -456,36 +436,12 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
-				return Double.toString(emp.getSalary());
+				return NumberFormat.getCurrencyInstance().format(emp.getSalary());
 			}
 		});
 		TableColumn tblclmnSalary = empSalary.getColumn();
 		tblclmnSalary.setWidth(100);
 		tblclmnSalary.setText("Salary");
-		
-		TableViewerColumn empPosition = new TableViewerColumn(EmpTableViewer, SWT.NONE);
-		empPosition.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) 
-			{
-				Employee emp = (Employee) element;
-				return emp.getPositionId();
-			}
-		});
-		TableColumn tblclmnPodsition = empPosition.getColumn();
-		tblclmnPodsition.setWidth(100);
-		tblclmnPodsition.setText("PositionID");
-		
-		TableViewerColumn empDivision = new TableViewerColumn(EmpTableViewer, SWT.NONE);
-		empDivision.setLabelProvider(new ColumnLabelProvider() {
-			public String getText(Object element) 
-			{
-				Employee emp = (Employee) element;
-				return emp.getDivisionId();
-			}
-		});
-		TableColumn tblclmnDivision = empDivision.getColumn();
-		tblclmnDivision.setWidth(120);
-		tblclmnDivision.setText("DivisionID");
 		scrolledComposite.setContent(empTable);
 		scrolledComposite.setMinSize(empTable.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
