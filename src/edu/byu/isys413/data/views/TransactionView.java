@@ -1,5 +1,6 @@
 package edu.byu.isys413.data.views;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -555,9 +556,9 @@ public class TransactionView extends Shell {
 			
 			// Update totals display
 			t.calculateTotals();
-			txtSubtotal.setText("$" + t.getSubtotal());
-			txtTax.setText("$" + t.getTax());
-			txtTotal.setText("$" + t.getTotal());
+			txtSubtotal.setText(NumberFormat.getCurrencyInstance().format(t.getSubtotal()));
+			txtTax.setText(NumberFormat.getCurrencyInstance().format(t.getTax()));
+			txtTotal.setText(NumberFormat.getCurrencyInstance().format(t.getTotal()));
 		} catch (Exception e) {
 			System.out.println("Not updating products view: " + e.getMessage());
 		}
