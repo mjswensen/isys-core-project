@@ -196,12 +196,12 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:layout_height="match_parent" >
 
             <LinearLayout
+                android:id="@+id/layoutUploadHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
@@ -209,6 +209,7 @@
                     android:id="@+id/textViewUpload"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/upload"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -219,29 +220,37 @@
                     android:layout_height="wrap_content"
                     android:onClick="logout"
                     android:text="@string/log_out" />
-
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/imageViewUpload"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="fill_parent"
+                android:layout_above="@+id/editTextUploadCaption"
+                android:layout_below="@id/layoutUploadHeader" />
 
             <EditText
                 android:id="@+id/editTextUploadCaption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/layoutUploadFooter"
                 android:ems="10"
-                android:hint="@string/caption" />
+                android:hint="@string/caption" >
+
+                <requestFocus />
+            </EditText>
 
             <LinearLayout
+                android:id="@+id/layoutUploadFooter"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true" >
 
                 <Button
                     android:id="@+id/buttonUploadBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="showListView"
                     android:text="@string/back" />
 
@@ -249,11 +258,11 @@
                     android:id="@+id/buttonUploadConfirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="finishUpload"
                     android:text="@string/confirm" />
-
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
     </ViewFlipper>
 
