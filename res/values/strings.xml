@@ -1,5 +1,5 @@
 <resources>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">MyStuff</string>
 
     <string name="menu_settings">Settings</string>
 
@@ -32,5 +32,6 @@
     <string name="view_picture">View Picture</string>
 
     <string name="empty_string"></string>
+    <string name="app_name">MyStuff</string>
 
 </resources>
