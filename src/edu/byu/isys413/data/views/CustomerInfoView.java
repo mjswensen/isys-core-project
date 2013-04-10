@@ -126,6 +126,7 @@ public class CustomerInfoView extends Shell {
 		lblCreditCard.setText("Credit Card");
 		
 		txtCreditCard = new Text(grpMembershipInformation, SWT.BORDER);
+		txtCreditCard.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		txtCreditCard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		btnAdd = new Button(grpMembershipInformation, SWT.NONE);

@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:layout_above="@+id/layoutListFooter"
-                android:layout_below="@id/layoutListHeader"
+                android:layout_below="@+id/layoutListHeader"
                 android:choiceMode="multipleChoice"
                 android:clickable="true"
                 android:focusable="false"
