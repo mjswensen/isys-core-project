@@ -75,6 +75,9 @@ public class GeneralInfoWindow extends Dialog {
 	private Text physRentSearch;
 	private Table table;
 
+	private TableViewer EmpTableViewer;
+	private Combo EmpColumnCombo;
+	
 	/**
 	 * Create the dialog.
 	 * @param parent
@@ -341,7 +344,7 @@ public class GeneralInfoWindow extends Dialog {
 		lblEmpFilter.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblEmpFilter.setText("Filter:");
 		
-		final Combo EmpColumnCombo = new Combo(composite_8, SWT.READ_ONLY);
+		EmpColumnCombo = new Combo(composite_8, SWT.READ_ONLY);
 		GridData gd_EmpColumnCombo = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_EmpColumnCombo.widthHint = 150;
 		EmpColumnCombo.setLayoutData(gd_EmpColumnCombo);
@@ -367,7 +370,7 @@ public class GeneralInfoWindow extends Dialog {
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		
-		final TableViewer EmpTableViewer = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		EmpTableViewer = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
 		empTable = EmpTableViewer.getTable();
 		empTable.setHeaderVisible(true);
 		empTable.setLinesVisible(true);
@@ -470,14 +473,14 @@ public class GeneralInfoWindow extends Dialog {
 		empFilterBox.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				removeAllFilters(EmpTableViewer);
-				String filterText = empFilterBox.getText();
-				String filterOption = EmpColumnCombo.getText();
-				
-				EmployeeFilter empFilter = new EmployeeFilter();
-				empFilter.setFilter(filterText);
-				empFilter.setSelectedOption(filterOption);
-				EmpTableViewer.addFilter(empFilter);
+				applyEmployeeFilter();
+			}
+		});
+		
+		EmpColumnCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				applyEmployeeFilter();
 			}
 		});
 		
@@ -487,7 +490,7 @@ public class GeneralInfoWindow extends Dialog {
 				removeAllFilters(EmpTableViewer);
 				EmpTableViewer.refresh();
 				empFilterBox.setText("");
-				EmpColumnCombo.select(0);
+				EmpColumnCombo.deselectAll();
 			}
 		});
 		
@@ -1386,5 +1389,16 @@ public class GeneralInfoWindow extends Dialog {
 		for(ViewerFilter filter : tv.getFilters()) {
 			tv.removeFilter(filter);
 		}
+	}
+	
+	private void applyEmployeeFilter() {
+		removeAllFilters(EmpTableViewer);
+		String filterText = empFilterBox.getText();
+		String filterOption = EmpColumnCombo.getText();
+		
+		EmployeeFilter empFilter = new EmployeeFilter();
+		empFilter.setFilter(filterText);
+		empFilter.setSelectedOption(filterOption);
+		EmpTableViewer.addFilter(empFilter);
 	}
 }//GeneralInfoWindow

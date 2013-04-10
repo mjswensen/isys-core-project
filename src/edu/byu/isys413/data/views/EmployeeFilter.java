@@ -15,16 +15,15 @@ import edu.byu.isys413.data.models.Employee;
 public class EmployeeFilter extends ViewerFilter {
 
 	public static String[] options = {
-		"---",// 0
-		"Last Name contains",// 1
-		"First Name contains",// 2
-		"Username contains",// 3
-		"Store contains",// 4
-		"Hire Date is on or after",// 5
-		"Hire Date is on or before",// 6
-		"Phone contains",// 7
-		"Salary is greater than or equal to",// 8
-		"Salary is less than or equal to"// 9
+		"Last Name contains",// 0
+		"First Name contains",// 1
+		"Username contains",// 2
+		"Store contains",// 3
+		"Hire Date is on or after",// 4
+		"Hire Date is on or before",// 5
+		"Phone contains",// 6
+		"Salary is greater than or equal to",// 7
+		"Salary is less than or equal to"// 8
 	};
 	
 	private String filter;
@@ -58,48 +57,46 @@ public class EmployeeFilter extends ViewerFilter {
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		Employee e = (Employee) element;
 		if(selectedOption.equals(options[0])) {
-			return true;
+			makeFilterRegex();
+			return e.getLastName().toLowerCase().matches(filter.toLowerCase());
 		} else if(selectedOption.equals(options[1])) {
 			makeFilterRegex();
-			return e.getLastName().matches(filter);
+			return e.getFirstName().toLowerCase().matches(filter.toLowerCase());
 		} else if(selectedOption.equals(options[2])) {
 			makeFilterRegex();
-			return e.getFirstName().matches(filter);
+			return e.getNetid().toLowerCase().matches(filter.toLowerCase());
 		} else if(selectedOption.equals(options[3])) {
 			makeFilterRegex();
-			return e.getNetid().matches(filter);
-		} else if(selectedOption.equals(options[4])) {
-			makeFilterRegex();
 			try {
-				return e.getStore().getLocation().matches(filter);
+				return e.getStore().getLocation().toLowerCase().matches(filter.toLowerCase());
 			} catch(DataException e1) {
 				return false;
 			}
-		} else if(selectedOption.equals(options[5])) {
+		} else if(selectedOption.equals(options[4])) {
 			try {
 				Date filterDate = new SimpleDateFormat("yyyy-MM-dd").parse(filter);
 				return e.getHireDate().compareTo(filterDate) >= 0;
 			} catch (ParseException e1) {
 				return true;
 			}
-		} else if(selectedOption.equals(options[6])) {
+		} else if(selectedOption.equals(options[5])) {
 			try {
 				Date filterDate = new SimpleDateFormat("yyyy-MM-dd").parse(filter);
 				return e.getHireDate().compareTo(filterDate) <= 0;
 			} catch (ParseException e1) {
 				return true;
 			}
-		} else if(selectedOption.equals(options[7])) {
+		} else if(selectedOption.equals(options[6])) {
 			makeFilterRegex();
-			return e.getPhone().matches(filter);
-		} else if(selectedOption.equals(options[8])) {
+			return e.getPhone().toLowerCase().matches(filter.toLowerCase());
+		} else if(selectedOption.equals(options[7])) {
 			try {
 				double filterSalary = Double.parseDouble(filter);
 				return e.getSalary() >= filterSalary;
 			} catch (Exception e1) {
 				return true;
 			}
-		} else if(selectedOption.equals(options[9])) {
+		} else if(selectedOption.equals(options[8])) {
 			try {
 				double filterSalary = Double.parseDouble(filter);
 				return e.getSalary() <= filterSalary;
