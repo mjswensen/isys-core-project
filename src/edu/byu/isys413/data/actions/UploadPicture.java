@@ -14,8 +14,13 @@ import edu.byu.isys413.data.models.Picture;
 import edu.byu.isys413.data.models.SearchCriteria;
 import edu.byu.isys413.data.web.Action;
 
+/**
+ * UploadPicture supports the mobile app's option to upload a picture to the database.
+ *
+ */
 public class UploadPicture implements Action {
 
+	/* @see edu.byu.isys413.data.web.Action#process(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)*/
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		

@@ -4,31 +4,31 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.swt.widgets.Composite;
-import swing2swt.layout.FlowLayout;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.Customer;
@@ -38,10 +38,11 @@ import edu.byu.isys413.data.models.Rental;
 import edu.byu.isys413.data.models.Sale;
 import edu.byu.isys413.data.models.Store;
 import edu.byu.isys413.data.models.Transaction;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.wb.swt.SWTResourceManager;
 
+/**
+ * A window to provide transaction functionality
+ *
+ */
 public class TransactionView extends Shell {
 	private Text txtFirstname;
 	private Text txtLastname;
@@ -432,6 +433,9 @@ public class TransactionView extends Shell {
 		
 	}
 	
+	/**
+	 *Updates the customer view with the customer associate with the transaction
+	 */
 	private void updateCustomerView() {
 		try {
 			Customer c = t.getCustomer();
@@ -451,6 +455,9 @@ public class TransactionView extends Shell {
 		}
 	}
 	
+	/**
+	 *Updates the products view with the products associated with the transaction
+	 */
 	private void updateProductsView() {
 		try {
 			// Update Sales table
@@ -475,6 +482,7 @@ public class TransactionView extends Shell {
 		}
 	}
 
+	/* @see org.eclipse.swt.widgets.Decorations#checkSubclass()*/
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components

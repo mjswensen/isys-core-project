@@ -1,6 +1,7 @@
 package edu.byu.isys413.data.batch;
 
 import java.util.List;
+
 import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.Rental;
@@ -13,6 +14,7 @@ import edu.byu.isys413.data.models.Rental;
 public class RemindLateRentals {
 
 	/**
+	 * Run the program
 	 * @param args
 	 */
 	public static void main(String[] args) {

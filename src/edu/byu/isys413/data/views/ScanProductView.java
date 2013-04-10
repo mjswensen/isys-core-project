@@ -3,16 +3,20 @@ package edu.byu.isys413.data.views;
 import java.util.Date;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.ConceptualProduct;
@@ -23,11 +27,12 @@ import edu.byu.isys413.data.models.Rental;
 import edu.byu.isys413.data.models.Sale;
 import edu.byu.isys413.data.models.SearchCriteria;
 import edu.byu.isys413.data.models.Transaction;
-import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 
+/**
+ * Enables employees to ascertain product information by scanning that product
+ * or manually entering its sku or serial number.
+ *
+ */
 public class ScanProductView extends Shell {
 	
 	private Transaction t;
@@ -248,6 +253,7 @@ public class ScanProductView extends Shell {
 		labelErrorMsg.setText(msg);
 	}
 	
+	/* @see org.eclipse.swt.widgets.Decorations#checkSubclass()*/
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components

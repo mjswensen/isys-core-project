@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.Customer;
@@ -38,11 +39,10 @@ import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.Employee;
 import edu.byu.isys413.data.models.Store;
 import edu.byu.isys413.data.models.StoreProduct;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 
 
-/**TODO: This window allows you to manage everything from customers to computers
+/** This window allows you to manage everything from customers to computers
  *
  * @author Morgan S. Young
  *
@@ -168,6 +168,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn tableViewerColumn_4 = new TableViewerColumn(CustTableViewer, SWT.NONE);
 		tableViewerColumn_4.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
@@ -180,6 +181,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn tableViewerColumn_9 = new TableViewerColumn(CustTableViewer, SWT.NONE);
 		tableViewerColumn_9.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
@@ -192,6 +194,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn tableViewerColumn_10 = new TableViewerColumn(CustTableViewer, SWT.NONE);
 		tableViewerColumn_10.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
@@ -204,6 +207,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn tableViewerColumn_5 = new TableViewerColumn(CustTableViewer, SWT.NONE);
 		tableViewerColumn_5.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
@@ -217,6 +221,7 @@ public class GeneralInfoWindow extends Dialog {
 		TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(CustTableViewer, SWT.NONE);
 		tableViewerColumn_3.setLabelProvider(new ColumnLabelProvider() {
 			
+			@Override
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
@@ -247,6 +252,7 @@ public class GeneralInfoWindow extends Dialog {
 		TableViewerColumn tableViewerColumn_50 = new TableViewerColumn(CustTableViewer, SWT.NONE);
 		tableViewerColumn_50.setLabelProvider(new ColumnLabelProvider() {
 			
+			@Override
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
@@ -260,6 +266,7 @@ public class GeneralInfoWindow extends Dialog {
 		TableViewerColumn tableViewerColumn_51 = new TableViewerColumn(CustTableViewer, SWT.NONE);
 		tableViewerColumn_51.setLabelProvider(new ColumnLabelProvider() {
 			
+			@Override
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
@@ -273,6 +280,7 @@ public class GeneralInfoWindow extends Dialog {
 		TableViewerColumn tableViewerColumn_52 = new TableViewerColumn(CustTableViewer, SWT.NONE);
 		tableViewerColumn_52.setLabelProvider(new ColumnLabelProvider() {
 			
+			@Override
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
@@ -379,6 +387,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn tableViewerColumn = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		tableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
@@ -391,6 +400,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn empName = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		empName.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
@@ -404,6 +414,7 @@ public class GeneralInfoWindow extends Dialog {
 		TableViewerColumn tableViewerColumn_12 = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		tableViewerColumn_12.setLabelProvider(new ColumnLabelProvider() 
 		{
+			@Override
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
@@ -416,6 +427,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn empStore = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		empStore.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
@@ -428,6 +440,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn hireDate = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		hireDate.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
@@ -441,6 +454,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn empPhone = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		empPhone.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
@@ -453,6 +467,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn empSalary = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		empSalary.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
@@ -465,6 +480,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn empPosition = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		empPosition.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
@@ -477,6 +493,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn empDivision = new TableViewerColumn(EmpTableViewer, SWT.NONE);
 		empDivision.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Employee emp = (Employee) element;
@@ -616,6 +633,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
 		tableViewerColumn_1.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				StoreProduct storeProd = (StoreProduct) element;
@@ -628,6 +646,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storeProdID = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
 		storeProdID.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				StoreProduct storeProd = (StoreProduct) element;
@@ -680,6 +699,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storeProdQty = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
 		storeProdQty.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				StoreProduct storeProd = (StoreProduct) element;
@@ -692,6 +712,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storeProdShelf = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
 		storeProdShelf.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				StoreProduct storeProd = (StoreProduct) element;
@@ -750,6 +771,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storeID = new TableViewerColumn(StoreTableViewer, SWT.NONE);
 		storeID.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
@@ -762,6 +784,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storeLocation = new TableViewerColumn(StoreTableViewer, SWT.NONE);
 		storeLocation.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
@@ -774,6 +797,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storeManager = new TableViewerColumn(StoreTableViewer, SWT.NONE);
 		storeManager.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
@@ -786,6 +810,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storePhone = new TableViewerColumn(StoreTableViewer, SWT.NONE);
 		storePhone.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
@@ -798,6 +823,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storeAddress = new TableViewerColumn(StoreTableViewer, SWT.NONE);
 		storeAddress.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
@@ -810,6 +836,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storeCity = new TableViewerColumn(StoreTableViewer, SWT.NONE);
 		storeCity.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
@@ -822,6 +849,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storeState = new TableViewerColumn(StoreTableViewer, SWT.NONE);
 		storeState.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;
@@ -834,6 +862,7 @@ public class GeneralInfoWindow extends Dialog {
 		
 		TableViewerColumn storeZip = new TableViewerColumn(StoreTableViewer, SWT.NONE);
 		storeZip.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) 
 			{
 				Store store = (Store) element;

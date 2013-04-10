@@ -3,24 +3,28 @@ package edu.byu.isys413.data.views;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.Customer;
 import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.SearchCriteria;
-import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 
+/**
+ * A way to look up customers
+ *
+ */
 public class CustomerLookupView extends Shell {
 	private Text txtLastname;
 	private Text txtPhonenumber;
@@ -153,6 +157,8 @@ public class CustomerLookupView extends Shell {
 
 	}
 
+	/* @see org.eclipse.swt.widgets.Decorations#checkSubclass()*/
+	/* @see org.eclipse.swt.widgets.Decorations#checkSubclass()*/
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
