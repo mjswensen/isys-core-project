@@ -113,31 +113,60 @@ public class TransactionView extends Shell {
 		table_1.setLinesVisible(true);
 		table_1.setHeaderVisible(true);
 		
-		TableViewerColumn tableViewerColumn_5 = new TableViewerColumn(tableViewerSales, SWT.NONE);
-		TableColumn tableColumn_5 = tableViewerColumn_5.getColumn();
+		TableViewerColumn tableViewerColumnItemName = new TableViewerColumn(tableViewerSales, SWT.NONE);
+		tableViewerColumnItemName.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Sale s = (Sale)element;
+				try {
+					return s.getProduct().getId();
+				} catch (DataException e) {
+					return "Unable to get product identifier.";
+				}
+			}
+		});
+		TableColumn tableColumn_5 = tableViewerColumnItemName.getColumn();
 		tableColumn_5.setWidth(197);
 		tableColumn_5.setText("Name");
 		
-		TableViewerColumn tableViewerColumn_6 = new TableViewerColumn(tableViewerSales, SWT.NONE);
-		tableViewerColumn_6.setLabelProvider(new ColumnLabelProvider() 
+		TableViewerColumn tableViewerColumnItemPrice = new TableViewerColumn(tableViewerSales, SWT.NONE);
+		tableViewerColumnItemPrice.setLabelProvider(new ColumnLabelProvider() 
 		{
 			@Override
 			public String getText(Object element) {
-				// TODO Auto-generated method stub
-				return element == null ? "" : element.toString();
+				Sale s = (Sale)element;
+				try {
+					return "$" + s.getProduct().getPrice();
+				} catch (DataException e) {
+					return "Unable to get product price.";
+				}
 			}
 		});
-		TableColumn tableColumn_6 = tableViewerColumn_6.getColumn();
+		TableColumn tableColumn_6 = tableViewerColumnItemPrice.getColumn();
 		tableColumn_6.setWidth(71);
 		tableColumn_6.setText("Price");
 		
-		TableViewerColumn tableViewerColumn_7 = new TableViewerColumn(tableViewerSales, SWT.NONE);
-		TableColumn tableColumn_7 = tableViewerColumn_7.getColumn();
+		TableViewerColumn tableViewerQuantity = new TableViewerColumn(tableViewerSales, SWT.NONE);
+		tableViewerQuantity.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Sale s = (Sale)element;
+				return s.getQuantity() + "";
+			}
+		});
+		TableColumn tableColumn_7 = tableViewerQuantity.getColumn();
 		tableColumn_7.setWidth(76);
 		tableColumn_7.setText("Quantity");
 		
-		TableViewerColumn tableViewerColumn_8 = new TableViewerColumn(tableViewerSales, SWT.NONE);
-		TableColumn tableColumn_8 = tableViewerColumn_8.getColumn();
+		TableViewerColumn tableViewerColumnItemTotal = new TableViewerColumn(tableViewerSales, SWT.NONE);
+		tableViewerColumnItemTotal.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Sale s = (Sale)element;
+				return "$" + s.getChargeAmount();
+			}
+		});
+		TableColumn tableColumn_8 = tableViewerColumnItemTotal.getColumn();
 		tableColumn_8.setWidth(90);
 		tableColumn_8.setText("Item Total");
 		scrolledComposite_1.setContent(table_1);
@@ -273,28 +302,71 @@ public class TransactionView extends Shell {
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		
-		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewerRentals, SWT.NONE);
-		TableColumn tableColumn = tableViewerColumn.getColumn();
-		tableColumn.setWidth(178);
+		TableViewerColumn tableViewerColumnRentalItemName = new TableViewerColumn(tableViewerRentals, SWT.NONE);
+		tableViewerColumnRentalItemName.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Rental r = (Rental)element;
+				try {
+					return r.getForRent().getConceptualProduct().getName();
+				} catch (DataException e) {
+					return "Unable to get product name.";
+				}
+			}
+		});
+		TableColumn tableColumn = tableViewerColumnRentalItemName.getColumn();
+		tableColumn.setWidth(166);
 		tableColumn.setText("Name");
 		
-		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
-		TableColumn tableColumn_1 = tableViewerColumn_1.getColumn();
-		tableColumn_1.setWidth(100);
+		TableViewerColumn tableViewerColumnDateOut = new TableViewerColumn(tableViewerRentals, SWT.NONE);
+		tableViewerColumnDateOut.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Rental r = (Rental)element;
+				return sdf.format(r.getDateOut());
+			}
+		});
+		TableColumn tableColumn_1 = tableViewerColumnDateOut.getColumn();
+		tableColumn_1.setWidth(75);
 		tableColumn_1.setText("Date Out");
 		
-		TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
-		TableColumn tableColumn_2 = tableViewerColumn_2.getColumn();
-		tableColumn_2.setWidth(100);
+		TableViewerColumn tableViewerDateDue = new TableViewerColumn(tableViewerRentals, SWT.NONE);
+		tableViewerDateDue.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Rental r = (Rental)element;
+				return sdf.format(r.getDateDue());
+			}
+		});
+		TableColumn tableColumn_2 = tableViewerDateDue.getColumn();
+		tableColumn_2.setWidth(80);
 		tableColumn_2.setText("Date Due");
 		
-		TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
-		TableColumn tableColumn_3 = tableViewerColumn_3.getColumn();
+		TableViewerColumn tableViewerPricePerDay = new TableViewerColumn(tableViewerRentals, SWT.NONE);
+		tableViewerPricePerDay.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Rental r = (Rental)element;
+				try {
+					return "$" + r.getForRent().getConceptualProduct().getConceputalRental().getPricePerDay();
+				} catch (DataException e) {
+					return "Unable to get price per day.";
+				}
+			}
+		});
+		TableColumn tableColumn_3 = tableViewerPricePerDay.getColumn();
 		tableColumn_3.setWidth(78);
 		tableColumn_3.setText("Price Per Day");
 		
-		TableViewerColumn tableViewerColumn_4 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
-		TableColumn tableColumn_4 = tableViewerColumn_4.getColumn();
+		TableViewerColumn tableViewerColumnRentalItemTotal = new TableViewerColumn(tableViewerRentals, SWT.NONE);
+		tableViewerColumnRentalItemTotal.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				Rental r = (Rental)element;
+				return "$" + r.getChargeAmount();
+			}
+		});
+		TableColumn tableColumn_4 = tableViewerColumnRentalItemTotal.getColumn();
 		tableColumn_4.setWidth(61);
 		tableColumn_4.setText("Item Total");
 		scrolledComposite.setContent(table);
@@ -307,7 +379,7 @@ public class TransactionView extends Shell {
 		
 		Button btnAddItem = new Button(composite, SWT.NONE);
 		GridData gd_btnAddItem = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnAddItem.widthHint = 100;
+		gd_btnAddItem.widthHint = 111;
 		btnAddItem.setLayoutData(gd_btnAddItem);
 		btnAddItem.addMouseListener(new MouseAdapter() {
 			@Override
@@ -371,7 +443,7 @@ public class TransactionView extends Shell {
 		
 		Button btnRemoveItem = new Button(composite, SWT.NONE);
 		GridData gd_btnRemoveItem = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
-		gd_btnRemoveItem.widthHint = 100;
+		gd_btnRemoveItem.widthHint = 112;
 		btnRemoveItem.setLayoutData(gd_btnRemoveItem);
 		btnRemoveItem.addMouseListener(new MouseAdapter() {
 			@Override
