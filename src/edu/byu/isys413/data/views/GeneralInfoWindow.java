@@ -16,6 +16,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -221,24 +223,11 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
-				String answer = "NO";
-				
-				try 
-				{
-					if(cust.getMembership() == null)
-					{
-						
-						answer = "YES";
-					}
-				} 
-				
-				catch (DataException ex) 
-				{
-					System.out.println("Problem with Membership");
-					ex.printStackTrace();
+				try {
+					return cust.getMembership() == null ? "No" : "Yes";
+				} catch(DataException e) {
+					return "No";
 				}
-				
-				return answer;
 			}
 		});
 		TableColumn isMember = tableViewerColumn_3.getColumn();
@@ -264,7 +253,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
-				return Boolean.toString(cust.isValid());
+				return cust.isValid() ? "Yes" : "No";
 			}
 		});
 		TableColumn tblclmnIsValidated = tableViewerColumn_52.getColumn();
@@ -288,10 +277,16 @@ public class GeneralInfoWindow extends Dialog {
 				Customer cust = (Customer) selection.getFirstElement();
 				
 				CustomerInfoView window = new CustomerInfoView(Display.getDefault(), cust);
-				
 				window.open();
 				
-				CustTableViewer.refresh();
+				// Refresh the table when the customer info window closes.
+				window.addDisposeListener(new DisposeListener() {
+					@Override
+					public void widgetDisposed(DisposeEvent arg0) {
+						CustTableViewer.refresh();
+					}
+				});
+				
 			}
 		});
 		new Label(composite_13, SWT.NONE);

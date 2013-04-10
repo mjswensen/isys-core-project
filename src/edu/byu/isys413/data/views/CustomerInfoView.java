@@ -1,5 +1,7 @@
 package edu.byu.isys413.data.views;
 
+import java.util.Date;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -34,7 +36,6 @@ public class CustomerInfoView extends Shell {
 	private Button btnCancel;
 	private Group grpCustomerInformation;
 	private Group grpMembershipInformation;
-	private Button btnAdd;
 	private Label lblCreditCard;
 	private Text txtCreditCard;
 	
@@ -117,7 +118,7 @@ public class CustomerInfoView extends Shell {
 		new Label(grpCustomerInformation, SWT.NONE);
 		
 		grpMembershipInformation = new Group(this, SWT.NONE);
-		grpMembershipInformation.setLayout(new GridLayout(3, false));
+		grpMembershipInformation.setLayout(new GridLayout(2, false));
 		grpMembershipInformation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		grpMembershipInformation.setText("Membership Information");
 		
@@ -128,42 +129,6 @@ public class CustomerInfoView extends Shell {
 		txtCreditCard = new Text(grpMembershipInformation, SWT.BORDER);
 		txtCreditCard.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		txtCreditCard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
-		btnAdd = new Button(grpMembershipInformation, SWT.NONE);
-		btnAdd.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				try 
-				{
-					if(!txtCreditCard.getText().equalsIgnoreCase(""))
-					{
-						member = BusinessObjectDAO.getInstance().create("Membership");
-						member.setCustomer(c);
-						member.setCreditCard(txtCreditCard.getText());
-						
-						btnAdd.setEnabled(false);
-						
-						//TODO enter in a lable messace "Membership Created"
-					}//if
-					
-					else
-					{
-						//TODO enter in a lable messace "Membership not Created"
-					}//else
-				}//try
-				
-				catch (DataException ex) 
-				{
-					System.out.println("Membership Malfunctioning");
-					//ex.printStackTrace();
-				}//catch
-			}
-		});
-		GridData gd_btnAdd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnAdd.widthHint = 50;
-		btnAdd.setLayoutData(gd_btnAdd);
-		btnAdd.setText("+ Add");
 		
 		composite = new Composite(this, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
@@ -189,13 +154,37 @@ public class CustomerInfoView extends Shell {
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
-				c.setFirstName(txtFirstname.getText());
-				c.setLastName(txtLastname.getText());
-				c.setPhone(txtPhone.getText());
-				c.setEmail(txtEmail.getText());
-				c.setAddress(txtAddress.getText());
 				try {
+					c.setFirstName(txtFirstname.getText());
+					c.setLastName(txtLastname.getText());
+					c.setPhone(txtPhone.getText());
+					c.setEmail(txtEmail.getText());
+					c.setAddress(txtAddress.getText());
 					c.save();
+					if(!txtCreditCard.getText().equalsIgnoreCase("")) {
+						// There is a credit card number in the field.
+						String creditCard = txtCreditCard.getText();
+						if(c.getMembership() == null) {
+							// This customer doesn't have a membership yet, so let's create it.
+							Membership m = BusinessObjectDAO.getInstance().create("Membership");
+							m.setCustomer(c);
+							m.setStartDate(new Date());
+							m.setTrial(false);
+							m.setCreditCard(creditCard);
+							m.save();
+							/* 
+							 * Let's give the customer an online password now that they have a membership.
+							 * The default password is their credit card number. They will later be able
+							 * to log in online and change their password (in a future iteration of the system).
+							 */
+							c.setPassword(creditCard);
+							c.save();
+						} else {
+							// This customer has a membership already, so let's update it.
+							Membership m = c.getMembership();
+							m.setCreditCard(creditCard);
+						}
+					}
 				} catch (DataException e1) {
 					// TODO
 				}
@@ -204,6 +193,18 @@ public class CustomerInfoView extends Shell {
 		});
 		btnSave.setText("Save");
 		createContents();
+		
+		// Populate fields with customer information.
+		txtFirstname.setText(c.getFirstName());
+		txtLastname.setText(c.getLastName());
+		txtPhone.setText(c.getPhone());
+		txtEmail.setText(c.getEmail());
+		txtAddress.setText(c.getAddress());
+		try {
+			if(c.getMembership() != null) {
+				txtCreditCard.setText(c.getMembership().getCreditCard());
+			}
+		} catch(DataException e) {}
 	}
 
 	/**
