@@ -224,7 +224,7 @@ public class GeneralInfoWindow extends Dialog {
 			{
 				Customer cust = (Customer) element;
 				try {
-					return cust.getMembership() == null ? "No" : "Yes";
+					return cust.getMembership() == null ? "" : "\u2713";
 				} catch(DataException e) {
 					return "No";
 				}
@@ -253,7 +253,7 @@ public class GeneralInfoWindow extends Dialog {
 			public String getText(Object element) 
 			{
 				Customer cust = (Customer) element;
-				return cust.isValid() ? "Yes" : "No";
+				return cust.isValid() ? "\u2713" : "";
 			}
 		});
 		TableColumn tblclmnIsValidated = tableViewerColumn_52.getColumn();
