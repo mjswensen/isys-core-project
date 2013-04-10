@@ -126,16 +126,15 @@
                     android:layout_weight="1"
                     android:onClick="buySelectedPictures"
                     android:text="@string/buy_prints" />
-
             </LinearLayout>
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:layout_height="match_parent" >
 
             <LinearLayout
+                android:id="@+id/layoutShowPictureHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
@@ -143,6 +142,7 @@
                     android:id="@+id/textViewShowPicture"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/view_picture"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -153,31 +153,36 @@
                     android:layout_height="wrap_content"
                     android:onClick="logout"
                     android:text="@string/log_out" />
-
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/imageViewShowPicture"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_search" />
+                android:layout_height="fill_parent"
+                android:layout_above="@+id/textViewShowPictureCaption"
+                android:layout_below="@id/layoutShowPictureHeader" />
 
             <TextView
                 android:id="@+id/textViewShowPictureCaption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Medium Text"
+                android:layout_above="@+id/layoutShowImageFooter"
+                android:layout_marginBottom="@dimen/MyPadding"
+                android:gravity="center_horizontal"
+                android:text="@string/empty_string"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <LinearLayout
+                android:id="@+id/layoutShowImageFooter"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true" >
 
                 <Button
                     android:id="@+id/buttonShowPictureBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="showListView"
                     android:text="@string/back" />
 
@@ -185,11 +190,11 @@
                     android:id="@+id/buttonShowPictureBuyPrint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="buyShownPicture"
                     android:text="@string/buy_print" />
-
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
