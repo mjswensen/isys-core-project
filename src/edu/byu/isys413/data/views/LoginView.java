@@ -19,12 +19,24 @@ import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.Employee;
 import edu.byu.isys413.data.models.LDAP;
 import edu.byu.isys413.data.models.SearchCriteria;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class LoginView extends Shell {
 	private Text txtNetid;
 	private Text txtPassword;
 	private int tryCount = 1;
 	private Label errorLabel;
+	private CLabel label;
+	private Group grpLoginStatus;
+	private Composite composite;
+	private Button btnCancel;
+	private Composite composite_1;
 
 	/**
 	 * Launch the application. Only used for testing.
@@ -51,21 +63,37 @@ public class LoginView extends Shell {
 	 * @param display
 	 */
 	public LoginView(Display display) {
-		super(display, SWT.SHELL_TRIM | SWT.APPLICATION_MODAL);
+		super(display, SWT.SHELL_TRIM | SWT.APPLICATION_MODAL | SWT.NONE);
+		setMinimumSize(new Point(480, 215));
+		setImage(SWTResourceManager.getImage(LoginView.class, "/images/logo_camera.png"));
 		setLayout(new GridLayout(2, false));
 		
-		Label lblNetid = new Label(this, SWT.NONE);
-		lblNetid.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		label = new CLabel(this, SWT.NONE);
+		label.setImage(SWTResourceManager.getImage(LoginView.class, "/images/logo_camera.png"));
+		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 4));
+		label.setText("");
+		
+		composite_1 = new Composite(this, SWT.NONE);
+		GridData gd_composite_1 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 2);
+		gd_composite_1.verticalIndent = 5;
+		composite_1.setLayoutData(gd_composite_1);
+		composite_1.setLayout(new GridLayout(2, false));
+		
+		Label lblNetid = new Label(composite_1, SWT.NONE);
 		lblNetid.setText("NetID:");
 		
-		txtNetid = new Text(this, SWT.BORDER);
-		txtNetid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtNetid = new Text(composite_1, SWT.BORDER);
+		GridData gd_txtNetid = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		gd_txtNetid.widthHint = 200;
+		txtNetid.setLayoutData(gd_txtNetid);
 		
-		Label lblPassword = new Label(this, SWT.NONE);
-		lblPassword.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		Label lblPassword = new Label(composite_1, SWT.NONE);
 		lblPassword.setText("Password:");
 		
-		txtPassword = new Text(this, SWT.BORDER | SWT.PASSWORD);
+		txtPassword = new Text(composite_1, SWT.BORDER | SWT.PASSWORD);
+		GridData gd_txtPassword = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		gd_txtPassword.widthHint = 200;
+		txtPassword.setLayoutData(gd_txtPassword);
 		txtPassword.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -74,23 +102,45 @@ public class LoginView extends Shell {
 				}
 			}
 		});
-		txtPassword.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(this, SWT.NONE);
 		
-		errorLabel = new Label(this, SWT.NONE);
-		errorLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		grpLoginStatus = new Group(this, SWT.NONE);
+		grpLoginStatus.setText("Login Status");
+		grpLoginStatus.setLayout(new GridLayout(1, false));
+		grpLoginStatus.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
+		
+		errorLabel = new Label(grpLoginStatus, SWT.NONE);
+		errorLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1));
 		errorLabel.setText("");
-		new Label(this, SWT.NONE);
 		
-		Button btnLogIn = new Button(this, SWT.NONE);
+		composite = new Composite(this, SWT.NONE);
+		composite.setLayout(new GridLayout(2, false));
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
+		
+		btnCancel = new Button(composite, SWT.NONE);
+		btnCancel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				System.exit(0);
+			}
+		});
+		btnCancel.setFont(SWTResourceManager.getFont("Buxton Sketch", 14, SWT.BOLD));
+		GridData gd_btnCancel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_btnCancel.widthHint = 120;
+		btnCancel.setLayoutData(gd_btnCancel);
+		btnCancel.setText("CANCEL");
+		
+		Button btnLogIn = new Button(composite, SWT.NONE);
+		GridData gd_btnLogIn = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnLogIn.widthHint = 120;
+		btnLogIn.setLayoutData(gd_btnLogIn);
+		btnLogIn.setFont(SWTResourceManager.getFont("Buxton Sketch", 14, SWT.BOLD));
 		btnLogIn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				login();
 			}
 		});
-		btnLogIn.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnLogIn.setText("Log In");
+		btnLogIn.setText("OK");
 		createContents();
 	}
 	
@@ -98,8 +148,8 @@ public class LoginView extends Shell {
 	 * Create contents of the shell.
 	 */
 	protected void createContents() {
-		setText("Log In");
-		setSize(425, 135);
+		setText("LogIn");
+		setSize(463, 215);
 	}
 	
 	/**
@@ -132,6 +182,7 @@ public class LoginView extends Shell {
 				messageBox.setMessage("Login failed. Please try again later."); 
 				messageBox.open(); 
 				dispose();
+				System.exit(0);
 			}
 		}
 	}

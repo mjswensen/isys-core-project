@@ -15,6 +15,11 @@ import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.Customer;
 import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.SearchCriteria;
+import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class CustomerLookupView extends Shell {
 	private Text txtLastname;
@@ -47,16 +52,26 @@ public class CustomerLookupView extends Shell {
 	 */
 	public CustomerLookupView(Display display) {
 		super(display, SWT.SHELL_TRIM);
-		setLayout(new GridLayout(3, false));
+		setMinimumSize(new Point(350, 210));
+		setImage(SWTResourceManager.getImage(CustomerLookupView.class, "/images/logo_camera.png"));
+		setLayout(new GridLayout(1, false));
 		
-		Label lblLastName = new Label(this, SWT.NONE);
+		Group grpLookupInformation = new Group(this, SWT.NONE);
+		grpLookupInformation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		grpLookupInformation.setText("Customer Information");
+		grpLookupInformation.setLayout(new GridLayout(3, false));
+		
+		Label lblLastName = new Label(grpLookupInformation, SWT.NONE);
 		lblLastName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblLastName.setText("Last Name:");
 		
-		txtLastname = new Text(this, SWT.BORDER);
+		txtLastname = new Text(grpLookupInformation, SWT.BORDER);
 		txtLastname.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnGo = new Button(this, SWT.NONE);
+		Button btnGo = new Button(grpLookupInformation, SWT.NONE);
+		GridData gd_btnGo = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnGo.widthHint = 50;
+		btnGo.setLayoutData(gd_btnGo);
 		btnGo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -67,7 +82,7 @@ public class CustomerLookupView extends Shell {
 						AppData.getInstance().setLookupCustomer(c);
 						dispose();
 					} else {
-						lblCustNotFound.setText("Customer not found.");
+						lblCustNotFound.setText("CUSTOMER NOT FOUND");
 					}
 				} catch (DataException e1) {
 					e1.printStackTrace();
@@ -76,14 +91,17 @@ public class CustomerLookupView extends Shell {
 		});
 		btnGo.setText("Go");
 		
-		Label lblPhoneNumber = new Label(this, SWT.NONE);
+		Label lblPhoneNumber = new Label(grpLookupInformation, SWT.NONE);
 		lblPhoneNumber.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblPhoneNumber.setText("Phone Number:");
 		
-		txtPhonenumber = new Text(this, SWT.BORDER);
+		txtPhonenumber = new Text(grpLookupInformation, SWT.BORDER);
 		txtPhonenumber.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnGo_1 = new Button(this, SWT.NONE);
+		Button btnGo_1 = new Button(grpLookupInformation, SWT.NONE);
+		GridData gd_btnGo_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnGo_1.widthHint = 50;
+		btnGo_1.setLayoutData(gd_btnGo_1);
 		btnGo_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -102,18 +120,27 @@ public class CustomerLookupView extends Shell {
 			}
 		});
 		btnGo_1.setText("Go");
-		new Label(this, SWT.NONE);
-		new Label(this, SWT.NONE);
-		new Label(this, SWT.NONE);
-		new Label(this, SWT.NONE);
-		new Label(this, SWT.NONE);
-		new Label(this, SWT.NONE);
-		new Label(this, SWT.NONE);
 		
-		lblCustNotFound = new Label(this, SWT.NONE);
-		lblCustNotFound.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		Group grpStatusInformation = new Group(this, SWT.NONE);
+		grpStatusInformation.setLayout(new GridLayout(1, false));
+		grpStatusInformation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		grpStatusInformation.setText("Status Information");
 		
-		new Label(this, SWT.NONE);
+		lblCustNotFound = new Label(grpStatusInformation, SWT.NONE);
+		lblCustNotFound.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		
+		Button btnNewButton = new Button(this, SWT.NONE);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				dispose();
+			}
+		});
+		GridData gd_btnNewButton = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+		gd_btnNewButton.widthHint = 100;
+		btnNewButton.setLayoutData(gd_btnNewButton);
+		btnNewButton.setText("Cancel");
 		createContents();
 	}
 
@@ -121,8 +148,8 @@ public class CustomerLookupView extends Shell {
 	 * Create contents of the shell.
 	 */
 	protected void createContents() {
-		setText("Customer Lookup");
-		setSize(450, 300);
+		setText("MyStuff | Customer Lookup");
+		setSize(267, 210);
 
 	}
 

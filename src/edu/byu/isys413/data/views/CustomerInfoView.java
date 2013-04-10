@@ -11,8 +11,17 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 
+import edu.byu.isys413.data.models.BusinessObjectDAO;
 import edu.byu.isys413.data.models.Customer;
 import edu.byu.isys413.data.models.DataException;
+import edu.byu.isys413.data.models.Membership;
+
+import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class CustomerInfoView extends Shell {
 	private Text txtFirstname;
@@ -21,12 +30,16 @@ public class CustomerInfoView extends Shell {
 	private Text txtEmail;
 	private Text txtAddress;
 	private Button btnSave;
+	private Composite composite;
+	private Button btnCancel;
+	private Group grpCustomerInformation;
+	private Group grpMembershipInformation;
+	private Button btnAdd;
+	private Label lblCreditCard;
+	private Text txtCreditCard;
+	
+	private Membership member = null;
 
-	
-///////////////////////// NOW OBSELETE - SEE CUSTOMER DIALOG //////////////////////////////
-	
-	
-	
 	/**
 	 * Launch the application.
 	 * @param args
@@ -53,45 +66,125 @@ public class CustomerInfoView extends Shell {
 	 */
 	public CustomerInfoView(Display display, final Customer c) {
 		super(display, SWT.SHELL_TRIM);
-		setLayout(new GridLayout(2, false));
+		setMinimumSize(new Point(320, 310));
+		setImage(SWTResourceManager.getImage(CustomerInfoView.class, "/images/logo_camera.png"));
+		setLayout(new GridLayout(1, false));
 		
-		Label lblFirstName = new Label(this, SWT.NONE);
-		lblFirstName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		grpCustomerInformation = new Group(this, SWT.NONE);
+		grpCustomerInformation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		grpCustomerInformation.setText("Personal Information");
+		grpCustomerInformation.setLayout(new GridLayout(2, false));
+		
+		Label lblFirstName = new Label(grpCustomerInformation, SWT.NONE);
 		lblFirstName.setText("First Name:");
 		
-		txtFirstname = new Text(this, SWT.BORDER);
-		txtFirstname.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtFirstname = new Text(grpCustomerInformation, SWT.BORDER);
+		GridData gd_txtFirstname = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_txtFirstname.widthHint = 200;
+		txtFirstname.setLayoutData(gd_txtFirstname);
 		
-		Label lblLastName = new Label(this, SWT.NONE);
-		lblLastName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		Label lblLastName = new Label(grpCustomerInformation, SWT.NONE);
 		lblLastName.setText("Last Name:");
 		
-		txtLastname = new Text(this, SWT.BORDER);
-		txtLastname.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtLastname = new Text(grpCustomerInformation, SWT.BORDER);
+		GridData gd_txtLastname = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_txtLastname.widthHint = 200;
+		txtLastname.setLayoutData(gd_txtLastname);
 		
-		Label lblPhone = new Label(this, SWT.NONE);
-		lblPhone.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		Label lblPhone = new Label(grpCustomerInformation, SWT.NONE);
 		lblPhone.setText("Phone:");
 		
-		txtPhone = new Text(this, SWT.BORDER);
-		txtPhone.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtPhone = new Text(grpCustomerInformation, SWT.BORDER);
+		GridData gd_txtPhone = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_txtPhone.widthHint = 100;
+		txtPhone.setLayoutData(gd_txtPhone);
 		
-		Label lblEmail = new Label(this, SWT.NONE);
-		lblEmail.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		Label lblEmail = new Label(grpCustomerInformation, SWT.NONE);
 		lblEmail.setText("Email:");
 		
-		txtEmail = new Text(this, SWT.BORDER);
-		txtEmail.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtEmail = new Text(grpCustomerInformation, SWT.BORDER);
+		GridData gd_txtEmail = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_txtEmail.widthHint = 200;
+		txtEmail.setLayoutData(gd_txtEmail);
 		
-		Label lblAddress = new Label(this, SWT.NONE);
-		lblAddress.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		Label lblAddress = new Label(grpCustomerInformation, SWT.NONE);
 		lblAddress.setText("Address:");
 		
-		txtAddress = new Text(this, SWT.BORDER);
-		txtAddress.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(this, SWT.NONE);
+		txtAddress = new Text(grpCustomerInformation, SWT.BORDER);
+		GridData gd_txtAddress = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 2);
+		gd_txtAddress.widthHint = 200;
+		txtAddress.setLayoutData(gd_txtAddress);
+		new Label(grpCustomerInformation, SWT.NONE);
 		
-		btnSave = new Button(this, SWT.NONE);
+		grpMembershipInformation = new Group(this, SWT.NONE);
+		grpMembershipInformation.setLayout(new GridLayout(3, false));
+		grpMembershipInformation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		grpMembershipInformation.setText("Membership Information");
+		
+		lblCreditCard = new Label(grpMembershipInformation, SWT.NONE);
+		lblCreditCard.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblCreditCard.setText("Credit Card");
+		
+		txtCreditCard = new Text(grpMembershipInformation, SWT.BORDER);
+		txtCreditCard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		btnAdd = new Button(grpMembershipInformation, SWT.NONE);
+		btnAdd.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				try 
+				{
+					if(!txtCreditCard.getText().equalsIgnoreCase(""))
+					{
+						member = BusinessObjectDAO.getInstance().create("Membership");
+						member.setCustomer(c);
+						member.setCreditCard(txtCreditCard.getText());
+						
+						btnAdd.setEnabled(false);
+						
+						//TODO enter in a lable messace "Membership Created"
+					}//if
+					
+					else
+					{
+						//TODO enter in a lable messace "Membership not Created"
+					}//else
+				}//try
+				
+				catch (DataException ex) 
+				{
+					System.out.println("Membership Malfunctioning");
+					//ex.printStackTrace();
+				}//catch
+			}
+		});
+		GridData gd_btnAdd = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnAdd.widthHint = 50;
+		btnAdd.setLayoutData(gd_btnAdd);
+		btnAdd.setText("+ Add");
+		
+		composite = new Composite(this, SWT.NONE);
+		composite.setLayout(new GridLayout(2, false));
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		btnCancel = new Button(composite, SWT.NONE);
+		btnCancel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				dispose();
+			}
+		});
+		GridData gd_btnNewButton = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_btnNewButton.widthHint = 100;
+		btnCancel.setLayoutData(gd_btnNewButton);
+		btnCancel.setText("Cancel");
+		
+		btnSave = new Button(composite, SWT.NONE);
+		GridData gd_btnSave = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnSave.widthHint = 100;
+		btnSave.setLayoutData(gd_btnSave);
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -108,7 +201,6 @@ public class CustomerInfoView extends Shell {
 				dispose();
 			}
 		});
-		btnSave.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		btnSave.setText("Save");
 		createContents();
 	}
@@ -117,8 +209,8 @@ public class CustomerInfoView extends Shell {
 	 * Create contents of the shell.
 	 */
 	protected void createContents() {
-		setText("Customer Information");
-		setSize(423, 216);
+		setText("MyStuff | Customer Information");
+		setSize(320, 264);
 
 	}
 

@@ -52,7 +52,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 public class GeneralInfoWindow extends Dialog {
 
 	protected Object result;
-	protected Shell shell;
+	protected Shell shlMyStuff;
 	private Table empTable;
 	private Table storeTable;
 	private Table conProdTable;
@@ -89,10 +89,10 @@ public class GeneralInfoWindow extends Dialog {
 	 */
 	public Object open() throws DataException {
 		createContents();
-		shell.open();
-		shell.layout();
+		shlMyStuff.open();
+		shlMyStuff.layout();
 		Display display = getParent().getDisplay();
-		while (!shell.isDisposed()) {
+		while (!shlMyStuff.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -105,13 +105,14 @@ public class GeneralInfoWindow extends Dialog {
 	 * @throws DataException 
 	 */
 	private void createContents() throws DataException {
-		shell = new Shell();
-		shell.setMinimumSize(new Point(900, 500));
-		shell.setSize(801, 501);
-		shell.setText("My Stuff | Group 9 Sec. 1");
-		shell.setLayout(new GridLayout(1, false));
+		shlMyStuff = new Shell();
+		shlMyStuff.setImage(SWTResourceManager.getImage(GeneralInfoWindow.class, "/images/logo_camera.png"));
+		shlMyStuff.setMinimumSize(new Point(900, 500));
+		shlMyStuff.setSize(801, 501);
+		shlMyStuff.setText("My Stuff | Management Window");
+		shlMyStuff.setLayout(new GridLayout(1, false));
 		
-		CTabFolder tabFolder = new CTabFolder(shell, SWT.BORDER);
+		CTabFolder tabFolder = new CTabFolder(shlMyStuff, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		
@@ -285,17 +286,27 @@ public class GeneralInfoWindow extends Dialog {
 		scrolledComposite_5.setMinSize(custTable.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		scrolledComposite_5.setMinSize(new Point(866, 45));
 		
-		Button btnAddCust = new Button(composite_13, SWT.NONE);
-		GridData gd_btnAddCust = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnAddCust.widthHint = 200;
-		btnAddCust.setLayoutData(gd_btnAddCust);
-		btnAddCust.setText("+ Add New Customer");
-		
 		Button btnEditCustomer = new Button(composite_13, SWT.NONE);
 		GridData gd_btnEditSelectedEmployee_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnEditSelectedEmployee_1.widthHint = 200;
 		btnEditCustomer.setLayoutData(gd_btnEditSelectedEmployee_1);
 		btnEditCustomer.setText("Edit Selected Customer");
+		
+		btnEditCustomer.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				IStructuredSelection selection = (IStructuredSelection) CustTableViewer.getSelection();
+				Customer cust = (Customer) selection.getFirstElement();
+				
+				CustomerInfoView window = new CustomerInfoView(Display.getDefault(), cust);
+				
+				window.open();
+				
+				CustTableViewer.refresh();
+			}
+		});
+		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		new Label(composite_13, SWT.NONE);
 		
@@ -311,68 +322,11 @@ public class GeneralInfoWindow extends Dialog {
 		CustTableViewer.setContentProvider(new ArrayContentProvider());
 		CustTableViewer.setInput(BusinessObjectDAO.getInstance().searchForAll("Customer"));
 		
-		//********** Customer Buttons **********
-		
-		btnAddCust.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				CustomerDialog window = new CustomerDialog(shell, SWT.APPLICATION_MODAL, null);
-				try 
-				{
-					window.open();
-				} 
-				
-				catch (DataException ex) 
-				{
-					System.out.println("Problem creating Customer Dialog");
-					//ex.printStackTrace();
-				}
-				
-				try 
-				{
-					CustTableViewer.setInput(BusinessObjectDAO.getInstance().searchForAll("Customer"));
-				} 
-				
-				catch (DataException ex) 
-				{
-					System.out.println("Customer Table Viewer Error");
-					//ex.printStackTrace();
-				}
-				
-				CustTableViewer.refresh();
-			}
-		});
-		
-		btnEditCustomer.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				IStructuredSelection selection = (IStructuredSelection) CustTableViewer.getSelection();
-				Customer cust = (Customer) selection.getFirstElement();
-				
-				CustomerDialog window = new CustomerDialog(shell, SWT.APPLICATION_MODAL, cust);
-				
-				try 
-				{
-					window.open();
-				} 
-				
-				catch (DataException ex) 
-				{
-					System.out.println("Problem creating Customer Dialog");
-					//ex.printStackTrace();
-				}
-				
-				CustTableViewer.refresh();
-			}
-		});
-		
 		btnCustExit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				shell.close();
+				shlMyStuff.close();
 			}
 		});
 		
@@ -587,7 +541,7 @@ public class GeneralInfoWindow extends Dialog {
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				shell.close();
+				shlMyStuff.close();
 			}
 		});
 		
@@ -946,7 +900,7 @@ public class GeneralInfoWindow extends Dialog {
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				shell.close();
+				shlMyStuff.close();
 			}
 		});
 		
@@ -1408,9 +1362,18 @@ public class GeneralInfoWindow extends Dialog {
 		btnExit.setLayoutData(gd_btnConRentExit);
 		btnExit.setText("Exit");
 		
-		CTabItem tbtmComputers = new CTabItem(tabFolder, SWT.NONE);
-		tbtmComputers.setImage(SWTResourceManager.getImage(GeneralInfoWindow.class, "/images/computer.png"));
-		tbtmComputers.setText("Computers");
+		switch(tab)
+		{
+			case 1:		tabFolder.setSelection(1);
+						break;
+			case 2:		tabFolder.setSelection(2);
+						break;
+			case 3:		tabFolder.setSelection(3);
+						break;
+			case 4:		tabFolder.setSelection(4);
+						break;
+			default:	tabFolder.setSelection(0);
+		}
 		
 	}//createContents
 }//GeneralInfoWindow
