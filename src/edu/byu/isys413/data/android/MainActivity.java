@@ -3,7 +3,6 @@ package edu.byu.isys413.data.android;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,12 +37,14 @@ import android.provider.MediaStore.Images.Media;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 public class MainActivity extends Activity {
@@ -58,6 +60,8 @@ public class MainActivity extends Activity {
 	static int UPLOAD_PIC_VIEW = 3;
 	
 	static final int UPLOAD_PHOTO_CODE = 1;
+	
+	Picture shownPic = null;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,96 +87,62 @@ public class MainActivity extends Activity {
      * @param view
      */
     public void loginSubmit(final View view) {
+    	// Force the keyboard to close.
+    	InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+    	imm.hideSoftInputFromWindow(((EditText) findViewById(R.id.editTextPassword)).getWindowToken(), 0);
+    	// Post the login credentials.
     	try {
-	    	HttpPost request = new HttpPost(getUrlFromAction("Login"));
 	    	List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    	EditText email = (EditText) findViewById(R.id.editTextEmail);
 	    	EditText password = (EditText) findViewById(R.id.editTextPassword);
 	    	nameValuePairs.add(new BasicNameValuePair("format", "json"));
 	    	nameValuePairs.add(new BasicNameValuePair("email", email.getText().toString()));
 	        nameValuePairs.add(new BasicNameValuePair("password", password.getText().toString()));
-	        request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-	        HttpResponse response = client.execute(request);
-	        StatusLine statusLine = response.getStatusLine();
-	        int statusCode = statusLine.getStatusCode();
-	        if (statusCode == 200) {
-				HttpEntity entity = response.getEntity();
-				InputStream content = entity.getContent();
-				StringBuilder builder = new StringBuilder();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
-				}
-				JSONObject json = new JSONObject(builder.toString());
-				if(json.getString("status").equals("success")) {
-//					// Get the pics out of the JSON array
-//					JSONArray picsJa = json.getJSONArray("pics");
-//					for(int i = 0; i < picsJa.length(); i++) {
-//						JSONObject picJo = picsJa.getJSONObject(i);
-//						Picture pic = new Picture(picJo.getString("id"), picJo.getString("caption"));
-//						picList.add(pic);
-//					}
-					populatePicListFromJson(json);
-					// Assign the picList to the ListView
-					ListView pics = (ListView) findViewById(R.id.listViewPics);
-					pics.setAdapter(new ArrayAdapter(this, R.layout.pic_in_list, picList));
-					pics.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-						@Override
-						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+	        JSONObject json = makeRequest("Login", nameValuePairs);
+			if(json.getString("status").equals("success")) {
+				// Get the pics out of the JSON array
+				populatePicListFromJson(json);
+				// Assign the picList to the ListView
+				ListView pics = (ListView) findViewById(R.id.listViewPics);
+				pics.setAdapter(new ArrayAdapter(this, R.layout.pic_in_list, picList));
+				pics.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+						Picture pic = (Picture) parent.getItemAtPosition(position);
+						pic.toggleSelected();
+					}
+				});
+				pics.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+					@Override
+					public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+						try {
 							Picture pic = (Picture) parent.getItemAtPosition(position);
-							pic.toggleSelected();
+							List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+							nameValuePairs.add(new BasicNameValuePair("picId", pic.getGuid()));
+					        JSONObject json = makeRequest("PicData", nameValuePairs);
+							// Get the pic data, decode it, and show it in the view.
+							String picData = json.getString("picData");
+							byte[] picDataBytes = Base64.decode(picData, Base64.DEFAULT);
+				        	ImageView showPicture = (ImageView) findViewById(R.id.imageViewShowPicture);
+				        	showPicture.setImageBitmap(BitmapFactory.decodeByteArray(picDataBytes, 0, picDataBytes.length));
+				        	// Show the caption in the view, too.
+				        	TextView showPictureCaption = (TextView) findViewById(R.id.textViewShowPictureCaption);
+				        	showPictureCaption.setText(pic.getCaption());
+				        	// Finally, show the ShowPicture view.
+				        	showShowPictureView();
+				        	// Set the shownPic to the current picture, in case the user buys prints from show picture view.
+				        	shownPic = pic;
+						} catch(Exception e) {
+							e.printStackTrace();
 						}
-					});
-					pics.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-						@Override
-						public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-							try {
-								Picture pic = (Picture) parent.getItemAtPosition(position);
-								HttpPost request = new HttpPost(getUrlFromAction("PicData"));
-								List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-								nameValuePairs.add(new BasicNameValuePair("picId", pic.getGuid()));
-								request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-						        HttpResponse response = client.execute(request);
-						        StatusLine statusLine = response.getStatusLine();
-						        int statusCode = statusLine.getStatusCode();
-						        if(statusCode == 200) {
-						        	HttpEntity entity = response.getEntity();
-									InputStream content = entity.getContent();
-									StringBuilder builder = new StringBuilder();
-									BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-									String line;
-									while ((line = reader.readLine()) != null) {
-										builder.append(line);
-									}
-									JSONObject json = new JSONObject(builder.toString());
-									// Get the pic data, decode it, and show it in the view.
-									String picData = json.getString("picData");
-									byte[] picDataBytes = Base64.decode(picData, Base64.DEFAULT);
-						        	ImageView showPicture = (ImageView) findViewById(R.id.imageViewShowPicture);
-						        	showPicture.setImageBitmap(BitmapFactory.decodeByteArray(picDataBytes, 0, picDataBytes.length));
-						        	// Show the caption in the view, too.
-						        	TextView showPictureCaption = (TextView) findViewById(R.id.textViewShowPictureCaption);
-						        	showPictureCaption.setText(pic.getCaption());
-						        	// Finally, show the ShowPicture view.
-						        	showShowPictureView();
-						        } else {
-						        	throw new Exception("Got a response other than 200.");
-						        }
-							} catch(Exception e) {
-								e.printStackTrace();
-							}
-							return true;// See http://developer.android.com/reference/android/widget/AdapterView.OnItemLongClickListener.html
-						}
-					});
-					showListView();
-				} else {
-					TextView loginStatus = (TextView) findViewById(R.id.textViewLoginStatus);
-					loginStatus.setText("Bummer. The email/password you provided didn't work.");
-				}
-	        } else {
-	        	throw new Exception("Got a response other than 200.");
-	        }
+						return true;// See http://developer.android.com/reference/android/widget/AdapterView.OnItemLongClickListener.html
+					}
+				});
+				showListView();
+			} else {
+				TextView loginStatus = (TextView) findViewById(R.id.textViewLoginStatus);
+				loginStatus.setText("Bummer. The email/password you provided didn't work.");
+			}
     	} catch(Exception e) {
     		e.printStackTrace();
     	}
@@ -276,35 +246,16 @@ public class MainActivity extends Activity {
     	
     	// Send to server and get updated pic list
     	try {
-	    	HttpPost request = new HttpPost(getUrlFromAction("UploadPicture"));
 	    	List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	    	nameValuePairs.add(new BasicNameValuePair("picData", picData));
 	    	nameValuePairs.add(new BasicNameValuePair("caption", caption));
-	        request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-	        HttpResponse response = client.execute(request);
-	        StatusLine statusLine = response.getStatusLine();
-	        int statusCode = statusLine.getStatusCode();
-	        if(statusCode == 200) {
-	        	// Get updated pic list from JSON string
-	        	HttpEntity entity = response.getEntity();
-				InputStream content = entity.getContent();
-				StringBuilder builder = new StringBuilder();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
-				}
-				JSONObject json = new JSONObject(builder.toString());
-				populatePicListFromJson(json);
-				// We need to notify the adapter that the dataset changed.
-				ListView pics = (ListView) findViewById(R.id.listViewPics);
-				pics.invalidateViews();
-	        	showListView();
-	        } else {
-	        	throw new Exception("Got a response other than 200.");
-	        }
+	    	JSONObject json = makeRequest("UploadPicture", nameValuePairs);
+			populatePicListFromJson(json);
+			// We need to notify the adapter that the dataset changed.
+			ListView pics = (ListView) findViewById(R.id.listViewPics);
+			pics.invalidateViews();
     	} catch(Exception e) {
-    		
+    		// TODO: handle this.
     	}
     	
     	// Switch to pic list view.
@@ -312,7 +263,89 @@ public class MainActivity extends Activity {
     }
     
     /**
-     * The following are convenince methods for using the ViewFlipper.
+     * Sends a message to the server to delete the session and
+     * returns the user to the login view.
+     * @param view
+     */
+    public void logout(View view) {
+    	try {
+    	List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+    	nameValuePairs.add(new BasicNameValuePair("format","json"));
+    	JSONObject json = makeRequest("Logout", nameValuePairs);
+    	if(json.getString("status").equals("success")) {
+    		// clear the password input and show the login view.
+    		((EditText) findViewById(R.id.editTextPassword)).setText("");
+    		showLoginView();
+    	}
+    	} catch(Exception e) {
+    		// TODO: handle this.
+    	}
+    }
+    
+    /**
+     * For making HTTP requests from within the application.
+     * @param action
+     * @param data
+     * @return JSONObject json
+     * @throws Exception
+     */
+    public JSONObject makeRequest(String action, List<NameValuePair> data) throws Exception {
+    	HttpPost request = new HttpPost(getUrlFromAction(action));
+    	request.setEntity(new UrlEncodedFormEntity(data));
+        HttpResponse response = client.execute(request);
+        StatusLine statusLine = response.getStatusLine();
+        int statusCode = statusLine.getStatusCode();
+        if (statusCode == 200) {
+			HttpEntity entity = response.getEntity();
+			InputStream content = entity.getContent();
+			StringBuilder builder = new StringBuilder();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				builder.append(line);
+			}
+			return new JSONObject(builder.toString());
+        } else {
+        	throw new Exception("Got a response other than 200");
+        }
+    }
+    
+    public void buyShownPicture(View view) {
+    	try {
+    		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+    		nameValuePairs.add(new BasicNameValuePair("guid", shownPic.getGuid()));
+			JSONObject json = makeRequest("BuyPrints", nameValuePairs);
+			// Get json message and display it in a toast.
+			Toast.makeText(this, json.getString("message"), Toast.LENGTH_LONG).show();
+			showListView();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void buySelectedPictures(View view) {
+    	try {
+    		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+    		for(Picture pic : picList) {
+    			if(pic.isSelected()) {
+    				nameValuePairs.add(new BasicNameValuePair("guid", pic.getGuid()));
+    			}
+    		}
+    		if(nameValuePairs.size() > 0) {
+    			JSONObject json = makeRequest("BuyPrints", nameValuePairs);
+    			// Get json message and display it in a toast.
+    			Toast.makeText(this, json.getString("message"), Toast.LENGTH_LONG).show();
+    			showListView();
+    		} else {
+    			throw new Exception("Cannot buy 0 prints.");
+    		}
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    /**
+     * The following are convenience methods for using the ViewFlipper.
      * Overloaded with View parameter so that they may be called
      * directly from an event handler if desired.
      */

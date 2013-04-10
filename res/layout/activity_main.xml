@@ -78,7 +78,9 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="logout"
                     android:text="@string/log_out" />
+
             </LinearLayout>
 
             <ListView
@@ -109,7 +111,9 @@
                     android:id="@+id/buttonBuyPrints"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="buySelectedPictures"
                     android:text="@string/buy_prints" />
+
             </LinearLayout>
         </LinearLayout>
 
@@ -134,7 +138,9 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="logout"
                     android:text="@string/log_out" />
+
             </LinearLayout>
 
             <ImageView
@@ -166,7 +172,9 @@
                     android:id="@+id/buttonShowPictureBuyPrint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="buyShownPicture"
                     android:text="@string/buy_print" />
+
             </LinearLayout>
         </LinearLayout>
 
@@ -191,7 +199,9 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="logout"
                     android:text="@string/log_out" />
+
             </LinearLayout>
 
             <ImageView

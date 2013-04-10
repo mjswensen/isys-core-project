@@ -3,6 +3,8 @@ package edu.byu.isys413.data.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+
 import edu.byu.isys413.data.web.*;
 
 public class Logout implements Action {
@@ -16,7 +18,14 @@ public class Logout implements Action {
 		request.getSession().removeAttribute("cust");
 		request.getSession().invalidate();
 		
-		return "index.jsp";
+		if(request.getParameter("format").equals("json")) {
+			JSONObject json = new JSONObject();
+			json.put("status", "success");
+			request.setAttribute("json", json);
+			return "json.jsp";
+		} else {
+			return "index.jsp";
+		}
 	}
-
+	
 }

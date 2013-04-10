@@ -231,6 +231,19 @@ public class Transaction extends BusinessObject {
 	}
 	
 	/**
+	 * @return Print Orders associated with this transaction
+	 * @throws DataException
+	 */
+	public List<PrintOrder> getPrintOrders() throws DataException {
+		List<PrintOrder> allPos = BusinessObjectDAO.getInstance().searchForAll("PrintOrder");
+		List<PrintOrder> pos = new LinkedList<PrintOrder>();
+		for(PrintOrder po : allPos) {
+			if(po.getTransactionId() == id) pos.add(po);
+		}
+		return pos;
+	}
+	
+	/**
 	 * Retrieves associated sales from DB and calculates totals.
 	 * @throws DataException
 	 */
@@ -244,6 +257,9 @@ public class Transaction extends BusinessObject {
 		}
 		for(Fee f : getFees()) {
 			subtotal += f.getChargeAmount();
+		}
+		for(PrintOrder po : getPrintOrders()) {
+			subtotal += po.getChargeAmount();
 		}
 		tax = subtotal * getStore().getSalesTaxRate();
 		total = tax + subtotal;
