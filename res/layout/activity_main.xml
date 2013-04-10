@@ -14,6 +14,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
+            <ImageView
+                android:id="@+id/imageViewLoginLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/MyPadding"
+                android:src="@drawable/meyer_1" />
+
             <TextView
                 android:id="@+id/textViewEmail"
                 android:layout_width="wrap_content"
@@ -46,6 +54,7 @@
                 android:id="@+id/buttonLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:onClick="loginSubmit"
                 android:text="@string/log_in" />
 
