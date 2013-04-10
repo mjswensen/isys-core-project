@@ -4,6 +4,7 @@ package edu.byu.isys413.data.views;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -134,23 +135,22 @@ public class GeneralInfoWindow extends Dialog {
 		composite_10.setLayout(new GridLayout(4, false));
 		composite_10.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
 		
-		Label lblSearchBy_3 = new Label(composite_10, SWT.NONE);
-		lblSearchBy_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSearchBy_3.setText("Filter by:");
+		Label lblCustFilter = new Label(composite_10, SWT.NONE);
+		lblCustFilter.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblCustFilter.setText("Filter:");
 		
 		Combo custColumCombo = new Combo(composite_10, SWT.READ_ONLY);
 		GridData gd_custColumCombo = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_custColumCombo.widthHint = 150;
 		custColumCombo.setLayoutData(gd_custColumCombo);
 		
-		Label lblSearch_2 = new Label(composite_10, SWT.NONE);
-		lblSearch_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSearch_2.setText("Filter:");
-		
 		custSearchBox = new Text(composite_10, SWT.BORDER);
 		GridData gd_custSearchBox = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_custSearchBox.widthHint = 150;
 		custSearchBox.setLayoutData(gd_custSearchBox);
+		
+		Button btnClearFilter = new Button(composite_10, SWT.NONE);
+		btnClearFilter.setText("Clear Filter");
 		
 		Group group = new Group(composite_13, SWT.NONE);
 		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 2));
@@ -323,6 +323,8 @@ public class GeneralInfoWindow extends Dialog {
 		
 //========== Employee Tab ==========
 		
+		// First, let's populate the map of filter options
+		
 		CTabItem empTab = new CTabItem(tabFolder, SWT.NONE);
 		empTab.setImage(SWTResourceManager.getImage(GeneralInfoWindow.class, "/images/employee.png"));
 		empTab.setText("Employees");
@@ -335,30 +337,25 @@ public class GeneralInfoWindow extends Dialog {
 		composite_8.setLayout(new GridLayout(4, false));
 		composite_8.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
 		
-		Label lblSearchBy_2 = new Label(composite_8, SWT.NONE);
-		lblSearchBy_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSearchBy_2.setText("Filter By:");
+		Label lblEmpFilter = new Label(composite_8, SWT.NONE);
+		lblEmpFilter.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblEmpFilter.setText("Filter:");
 		
-		Combo EmpColumnCombo = new Combo(composite_8, SWT.READ_ONLY);
+		final Combo EmpColumnCombo = new Combo(composite_8, SWT.READ_ONLY);
 		GridData gd_EmpColumnCombo = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_EmpColumnCombo.widthHint = 150;
 		EmpColumnCombo.setLayoutData(gd_EmpColumnCombo);
-		EmpColumnCombo.add("---");
-		EmpColumnCombo.add("Last Name");
-		EmpColumnCombo.add("First Name");
-		EmpColumnCombo.add("Username");
-		EmpColumnCombo.add("Hire Date");
-		EmpColumnCombo.add("Phone");
-		EmpColumnCombo.add("Salary");
-		
-		Label lblSearch_1 = new Label(composite_8, SWT.NONE);
-		lblSearch_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSearch_1.setText("Filter:");
+		for(String option : EmployeeFilter.options) {
+			EmpColumnCombo.add(option);
+		}
 		
 		empFilterBox = new Text(composite_8, SWT.BORDER);
 		GridData gd_empSearchBox = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_empSearchBox.widthHint = 150;
 		empFilterBox.setLayoutData(gd_empSearchBox);
+		
+		Button btnClearFilter_1 = new Button(composite_8, SWT.NONE);
+		btnClearFilter_1.setText("Clear Filter");
 		
 		Group grpEmployees = new Group(composite, SWT.NONE);
 		grpEmployees.setLayout(new GridLayout(1, false));
@@ -474,10 +471,23 @@ public class GeneralInfoWindow extends Dialog {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				removeAllFilters(EmpTableViewer);
+				String filterText = empFilterBox.getText();
+				String filterOption = EmpColumnCombo.getText();
+				
 				EmployeeFilter empFilter = new EmployeeFilter();
-				String filter = ".*" + empFilterBox.getText() + ".*";
-				empFilter.setFilter(filter);
+				empFilter.setFilter(filterText);
+				empFilter.setSelectedOption(filterOption);
 				EmpTableViewer.addFilter(empFilter);
+			}
+		});
+		
+		btnClearFilter_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				removeAllFilters(EmpTableViewer);
+				EmpTableViewer.refresh();
+				empFilterBox.setText("");
+				EmpColumnCombo.select(0);
 			}
 		});
 		
@@ -547,21 +557,20 @@ public class GeneralInfoWindow extends Dialog {
 		
 		Label lblSearchBy = new Label(composite_7, SWT.NONE);
 		lblSearchBy.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSearchBy.setText("Filter by:");
+		lblSearchBy.setText("Filter:");
 		
 		Combo storeColumnCombo = new Combo(composite_7, SWT.READ_ONLY);
 		GridData gd_storeColumnCombo = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_storeColumnCombo.widthHint = 150;
 		storeColumnCombo.setLayoutData(gd_storeColumnCombo);
 		
-		Label lblSearch = new Label(composite_7, SWT.NONE);
-		lblSearch.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSearch.setText("Filter:");
-		
 		storeSearchBox = new Text(composite_7, SWT.BORDER);
 		GridData gd_storeSearchBox = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_storeSearchBox.widthHint = 150;
 		storeSearchBox.setLayoutData(gd_storeSearchBox);
+		
+		Button btnClearFilter_2 = new Button(composite_7, SWT.NONE);
+		btnClearFilter_2.setText("Clear Filter");
 		
 		Group grpProductsInSelected = new Group(composite_2, SWT.NONE);
 		grpProductsInSelected.setLayout(new GridLayout(2, true));
@@ -918,21 +927,20 @@ public class GeneralInfoWindow extends Dialog {
 		
 		Label lblNewLabel_5 = new Label(composite_6, SWT.NONE);
 		lblNewLabel_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNewLabel_5.setText("Filter by:");
+		lblNewLabel_5.setText("Filter:");
 		
 		Combo conProdColumnCombo = new Combo(composite_6, SWT.READ_ONLY);
 		GridData gd_conProdColumnCombo = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_conProdColumnCombo.widthHint = 150;
 		conProdColumnCombo.setLayoutData(gd_conProdColumnCombo);
 		
-		Label lblNewLabel_4 = new Label(composite_6, SWT.NONE);
-		lblNewLabel_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNewLabel_4.setText("Filter:");
-		
 		conProdSearchBox = new Text(composite_6, SWT.BORDER);
 		GridData gd_conProdSearchBox = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_conProdSearchBox.widthHint = 150;
 		conProdSearchBox.setLayoutData(gd_conProdSearchBox);
+		
+		Button btnClearFilter_3 = new Button(composite_6, SWT.NONE);
+		btnClearFilter_3.setText("Clear Filter");
 		
 		Group grpStoresThatCarry = new Group(composite_4, SWT.NONE);
 		GridData gd_grpStoresThatCarry = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2);
@@ -1158,21 +1166,20 @@ public class GeneralInfoWindow extends Dialog {
 		
 		Label lblSearchBy_4 = new Label(composite_12, SWT.NONE);
 		lblSearchBy_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSearchBy_4.setText("Filter by:");
+		lblSearchBy_4.setText("Filter:");
 		
 		Combo conRentCombo = new Combo(composite_12, SWT.READ_ONLY);
 		GridData gd_conRentCombo = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_conRentCombo.widthHint = 150;
 		conRentCombo.setLayoutData(gd_conRentCombo);
 		
-		Label lblSearch_3 = new Label(composite_12, SWT.NONE);
-		lblSearch_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSearch_3.setText("Filter:");
-		
 		conRentSearch = new Text(composite_12, SWT.BORDER);
 		GridData gd_conRentSearch = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_conRentSearch.widthHint = 150;
 		conRentSearch.setLayoutData(gd_conRentSearch);
+		
+		Button btnClearFilter_4 = new Button(composite_12, SWT.NONE);
+		btnClearFilter_4.setText("Clear Filter");
 		
 		Group grpPhysicalRentals = new Group(composite_11, SWT.NONE);
 		grpPhysicalRentals.setText("Physical Rentals");
