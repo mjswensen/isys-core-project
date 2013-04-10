@@ -100,6 +100,8 @@ public class MainActivity extends Activity {
 	        nameValuePairs.add(new BasicNameValuePair("password", password.getText().toString()));
 	        JSONObject json = makeRequest("Login", nameValuePairs);
 			if(json.getString("status").equals("success")) {
+				// Set the text of the login feedback to blank (for when they log out, if they missed the password once.
+				((TextView) findViewById(R.id.textViewLoginStatus)).setText("");
 				// Get the pics out of the JSON array
 				populatePicListFromJson(json);
 				// Assign the picList to the ListView
