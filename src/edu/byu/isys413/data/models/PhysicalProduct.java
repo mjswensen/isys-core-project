@@ -83,8 +83,16 @@ public class PhysicalProduct extends Product {
 	 * @return the conceptualProduct
 	 * @throws DataException 
 	 */
-	public ConceptualProduct getConceptualProduct() throws DataException {
-		return BusinessObjectDAO.getInstance().read(conceptualProductId);
+	@Override
+	public ConceptualProduct getConceptualProduct() {
+		ConceptualProduct cp = null;
+		try {
+			cp = BusinessObjectDAO.getInstance().read(conceptualProductId);
+		} catch (DataException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+		return cp;
 	}
 
 	/**
