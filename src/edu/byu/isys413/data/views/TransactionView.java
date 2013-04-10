@@ -120,7 +120,7 @@ public class TransactionView extends Shell {
 			public String getText(Object element) {
 				Sale s = (Sale)element;
 				try {
-					return s.getProduct().getId();
+					return s.getProduct().getConceptualProduct().getName();
 				} catch (DataException e) {
 					return "Unable to get product identifier.";
 				}
@@ -468,7 +468,7 @@ public class TransactionView extends Shell {
 		
 		Button btnCancelTransaction = new Button(composite_3, SWT.NONE);
 		GridData gd_btnCancelTransaction = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-		gd_btnCancelTransaction.widthHint = 130;
+		gd_btnCancelTransaction.widthHint = 139;
 		btnCancelTransaction.setLayoutData(gd_btnCancelTransaction);
 		btnCancelTransaction.addMouseListener(new MouseAdapter() {
 			@Override
@@ -476,7 +476,7 @@ public class TransactionView extends Shell {
 				dispose();
 			}
 		});
-		btnCancelTransaction.setText("Cancel Transaction");
+		btnCancelTransaction.setText("Cancel");
 		
 		Button btnSubmitTransaction = new Button(composite_3, SWT.NONE);
 		GridData gd_btnSubmitTransaction = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -493,7 +493,7 @@ public class TransactionView extends Shell {
 				}
 			}
 		});
-		btnSubmitTransaction.setText("Submit Transaction");
+		btnSubmitTransaction.setText("Submit");
 		
 		// Begin the transaction
 		

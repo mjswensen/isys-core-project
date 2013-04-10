@@ -30,4 +30,13 @@ public class Product extends BusinessObject {
 		setDirty();
 	}
 
+	public ConceptualProduct getConceptualProduct(){
+		ConceptualProduct cp = null;
+		try {
+			cp = BusinessObjectDAO.getInstance().read(getId());
+		} catch (DataException ex) {
+			ex.printStackTrace();
+		}
+		return cp;
+	}
 }
