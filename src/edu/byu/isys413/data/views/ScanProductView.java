@@ -23,6 +23,10 @@ import edu.byu.isys413.data.models.Rental;
 import edu.byu.isys413.data.models.Sale;
 import edu.byu.isys413.data.models.SearchCriteria;
 import edu.byu.isys413.data.models.Transaction;
+import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class ScanProductView extends Shell {
 	
@@ -56,6 +60,8 @@ public class ScanProductView extends Shell {
 	 */
 	public ScanProductView(Display display) {
 		super(display, SWT.SHELL_TRIM);
+		setMinimumSize(new Point(420, 350));
+		setImage(SWTResourceManager.getImage(ScanProductView.class, "/images/logo_camera.png"));
 		setLayout(new GridLayout(1, false));
 		
 		Group grpStandard = new Group(this, SWT.NONE);
@@ -63,23 +69,26 @@ public class ScanProductView extends Shell {
 		gd_grpStandard.widthHint = 380;
 		grpStandard.setLayoutData(gd_grpStandard);
 		grpStandard.setText("Purchase Standard");
-		grpStandard.setLayout(new GridLayout(3, false));
+		grpStandard.setLayout(new GridLayout(4, false));
 		
 		Label lblSku = new Label(grpStandard, SWT.NONE);
 		lblSku.setText("SKU:");
 		
 		final Text txtSku = new Text(grpStandard, SWT.BORDER);
-		txtSku.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		txtSku.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		new Label(grpStandard, SWT.NONE);
 		
 		Label lblQuantity = new Label(grpStandard, SWT.NONE);
-		lblQuantity.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblQuantity.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1));
 		lblQuantity.setText("Quantity:");
 		
 		final Text txtQty = new Text(grpStandard, SWT.BORDER);
-		txtQty.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		txtQty.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		
 		Button btnGoStoreProduct = new Button(grpStandard, SWT.NONE);
+		GridData gd_btnGoStoreProduct = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnGoStoreProduct.widthHint = 50;
+		btnGoStoreProduct.setLayoutData(gd_btnGoStoreProduct);
 		btnGoStoreProduct.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -117,6 +126,9 @@ public class ScanProductView extends Shell {
 		txtForSaleSerialnumber.setLayoutData(gd_txtForSaleSerialnumber);
 		
 		Button btnGoForSale = new Button(grpHighend, SWT.NONE);
+		GridData gd_btnGoForSale = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_btnGoForSale.widthHint = 50;
+		btnGoForSale.setLayoutData(gd_btnGoForSale);
 		btnGoForSale.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -142,24 +154,27 @@ public class ScanProductView extends Shell {
 		Group grpRental = new Group(this, SWT.NONE);
 		grpRental.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		grpRental.setText("Rental");
-		grpRental.setLayout(new GridLayout(3, false));
+		grpRental.setLayout(new GridLayout(5, false));
 		
 		Label lblSerialNumber_1 = new Label(grpRental, SWT.NONE);
 		lblSerialNumber_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblSerialNumber_1.setText("Serial Number:");
 		
 		final Text txtForRentSerialnumber = new Text(grpRental, SWT.BORDER);
-		txtForRentSerialnumber.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtForRentSerialnumber.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 		new Label(grpRental, SWT.NONE);
 		
 		Label lblRentalPeriodin = new Label(grpRental, SWT.NONE);
-		lblRentalPeriodin.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblRentalPeriodin.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 3, 1));
 		lblRentalPeriodin.setText("Rental Period (in Days):");
 		
 		final Text txtRentalPeriod = new Text(grpRental, SWT.BORDER);
-		txtRentalPeriod.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		txtRentalPeriod.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		
 		Button btnGoForRent = new Button(grpRental, SWT.NONE);
+		GridData gd_btnGoForRent = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnGoForRent.widthHint = 50;
+		btnGoForRent.setLayoutData(gd_btnGoForRent);
 		btnGoForRent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -186,7 +201,25 @@ public class ScanProductView extends Shell {
 		});
 		btnGoForRent.setText("Go");
 		
-		labelErrorMsg = new Label(this, SWT.NONE);
+		Group grpStatusInformation = new Group(this, SWT.NONE);
+		grpStatusInformation.setLayout(new GridLayout(1, false));
+		grpStatusInformation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		grpStatusInformation.setText("Status Information");
+		
+		labelErrorMsg = new Label(grpStatusInformation, SWT.NONE);
+		labelErrorMsg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Button btnNewButton = new Button(this, SWT.NONE);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				dispose();
+			}
+		});
+		GridData gd_btnNewButton = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+		gd_btnNewButton.widthHint = 150;
+		btnNewButton.setLayoutData(gd_btnNewButton);
+		btnNewButton.setText("Cancel");
 		createContents();
 	}
 
@@ -194,8 +227,8 @@ public class ScanProductView extends Shell {
 	 * Create contents of the shell.
 	 */
 	protected void createContents() {
-		setText("Scan Product");
-		setSize(450, 300);
+		setText("MyStuff | Scan Product");
+		setSize(325, 304);
 
 	}
 	

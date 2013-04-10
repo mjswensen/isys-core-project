@@ -62,9 +62,8 @@ public class MainView {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shlMystuffMain = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
+		shlMystuffMain = new Shell();
 		shlMystuffMain.setImage(SWTResourceManager.getImage(MainView.class, "/images/logo_camera.png"));
-		shlMystuffMain.setBackgroundImage(SWTResourceManager.getImage(MainView.class, "/images/background.png"));
 		shlMystuffMain.setMinimumSize(new Point(900, 600));
 		shlMystuffMain.setSize(450, 300);
 		shlMystuffMain.setText("MyStuff | Main Window");
@@ -215,10 +214,6 @@ public class MainView {
 		mntmReturnRental.setText("Return Rental...");
 		
 		shlMystuffMain.setMaximized(true);
-		
-		Label label_2 = new Label(shlMystuffMain, SWT.NONE);
-		
-		Label label_1 = new Label(shlMystuffMain, SWT.NONE);
 		
 		CLabel label = new CLabel(shlMystuffMain, SWT.NONE);
 		label.setAlignment(SWT.CENTER);
