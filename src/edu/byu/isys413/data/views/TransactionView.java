@@ -38,6 +38,9 @@ import edu.byu.isys413.data.models.Rental;
 import edu.byu.isys413.data.models.Sale;
 import edu.byu.isys413.data.models.Store;
 import edu.byu.isys413.data.models.Transaction;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class TransactionView extends Shell {
 	private Text txtFirstname;
@@ -45,7 +48,6 @@ public class TransactionView extends Shell {
 	private Text txtAddress;
 	private Text txtEmail;
 	private Text txtPhone;
-	private Table tableSales;
 	private Text txtSubtotal;
 	private Text txtTax;
 	private Text txtTotal;
@@ -54,10 +56,11 @@ public class TransactionView extends Shell {
 	private TableViewer tableViewerRentals;
 	
 	private Transaction t;
-	private Table tableRentals;
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
 	private Text txtYesNoMembership;
+	private Table table;
+	private Table table_1;
 
 	/**
 	 * Launch the application.
@@ -85,15 +88,60 @@ public class TransactionView extends Shell {
 	 */
 	public TransactionView(final Display display) {
 		super(display, SWT.SHELL_TRIM);
-		setSize(710, 540);
-		setText("Sales Transaction");
+		setImage(SWTResourceManager.getImage(TransactionView.class, "/images/logo_camera.png"));
+		setMinimumSize(new Point(800, 455));
+		setSize(669, 455);
+		setText("MyStuff | Transaction Matrix");
 		setLayout(new GridLayout(2, false));
 		
+		Group grpStandardTransactions = new Group(this, SWT.NONE);
+		GridData gd_grpStandardTransactions = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+		gd_grpStandardTransactions.heightHint = 180;
+		grpStandardTransactions.setLayoutData(gd_grpStandardTransactions);
+		grpStandardTransactions.setText("Standard Transactions");
+		grpStandardTransactions.setLayout(new GridLayout(1, false));
+		
+		ScrolledComposite scrolledComposite_1 = new ScrolledComposite(grpStandardTransactions, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		scrolledComposite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		scrolledComposite_1.setExpandHorizontal(true);
+		scrolledComposite_1.setExpandVertical(true);
+		
+		tableViewerSales = new TableViewer(scrolledComposite_1, SWT.BORDER | SWT.FULL_SELECTION);
+		table_1 = tableViewerSales.getTable();
+		table_1.setLinesVisible(true);
+		table_1.setHeaderVisible(true);
+		
+		TableViewerColumn tableViewerColumn_5 = new TableViewerColumn(tableViewerSales, SWT.NONE);
+		TableColumn tableColumn_5 = tableViewerColumn_5.getColumn();
+		tableColumn_5.setWidth(197);
+		tableColumn_5.setText("Name");
+		
+		TableViewerColumn tableViewerColumn_6 = new TableViewerColumn(tableViewerSales, SWT.NONE);
+		TableColumn tableColumn_6 = tableViewerColumn_6.getColumn();
+		tableColumn_6.setWidth(71);
+		tableColumn_6.setText("Price");
+		
+		TableViewerColumn tableViewerColumn_7 = new TableViewerColumn(tableViewerSales, SWT.NONE);
+		TableColumn tableColumn_7 = tableViewerColumn_7.getColumn();
+		tableColumn_7.setWidth(76);
+		tableColumn_7.setText("Quantity");
+		
+		TableViewerColumn tableViewerColumn_8 = new TableViewerColumn(tableViewerSales, SWT.NONE);
+		TableColumn tableColumn_8 = tableViewerColumn_8.getColumn();
+		tableColumn_8.setWidth(90);
+		tableColumn_8.setText("Item Total");
+		scrolledComposite_1.setContent(table_1);
+		scrolledComposite_1.setMinSize(table_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		
 		Group grpCustomer = new Group(this, SWT.NONE);
+		GridData gd_grpCustomer = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 2);
+		gd_grpCustomer.widthHint = 401;
+		grpCustomer.setLayoutData(gd_grpCustomer);
 		grpCustomer.setText("Customer");
 		grpCustomer.setLayout(new GridLayout(2, false));
 		
 		Button btnLookupCustomer = new Button(grpCustomer, SWT.NONE);
+		btnLookupCustomer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		btnLookupCustomer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -109,7 +157,6 @@ public class TransactionView extends Shell {
 			}
 		});
 		btnLookupCustomer.setText("Lookup Customer");
-		new Label(grpCustomer, SWT.NONE);
 		
 		Label lblFirstName = new Label(grpCustomer, SWT.NONE);
 		lblFirstName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -139,7 +186,9 @@ public class TransactionView extends Shell {
 		lblEmail.setText("Email");
 		
 		txtEmail = new Text(grpCustomer, SWT.BORDER | SWT.READ_ONLY);
-		txtEmail.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		GridData gd_txtEmail = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		gd_txtEmail.widthHint = 150;
+		txtEmail.setLayoutData(gd_txtEmail);
 		
 		Label lblPhone = new Label(grpCustomer, SWT.NONE);
 		lblPhone.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -156,7 +205,18 @@ public class TransactionView extends Shell {
 		txtYesNoMembership.setEditable(false);
 		txtYesNoMembership.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		Button btnNewCustomer = new Button(grpCustomer, SWT.NONE);
+		Composite composite_4 = new Composite(grpCustomer, SWT.NONE);
+		GridLayout gl_composite_4 = new GridLayout(2, false);
+		gl_composite_4.marginBottom = -5;
+		gl_composite_4.marginRight = -5;
+		gl_composite_4.marginLeft = -5;
+		composite_4.setLayout(gl_composite_4);
+		composite_4.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 2, 1));
+		
+		Button btnNewCustomer = new Button(composite_4, SWT.NONE);
+		GridData gd_btnNewCustomer = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_btnNewCustomer.widthHint = 130;
+		btnNewCustomer.setLayoutData(gd_btnNewCustomer);
 		btnNewCustomer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -179,163 +239,66 @@ public class TransactionView extends Shell {
 		});
 		btnNewCustomer.setText("New Customer");
 		
-		Button btnEditCustomer = new Button(grpCustomer, SWT.NONE);
+		Button btnEditCustomer = new Button(composite_4, SWT.NONE);
+		GridData gd_btnEditCustomer = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnEditCustomer.widthHint = 130;
+		btnEditCustomer.setLayoutData(gd_btnEditCustomer);
 		btnEditCustomer.setText("Edit Customer");
 		
-		tableViewerSales = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
-		tableSales = tableViewerSales.getTable();
-		tableSales.setLinesVisible(true);
-		tableSales.setHeaderVisible(true);
-		tableSales.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		Group grpRentalTransactions = new Group(this, SWT.NONE);
+		GridData gd_grpRentalTransactions = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 3);
+		gd_grpRentalTransactions.heightHint = 150;
+		gd_grpRentalTransactions.widthHint = 465;
+		grpRentalTransactions.setLayoutData(gd_grpRentalTransactions);
+		grpRentalTransactions.setText("Rental Transactions");
+		grpRentalTransactions.setLayout(new GridLayout(1, false));
 		
-		TableViewerColumn tableViewerColumnItemName = new TableViewerColumn(tableViewerSales, SWT.NONE);
-		TableColumn tblclmnName = tableViewerColumnItemName.getColumn();
-		tblclmnName.setWidth(197);
-		tblclmnName.setText("Name");
-		tableViewerColumnItemName.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				Sale s = (Sale)element;
-				try {
-					return s.getProduct().getId();
-				} catch (DataException e) {
-					return "Unable to get product identifier.";
-				}
-			}
-		});
+		ScrolledComposite scrolledComposite = new ScrolledComposite(grpRentalTransactions, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		scrolledComposite.setExpandHorizontal(true);
+		scrolledComposite.setExpandVertical(true);
 		
-		TableViewerColumn tableViewerColumnItemPrice = new TableViewerColumn(tableViewerSales, SWT.NONE);
-		TableColumn tblclmnPrice = tableViewerColumnItemPrice.getColumn();
-		tblclmnPrice.setWidth(71);
-		tblclmnPrice.setText("Price");
-		new Label(this, SWT.NONE);
-		
-		tableViewerRentals = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
-		tableRentals = tableViewerRentals.getTable();
-		tableRentals.setLinesVisible(true);
-		tableRentals.setHeaderVisible(true);
-		GridData gd_tableRentals = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		gd_tableRentals.heightHint = 123;
-		tableRentals.setLayoutData(gd_tableRentals);
+		tableViewerRentals = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		table = tableViewerRentals.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
 		
 		TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewerRentals, SWT.NONE);
-		TableColumn tblclmnName_1 = tableViewerColumn.getColumn();
-		tblclmnName_1.setWidth(178);
-		tblclmnName_1.setText("Name");
-		tableViewerColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				Rental r = (Rental)element;
-				try {
-					return r.getForRent().getConceptualProduct().getName();
-				} catch (DataException e) {
-					return "Unable to get product name.";
-				}
-			}
-		});
+		TableColumn tableColumn = tableViewerColumn.getColumn();
+		tableColumn.setWidth(178);
+		tableColumn.setText("Name");
 		
 		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
-		TableColumn tblclmnDateOut = tableViewerColumn_1.getColumn();
-		tblclmnDateOut.setWidth(57);
-		tblclmnDateOut.setText("Date Out");
-		tableViewerColumn_1.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				Rental r = (Rental)element;
-				return sdf.format(r.getDateOut());
-			}
-		});
+		TableColumn tableColumn_1 = tableViewerColumn_1.getColumn();
+		tableColumn_1.setWidth(100);
+		tableColumn_1.setText("Date Out");
 		
 		TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
-		TableColumn tblclmnDateDue = tableViewerColumn_2.getColumn();
-		tblclmnDateDue.setWidth(59);
-		tblclmnDateDue.setText("Date Due");
-		tableViewerColumn_2.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				Rental r = (Rental)element;
-				return sdf.format(r.getDateDue());
-			}
-		});
+		TableColumn tableColumn_2 = tableViewerColumn_2.getColumn();
+		tableColumn_2.setWidth(100);
+		tableColumn_2.setText("Date Due");
 		
 		TableViewerColumn tableViewerColumn_3 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
-		TableColumn tblclmnPricePerDay = tableViewerColumn_3.getColumn();
-		tblclmnPricePerDay.setWidth(78);
-		tblclmnPricePerDay.setText("Price Per Day");
-		tableViewerColumn_3.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				Rental r = (Rental)element;
-				try {
-					return "$" + r.getForRent().getConceptualProduct().getConceputalRental().getPricePerDay();
-				} catch (DataException e) {
-					return "Unable to get price per day.";
-				}
-			}
-		});
+		TableColumn tableColumn_3 = tableViewerColumn_3.getColumn();
+		tableColumn_3.setWidth(78);
+		tableColumn_3.setText("Price Per Day");
 		
 		TableViewerColumn tableViewerColumn_4 = new TableViewerColumn(tableViewerRentals, SWT.NONE);
-		TableColumn tblclmnItemTotal_1 = tableViewerColumn_4.getColumn();
-		tblclmnItemTotal_1.setWidth(61);
-		tblclmnItemTotal_1.setText("Item Total");
-		tableViewerColumn_4.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				Rental r = (Rental)element;
-				return "$" + r.getChargeAmount();
-			}
-		});
+		TableColumn tableColumn_4 = tableViewerColumn_4.getColumn();
+		tableColumn_4.setWidth(61);
+		tableColumn_4.setText("Item Total");
+		scrolledComposite.setContent(table);
+		scrolledComposite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
+		Group composite = new Group(this, SWT.NONE);
+		composite.setText("Transaction Information");
+		composite.setLayout(new GridLayout(2, true));
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		
-		new Label(this, SWT.NONE);
-		
-		tableViewerColumnItemPrice.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				Sale s = (Sale)element;
-				try {
-					return "$" + s.getProduct().getPrice();
-				} catch (DataException e) {
-					return "Unable to get product price.";
-				}
-			}
-		});
-		
-		TableViewerColumn tableViewerColumnQuantity = new TableViewerColumn(tableViewerSales, SWT.NONE);
-		TableColumn tblclmnQuantity = tableViewerColumnQuantity.getColumn();
-		tblclmnQuantity.setWidth(76);
-		tblclmnQuantity.setText("Quantity");
-		
-		tableViewerColumnQuantity.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				Sale s = (Sale)element;
-				return s.getQuantity() + "";
-			}
-		});
-		
-		TableViewerColumn tableViewerColumnItemTotal = new TableViewerColumn(tableViewerSales, SWT.NONE);
-		TableColumn tblclmnItemTotal = tableViewerColumnItemTotal.getColumn();
-		tblclmnItemTotal.setWidth(90);
-		tblclmnItemTotal.setText("Item Total");
-		
-		tableViewerColumnItemTotal.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				Sale s = (Sale)element;
-				return "$" + s.getChargeAmount();
-			}
-		});
-		
-		Composite composite = new Composite(this, SWT.NONE);
-		composite.setLayout(new GridLayout(2, false));
-		composite.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		
-		Composite composite_1 = new Composite(composite, SWT.NONE);
-		composite_1.setLayout(new GridLayout(1, false));
-		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		
-		Button btnAddItem = new Button(composite_1, SWT.NONE);
+		Button btnAddItem = new Button(composite, SWT.NONE);
+		GridData gd_btnAddItem = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnAddItem.widthHint = 100;
+		btnAddItem.setLayoutData(gd_btnAddItem);
 		btnAddItem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -367,25 +330,13 @@ public class TransactionView extends Shell {
 		});
 		btnAddItem.setText("Add Item");
 		
-		Button btnRemoveItem = new Button(composite_1, SWT.NONE);
-		btnRemoveItem.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseUp(MouseEvent e) {
-				// Get selection from the table and remove it in the database. Then update the view.
-				IStructuredSelection sel = (IStructuredSelection)tableViewerSales.getSelection();
-				Sale toRemove = (Sale)sel.getFirstElement();
-				try {
-					BusinessObjectDAO.getInstance().delete(toRemove);
-					updateProductsView();
-				} catch (DataException e1) {
-					// TODO
-				}
-			}
-		});
-		btnRemoveItem.setText("Remove Item");
-		
 		Composite composite_2 = new Composite(composite, SWT.NONE);
-		composite_2.setLayout(new GridLayout(2, false));
+		composite_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 2));
+		GridLayout gl_composite_2 = new GridLayout(2, false);
+		gl_composite_2.marginRight = -5;
+		gl_composite_2.marginTop = -5;
+		gl_composite_2.marginBottom = -5;
+		composite_2.setLayout(gl_composite_2);
 		
 		Label lblSubtotal = new Label(composite_2, SWT.NONE);
 		lblSubtotal.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -407,13 +358,35 @@ public class TransactionView extends Shell {
 		
 		txtTotal = new Text(composite_2, SWT.BORDER | SWT.READ_ONLY);
 		txtTotal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(this, SWT.NONE);
+		
+		Button btnRemoveItem = new Button(composite, SWT.NONE);
+		GridData gd_btnRemoveItem = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
+		gd_btnRemoveItem.widthHint = 100;
+		btnRemoveItem.setLayoutData(gd_btnRemoveItem);
+		btnRemoveItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				// Get selection from the table and remove it in the database. Then update the view.
+				IStructuredSelection sel = (IStructuredSelection)tableViewerSales.getSelection();
+				Sale toRemove = (Sale)sel.getFirstElement();
+				try {
+					BusinessObjectDAO.getInstance().delete(toRemove);
+					updateProductsView();
+				} catch (DataException e1) {
+					System.out.println("Error in deletion");
+				}
+			}
+		});
+		btnRemoveItem.setText("Remove Item");
 		
 		Composite composite_3 = new Composite(this, SWT.NONE);
-		composite_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		composite_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		composite_3.setLayout(new GridLayout(2, false));
+		composite_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
 		Button btnCancelTransaction = new Button(composite_3, SWT.NONE);
+		GridData gd_btnCancelTransaction = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_btnCancelTransaction.widthHint = 130;
+		btnCancelTransaction.setLayoutData(gd_btnCancelTransaction);
 		btnCancelTransaction.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -423,6 +396,9 @@ public class TransactionView extends Shell {
 		btnCancelTransaction.setText("Cancel Transaction");
 		
 		Button btnSubmitTransaction = new Button(composite_3, SWT.NONE);
+		GridData gd_btnSubmitTransaction = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnSubmitTransaction.widthHint = 130;
+		btnSubmitTransaction.setLayoutData(gd_btnSubmitTransaction);
 		btnSubmitTransaction.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {

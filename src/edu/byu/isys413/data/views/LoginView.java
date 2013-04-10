@@ -63,7 +63,7 @@ public class LoginView extends Shell {
 	 * @param display
 	 */
 	public LoginView(Display display) {
-		super(display, SWT.SHELL_TRIM | SWT.APPLICATION_MODAL | SWT.NONE);
+		super(display, SWT.CLOSE | SWT.APPLICATION_MODAL);
 		setMinimumSize(new Point(480, 215));
 		setImage(SWTResourceManager.getImage(LoginView.class, "/images/logo_camera.png"));
 		setLayout(new GridLayout(2, false));
