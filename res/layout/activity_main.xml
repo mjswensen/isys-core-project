@@ -57,13 +57,6 @@
                 android:layout_gravity="right"
                 android:onClick="loginSubmit"
                 android:text="@string/log_in" />
-
-            <TextView
-                android:id="@+id/textViewLoginStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/empty_string"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 
         <RelativeLayout

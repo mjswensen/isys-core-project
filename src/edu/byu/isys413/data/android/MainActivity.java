@@ -109,8 +109,6 @@ public class MainActivity extends Activity {
 	        nameValuePairs.add(new BasicNameValuePair("password", password.getText().toString()));
 	        JSONObject json = makeRequest("Login", nameValuePairs);
 			if(json.getString("status").equals("success")) {
-				// Set the text of the login feedback to blank (for when they log out, if they missed the password once.
-				((TextView) findViewById(R.id.textViewLoginStatus)).setText("");
 				// Get the pics out of the JSON array
 				populatePicListFromJson(json);
 				// Assign the picList to the ListView
@@ -151,8 +149,7 @@ public class MainActivity extends Activity {
 				});
 				showListView();
 			} else {
-				TextView loginStatus = (TextView) findViewById(R.id.textViewLoginStatus);
-				loginStatus.setText("Bummer. The email/password you provided didn't work.");
+				Toast.makeText(this, "Bummer. The email/password you provided didn't work. Please try again.", Toast.LENGTH_LONG).show();
 			}
     	} catch(Exception e) {
     		e.printStackTrace();
