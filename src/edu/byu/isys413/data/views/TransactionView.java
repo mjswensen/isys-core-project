@@ -33,9 +33,12 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import edu.byu.isys413.data.models.BusinessObjectDAO;
+import edu.byu.isys413.data.models.ConceptualProduct;
 import edu.byu.isys413.data.models.Customer;
 import edu.byu.isys413.data.models.DataException;
 import edu.byu.isys413.data.models.Employee;
+import edu.byu.isys413.data.models.PhysicalProduct;
+import edu.byu.isys413.data.models.Product;
 import edu.byu.isys413.data.models.Rental;
 import edu.byu.isys413.data.models.Sale;
 import edu.byu.isys413.data.models.Store;
@@ -120,9 +123,16 @@ public class TransactionView extends Shell {
 			public String getText(Object element) {
 				Sale s = (Sale)element;
 				try {
-					return s.getProduct().getConceptualProduct().getName();
+					Product p = s.getProduct();
+					if(p.getClass().getSimpleName().equals("ConceptualProduct")) {
+						return ((ConceptualProduct) p).getName();
+					} else if(p.getClass().getSimpleName().equals("PhysicalProduct")) {
+						return ((PhysicalProduct) p).getConceptualProduct().getName();
+					} else {
+						return "(Unavailable)";
+					}
 				} catch (DataException e) {
-					return "Unable to get product identifier.";
+					return "(Unavailable)";
 				}
 			}
 		});
@@ -137,9 +147,9 @@ public class TransactionView extends Shell {
 			public String getText(Object element) {
 				Sale s = (Sale)element;
 				try {
-					return "$" + s.getProduct().getPrice();
+					return NumberFormat.getCurrencyInstance().format(s.getProduct().getPrice());
 				} catch (DataException e) {
-					return "Unable to get product price.";
+					return "(Unavailable)";
 				}
 			}
 		});
@@ -164,7 +174,7 @@ public class TransactionView extends Shell {
 			@Override
 			public String getText(Object element) {
 				Sale s = (Sale)element;
-				return "$" + s.getChargeAmount();
+				return NumberFormat.getCurrencyInstance().format(s.getChargeAmount());
 			}
 		});
 		TableColumn tableColumn_8 = tableViewerColumnItemTotal.getColumn();
@@ -311,7 +321,7 @@ public class TransactionView extends Shell {
 				try {
 					return r.getForRent().getConceptualProduct().getName();
 				} catch (DataException e) {
-					return "Unable to get product name.";
+					return "(Unavailable)";
 				}
 			}
 		});
@@ -349,9 +359,9 @@ public class TransactionView extends Shell {
 			public String getText(Object element) {
 				Rental r = (Rental)element;
 				try {
-					return "$" + r.getForRent().getConceptualProduct().getConceputalRental().getPricePerDay();
+					return NumberFormat.getCurrencyInstance().format(r.getForRent().getConceptualProduct().getConceputalRental().getPricePerDay());
 				} catch (DataException e) {
-					return "Unable to get price per day.";
+					return "(Unavailable)";
 				}
 			}
 		});
@@ -364,7 +374,7 @@ public class TransactionView extends Shell {
 			@Override
 			public String getText(Object element) {
 				Rental r = (Rental)element;
-				return "$" + r.getChargeAmount();
+				return NumberFormat.getCurrencyInstance().format(r.getChargeAmount());
 			}
 		});
 		TableColumn tableColumn_4 = tableViewerColumnRentalItemTotal.getColumn();

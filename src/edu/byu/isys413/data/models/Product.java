@@ -29,14 +29,5 @@ public class Product extends BusinessObject {
 		this.price = price;
 		setDirty();
 	}
-
-	public ConceptualProduct getConceptualProduct(){
-		ConceptualProduct cp = null;
-		try {
-			cp = BusinessObjectDAO.getInstance().read(getId());
-		} catch (DataException ex) {
-			ex.printStackTrace();
-		}
-		return cp;
-	}
+	
 }
