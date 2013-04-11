@@ -23,7 +23,7 @@ public class Logout implements Action {
 		request.getSession().removeAttribute("cust");
 		request.getSession().invalidate();
 		
-		if(request.getParameter("format").equals("json")) {
+		if(request.getParameter("format") != null && request.getParameter("format").equals("json")) {
 			JSONObject json = new JSONObject();
 			json.put("status", "success");
 			request.setAttribute("json", json);
