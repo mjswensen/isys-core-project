@@ -68,10 +68,10 @@ public class TransactionView extends Shell {
 	private Table table;
 	private Table table_1;
 
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
+//	/**
+//	 * Launch the application.
+//	 * @param args
+//	 */
 //	public static void main(String args[]) {
 //		try {
 //			Display display = Display.getDefault();

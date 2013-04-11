@@ -44,10 +44,10 @@ public class CustomerInfoView extends Shell {
 	
 	private Membership member = null;
 
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
+//	/**
+//	 * Launch the application.
+//	 * @param args
+//	 */
 //	public static void main(String args[]) {
 //		try {
 //			Display display = Display.getDefault();

@@ -105,7 +105,7 @@ public class PrintOrder extends RevenueSource {
 			return getPrint().getPrice();
 		} catch (DataException e) {
 			e.printStackTrace();
-			// If there's no print associated witht the print order, the price will be free.
+			// If there's no print associated with the print order, the price will be free.
 			return 0.0;
 		}
 	}

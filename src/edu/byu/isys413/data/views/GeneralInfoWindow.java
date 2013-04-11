@@ -4,7 +4,6 @@ package edu.byu.isys413.data.views;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Map;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -22,6 +21,7 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -639,41 +639,137 @@ public class GeneralInfoWindow extends Dialog {
 		tblclmnStoreProdConProdID.setText("Product ID");
 		
 		TableViewerColumn tableViewerColumn_42 = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
+		tableViewerColumn_42.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnStoreProdSku = tableViewerColumn_42.getColumn();
 		tblclmnStoreProdSku.setWidth(100);
 		tblclmnStoreProdSku.setText("SKU");
 		
 		TableViewerColumn tableViewerColumn_37 = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
+		tableViewerColumn_37.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnStoreProdProductName = tableViewerColumn_37.getColumn();
 		tblclmnStoreProdProductName.setWidth(100);
 		tblclmnStoreProdProductName.setText("Product Name");
 		
 		TableViewerColumn tableViewerColumn_38 = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
+		tableViewerColumn_38.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnStoreProdDescription = tableViewerColumn_38.getColumn();
 		tblclmnStoreProdDescription.setWidth(100);
 		tblclmnStoreProdDescription.setText("Description");
 		
 		TableViewerColumn tableViewerColumn_40 = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
+		tableViewerColumn_40.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnStoreProdAvgCost = tableViewerColumn_40.getColumn();
 		tblclmnStoreProdAvgCost.setWidth(100);
 		tblclmnStoreProdAvgCost.setText("Avg Cost");
 		
 		TableViewerColumn tableViewerColumn_39 = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
+		tableViewerColumn_39.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnStoreProdManufacturer = tableViewerColumn_39.getColumn();
 		tblclmnStoreProdManufacturer.setWidth(100);
 		tblclmnStoreProdManufacturer.setText("Manufacturer");
 		
 		TableViewerColumn tableViewerColumn_41 = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
+		tableViewerColumn_41.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnStoreProdCommRate = tableViewerColumn_41.getColumn();
 		tblclmnStoreProdCommRate.setWidth(110);
 		tblclmnStoreProdCommRate.setText("Commission Rate");
 		
 		TableViewerColumn tableViewerColumn_45 = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
+		tableViewerColumn_45.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnStoreProdCategoryId = tableViewerColumn_45.getColumn();
 		tblclmnStoreProdCategoryId.setWidth(100);
 		tblclmnStoreProdCategoryId.setText("Category ID");
 		
 		TableViewerColumn tableViewerColumn_46 = new TableViewerColumn(StoreProdTableViewer, SWT.NONE);
+		tableViewerColumn_46.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnStoreProdVendorId = tableViewerColumn_46.getColumn();
 		tblclmnStoreProdVendorId.setWidth(100);
 		tblclmnStoreProdVendorId.setText("Vendor ID");
@@ -967,31 +1063,103 @@ public class GeneralInfoWindow extends Dialog {
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		
 		TableViewerColumn tableViewerColumn_34 = new TableViewerColumn(tableViewer_2, SWT.NONE);
+		tableViewerColumn_34.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnStatus_1 = tableViewerColumn_34.getColumn();
 		tblclmnStatus_1.setWidth(100);
 		tblclmnStatus_1.setText("Status");
 		
 		TableViewerColumn tableViewerColumn_2 = new TableViewerColumn(tableViewer_2, SWT.NONE);
+		tableViewerColumn_2.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnProductId_2 = tableViewerColumn_2.getColumn();
 		tblclmnProductId_2.setWidth(100);
 		tblclmnProductId_2.setText("Product ID");
 		
 		TableViewerColumn tableViewerColumn_30 = new TableViewerColumn(tableViewer_2, SWT.NONE);
+		tableViewerColumn_30.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnSerialNumber = tableViewerColumn_30.getColumn();
 		tblclmnSerialNumber.setWidth(100);
 		tblclmnSerialNumber.setText(" Serial Number");
 		
 		TableViewerColumn tableViewerColumn_36 = new TableViewerColumn(tableViewer_2, SWT.NONE);
+		tableViewerColumn_36.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnNewused = tableViewerColumn_36.getColumn();
 		tblclmnNewused.setWidth(100);
 		tblclmnNewused.setText("New/Used");
 		
 		TableViewerColumn tableViewerColumn_31 = new TableViewerColumn(tableViewer_2, SWT.NONE);
+		tableViewerColumn_31.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnShelfLocation_1 = tableViewerColumn_31.getColumn();
 		tblclmnShelfLocation_1.setWidth(100);
 		tblclmnShelfLocation_1.setText("Shelf Location");
 		
 		TableViewerColumn tableViewerColumn_35 = new TableViewerColumn(tableViewer_2, SWT.NONE);
+		tableViewerColumn_35.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnFullCommissionRate = tableViewerColumn_35.getColumn();
 		tblclmnFullCommissionRate.setWidth(100);
 		tblclmnFullCommissionRate.setText("Full Commission Rate");
@@ -1046,46 +1214,154 @@ public class GeneralInfoWindow extends Dialog {
 		conProdTable.setHeaderVisible(true);
 		
 		TableViewerColumn prodID = new TableViewerColumn(ConProdTableViewer, SWT.NONE);
+		prodID.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConProdID = prodID.getColumn();
 		tblclmnConProdID.setWidth(100);
 		tblclmnConProdID.setText("Product ID");
 		
 		TableViewerColumn tableViewerColumn_43 = new TableViewerColumn(ConProdTableViewer, SWT.NONE);
+		tableViewerColumn_43.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConProdSku = tableViewerColumn_43.getColumn();
 		tblclmnConProdSku.setWidth(100);
 		tblclmnConProdSku.setText("SKU");
 		
 		TableViewerColumn prodName = new TableViewerColumn(ConProdTableViewer, SWT.NONE);
+		prodName.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConProdName = prodName.getColumn();
 		tblclmnConProdName.setWidth(100);
 		tblclmnConProdName.setText("Product Name");
 		
 		TableViewerColumn prodDesc = new TableViewerColumn(ConProdTableViewer, SWT.NONE);
+		prodDesc.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConProdDescription = prodDesc.getColumn();
 		tblclmnConProdDescription.setWidth(100);
 		tblclmnConProdDescription.setText("Description");
 		
 		TableViewerColumn prodAvgCost = new TableViewerColumn(ConProdTableViewer, SWT.NONE);
+		prodAvgCost.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConProdAvgCost = prodAvgCost.getColumn();
 		tblclmnConProdAvgCost.setWidth(100);
 		tblclmnConProdAvgCost.setText("Avg. Cost");
 		
 		TableViewerColumn prodManu = new TableViewerColumn(ConProdTableViewer, SWT.NONE);
+		prodManu.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConProdManufacturer = prodManu.getColumn();
 		tblclmnConProdManufacturer.setWidth(100);
 		tblclmnConProdManufacturer.setText("Manufacturer");
 		
 		TableViewerColumn tableViewerColumn_47 = new TableViewerColumn(ConProdTableViewer, SWT.NONE);
+		tableViewerColumn_47.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConProdCommRate = tableViewerColumn_47.getColumn();
 		tblclmnConProdCommRate.setWidth(110);
 		tblclmnConProdCommRate.setText("Commission Rate");
 		
 		TableViewerColumn prodCategory = new TableViewerColumn(ConProdTableViewer, SWT.NONE);
+		prodCategory.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConProdCategoryId = prodCategory.getColumn();
 		tblclmnConProdCategoryId.setWidth(100);
 		tblclmnConProdCategoryId.setText("Category ID");
 		
 		TableViewerColumn prodVendor = new TableViewerColumn(ConProdTableViewer, SWT.NONE);
+		prodVendor.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConProdVendorId = prodVendor.getColumn();
 		tblclmnConProdVendorId.setWidth(100);
 		tblclmnConProdVendorId.setText("Vendor ID");
@@ -1210,41 +1486,137 @@ public class GeneralInfoWindow extends Dialog {
 		physRentTable.setHeaderVisible(true);
 		
 		TableViewerColumn tableViewerColumn_27 = new TableViewerColumn(tableViewer_1, SWT.NONE);
+		tableViewerColumn_27.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnStatus = tableViewerColumn_27.getColumn();
 		tblclmnStatus.setWidth(100);
 		tblclmnStatus.setText("Status");
 		
 		TableViewerColumn tableViewerColumn_22 = new TableViewerColumn(tableViewer_1, SWT.NONE);
+		tableViewerColumn_22.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnRentalId = tableViewerColumn_22.getColumn();
 		tblclmnRentalId.setWidth(100);
 		tblclmnRentalId.setText("Rental ID");
 		
 		TableViewerColumn tableViewerColumn_23 = new TableViewerColumn(tableViewer_1, SWT.NONE);
+		tableViewerColumn_23.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnNewColumn = tableViewerColumn_23.getColumn();
 		tblclmnNewColumn.setWidth(100);
 		tblclmnNewColumn.setText("Serial Number");
 		
 		TableViewerColumn tableViewerColumn_29 = new TableViewerColumn(tableViewer_1, SWT.NONE);
+		tableViewerColumn_29.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnTimesRented = tableViewerColumn_29.getColumn();
 		tblclmnTimesRented.setWidth(100);
 		tblclmnTimesRented.setText("Times Rented");
 		
 		TableViewerColumn tableViewerColumn_24 = new TableViewerColumn(tableViewer_1, SWT.NONE);
+		tableViewerColumn_24.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnShelfLocale = tableViewerColumn_24.getColumn();
 		tblclmnShelfLocale.setWidth(100);
 		tblclmnShelfLocale.setText("Shelf Location");
 		
 		TableViewerColumn tableViewerColumn_28 = new TableViewerColumn(tableViewer_1, SWT.NONE);
+		tableViewerColumn_28.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnCommissionRate_1 = tableViewerColumn_28.getColumn();
 		tblclmnCommissionRate_1.setWidth(110);
 		tblclmnCommissionRate_1.setText("Full Commission Rate");
 		
 		TableViewerColumn tableViewerColumn_26 = new TableViewerColumn(tableViewer_1, SWT.NONE);
+		tableViewerColumn_26.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnCost = tableViewerColumn_26.getColumn();
 		tblclmnCost.setWidth(100);
 		tblclmnCost.setText("Cost");
 		
 		TableViewerColumn tableViewerColumn_25 = new TableViewerColumn(tableViewer_1, SWT.NONE);
+		tableViewerColumn_25.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnDatePurchased = tableViewerColumn_25.getColumn();
 		tblclmnDatePurchased.setWidth(100);
 		tblclmnDatePurchased.setText("Date Purchased");
@@ -1290,61 +1662,205 @@ public class GeneralInfoWindow extends Dialog {
 		conRentTable.setHeaderVisible(true);
 		
 		TableViewerColumn tableViewerColumn_13 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_13.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentID = tableViewerColumn_13.getColumn();
 		tblclmnConRentID.setWidth(100);
 		tblclmnConRentID.setText("Rental ID");
 		
 		TableViewerColumn tableViewerColumn_44 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_44.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentConProdId = tableViewerColumn_44.getColumn();
 		tblclmnConRentConProdId.setWidth(100);
 		tblclmnConRentConProdId.setText("Product ID");
 		
 		TableViewerColumn tableViewerColumn_19 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_19.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentSku = tableViewerColumn_19.getColumn();
 		tblclmnConRentSku.setWidth(100);
 		tblclmnConRentSku.setText("SKU");
 		
 		TableViewerColumn tableViewerColumn_14 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_14.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentProdName = tableViewerColumn_14.getColumn();
 		tblclmnConRentProdName.setWidth(100);
 		tblclmnConRentProdName.setText("Product Name");
 		
 		TableViewerColumn tableViewerColumn_15 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_15.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentDescription = tableViewerColumn_15.getColumn();
 		tblclmnConRentDescription.setWidth(100);
 		tblclmnConRentDescription.setText("Description");
 		
 		TableViewerColumn tableViewerColumn_17 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_17.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentAvgCost = tableViewerColumn_17.getColumn();
 		tblclmnConRentAvgCost.setWidth(100);
 		tblclmnConRentAvgCost.setText("Avg  Cost");
 		
 		TableViewerColumn tableViewerColumn_16 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_16.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentManufacturer = tableViewerColumn_16.getColumn();
 		tblclmnConRentManufacturer.setWidth(100);
 		tblclmnConRentManufacturer.setText("Manufacturer");
 		
 		TableViewerColumn tableViewerColumn_18 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_18.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentCommRate = tableViewerColumn_18.getColumn();
 		tblclmnConRentCommRate.setWidth(100);
 		tblclmnConRentCommRate.setText("Commission Rate");
 		
 		TableViewerColumn tableViewerColumn_48 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_48.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentCategoryId = tableViewerColumn_48.getColumn();
 		tblclmnConRentCategoryId.setWidth(100);
 		tblclmnConRentCategoryId.setText("Category ID");
 		
 		TableViewerColumn tableViewerColumn_49 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_49.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentVendorId = tableViewerColumn_49.getColumn();
 		tblclmnConRentVendorId.setWidth(100);
 		tblclmnConRentVendorId.setText("Vendor ID");
 		
 		TableViewerColumn tableViewerColumn_20 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_20.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentPricePerDay = tableViewerColumn_20.getColumn();
 		tblclmnConRentPricePerDay.setWidth(100);
 		tblclmnConRentPricePerDay.setText("Price Per Day");
 		
 		TableViewerColumn tableViewerColumn_21 = new TableViewerColumn(tableViewer, SWT.NONE);
+		tableViewerColumn_21.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public Image getImage(Object element) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			@Override
+			public String getText(Object element) {
+				// TODO Auto-generated method stub
+				return element == null ? "" : element.toString();
+			}
+		});
 		TableColumn tblclmnConRentRepCost = tableViewerColumn_21.getColumn();
 		tblclmnConRentRepCost.setWidth(100);
 		tblclmnConRentRepCost.setText("Replacement Price");
