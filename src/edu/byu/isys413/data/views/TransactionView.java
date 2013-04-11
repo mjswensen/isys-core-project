@@ -435,21 +435,21 @@ public class TransactionView extends Shell {
 		lblSubtotal.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblSubtotal.setText("Subtotal");
 		
-		txtSubtotal = new Text(composite_2, SWT.BORDER | SWT.READ_ONLY);
+		txtSubtotal = new Text(composite_2, SWT.BORDER | SWT.READ_ONLY | SWT.RIGHT);
 		txtSubtotal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblTax = new Label(composite_2, SWT.NONE);
 		lblTax.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblTax.setText("Tax");
 		
-		txtTax = new Text(composite_2, SWT.BORDER | SWT.READ_ONLY);
+		txtTax = new Text(composite_2, SWT.BORDER | SWT.READ_ONLY | SWT.RIGHT);
 		txtTax.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblTotal = new Label(composite_2, SWT.NONE);
 		lblTotal.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblTotal.setText("Total");
 		
-		txtTotal = new Text(composite_2, SWT.BORDER | SWT.READ_ONLY);
+		txtTotal = new Text(composite_2, SWT.BORDER | SWT.READ_ONLY | SWT.RIGHT);
 		txtTotal.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnRemoveItem = new Button(composite, SWT.NONE);
