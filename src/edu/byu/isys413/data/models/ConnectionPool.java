@@ -31,9 +31,9 @@ import java.util.*;
  */
 public class ConnectionPool {
 
-  private static String DATABASE_URL = "jdbc:mysql://localhost:3306/mystuff?user=mystuff&password=mystuff";
+  private static String DATABASE_URL = "jdbc:mysql://isysteam1-9.com:7070/mystuff?user=mystuff&password=mystuff";
   private static String DRIVER_NAME = "com.mysql.jdbc.Driver";
-  private static final int MAX_CONNECTIONS = 1;
+  private static final int MAX_CONNECTIONS = 5;
   
   //////////////////////////////////////////////
   ///   Singelton code
