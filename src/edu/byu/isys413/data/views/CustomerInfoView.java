@@ -198,14 +198,14 @@ public class CustomerInfoView extends Shell {
 		createContents();
 		
 		// Populate fields with customer information.
-		txtFirstname.setText(c.getFirstName());
-		txtLastname.setText(c.getLastName());
-		txtPhone.setText(c.getPhone());
-		txtEmail.setText(c.getEmail());
-		txtAddress.setText(c.getAddress());
+		txtFirstname.setText(c.getFirstName() != null ? c.getFirstName() : "");
+		txtLastname.setText(c.getLastName() != null ? c.getLastName() : "");
+		txtPhone.setText(c.getPhone() != null ? c.getPhone() : "");
+		txtEmail.setText(c.getEmail() != null ? c.getEmail() : "");
+		txtAddress.setText(c.getAddress() != null ? c.getAddress() : "");
 		try {
 			if(c.getMembership() != null) {
-				txtCreditCard.setText(c.getMembership().getCreditCard());
+				txtCreditCard.setText(c.getMembership().getCreditCard() != null ? c.getMembership().getCreditCard() : "");
 			}
 		} catch(DataException e) {}
 	}
