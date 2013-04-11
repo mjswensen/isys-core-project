@@ -472,6 +472,9 @@ VALUES
   ('glAccount3','edu.byu.isys413.data.models.GeneralLedger'),
   ('glAccount4','edu.byu.isys413.data.models.GeneralLedger'),
   ('glAccount5','edu.byu.isys413.data.models.GeneralLedger'),
+  ('glAccount6','edu.byu.isys413.data.models.GeneralLedger'),
+  ('glAccount7','edu.byu.isys413.data.models.GeneralLedger'),
+  ('glAccount8','edu.byu.isys413.data.models.GeneralLedger'),
   ('journalEntry1','edu.byu.isys413.data.models.JournalEntry'),
   ('forSale1','edu.byu.isys413.data.models.ForSale'),
   ('forSale2','edu.byu.isys413.data.models.ForSale'),
@@ -771,8 +774,11 @@ VALUES
   ('glAccount1','Cash',25000.00,'DR'),
   ('glAccount2','Commission Payable',3300.00,'CR'),
   ('glAccount3','Commission Expense',0.00,'DR'),
-  ('glAccount4','Revenue',125000.00,'CR'),
-  ('glAccount5','Tax Payable',15000.00,'CR');
+  ('glAccount4','Sales Revenue',125000.00,'CR'),
+  ('glAccount5','Rental Revenue',500000.00,'CR'),
+  ('glAccount6','Fee Revenue',35000.00,'CR'),
+  ('glAccount7','Print Order Revenue',50000.00,'CR'),
+  ('glAccount8','Tax Payable',15000.00,'CR');
 
 
 # Populate table picture ;

@@ -61,7 +61,7 @@ public class UpdateGeneralLedger {
 				je.save();
 			}
 			
-			System.out.println("Journal entries posted to the general ledger successfully. Updated " + temporaryLedger.size() + " accounts from " + jeList.size() + " journal entries.");
+			System.out.println("Journal entries posted to the general ledger successfully. Updated " + temporaryLedger.size() + " accounts from " + jeList.size() + " journal " + (jeList.size() == 1 ? "entry" : "entries") + ".");
 			
 		} catch (DataException e) {
 			System.out.println("There was an error running this program: " + e.getMessage());

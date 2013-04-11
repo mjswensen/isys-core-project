@@ -312,13 +312,63 @@ public class Transaction extends BusinessObject {
 		cash.setAmount(total);
 		cash.save();
 		
-		DebitCredit salesRevenue = BusinessObjectDAO.getInstance().create("DebitCredit");
-		salesRevenue.setJournalEntry(je);
-		salesRevenue.setGlAccount("Revenue");
-		salesRevenue.setType("CR");
-		salesRevenue.setAmount(subtotal);
-		salesRevenue.save();
+
+		// Calculate where the revenues are coming from, and create the appropriate journal entries for them.
 		
+		if(getSales().size() > 0) {
+			double salesRevenueTotal = 0.0;
+			for(Sale s : getSales()) {
+				salesRevenueTotal += s.getChargeAmount();
+			}
+			DebitCredit salesRevenue = BusinessObjectDAO.getInstance().create("DebitCredit");
+			salesRevenue.setJournalEntry(je);
+			salesRevenue.setGlAccount("Sales Revenue");
+			salesRevenue.setType("CR");
+			salesRevenue.setAmount(salesRevenueTotal);
+			salesRevenue.save();
+		}
+		
+		if(getRentals().size() > 0) {
+			double rentalRevenueTotal = 0.0;
+			for(Rental r : getRentals()) {
+				rentalRevenueTotal += r.getChargeAmount();
+			}
+			DebitCredit rentalRevenue = BusinessObjectDAO.getInstance().create("DebitCredit");
+			rentalRevenue.setJournalEntry(je);
+			rentalRevenue.setGlAccount("Rental Revenue");
+			rentalRevenue.setType("CR");
+			rentalRevenue.setAmount(rentalRevenueTotal);
+			rentalRevenue.save();
+		}
+		
+		if(getFees().size() > 0) {
+			double feeRevenueTotal = 0.0;
+			for(Fee f : getFees()) {
+				feeRevenueTotal += f.getChargeAmount();
+			}
+			DebitCredit feeRevenue = BusinessObjectDAO.getInstance().create("DebitCredit");
+			feeRevenue.setJournalEntry(je);
+			feeRevenue.setGlAccount("Fee Revenue");
+			feeRevenue.setType("CR");
+			feeRevenue.setAmount(feeRevenueTotal);
+			feeRevenue.save();
+		}
+		
+		if(getPrintOrders().size() > 0) {
+			double printOrderRevenueTotal = 0.0;
+			for(PrintOrder po : getPrintOrders()) {
+				printOrderRevenueTotal += po.getChargeAmount();
+			}
+			DebitCredit printOrderRevenue = BusinessObjectDAO.getInstance().create("DebitCredit");
+			printOrderRevenue.setJournalEntry(je);
+			printOrderRevenue.setGlAccount("Print Order Revenue");
+			printOrderRevenue.setType("CR");
+			printOrderRevenue.setAmount(printOrderRevenueTotal);
+			printOrderRevenue.save();
+		}
+		
+		
+		// Taxes
 		DebitCredit taxPayable = BusinessObjectDAO.getInstance().create("DebitCredit");
 		taxPayable.setJournalEntry(je);
 		taxPayable.setGlAccount("Tax Payable");
