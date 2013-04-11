@@ -584,7 +584,7 @@ VALUES
 
 INSERT INTO `conceptualproduct` (`id`, `name`, `description`, `manufacturer`, `averagecost`, `commissionrate`, `sku`, `categoryid`, `vendorid`)
 VALUES
-  ('conceptualProduct1','EOS','Entry-level digital camera','Canon',300.00,0.05,NULL,NULL,NULL),
+  ('conceptualProduct1','Canon EOS','Entry-level digital camera','Canon',300.00,0.05,NULL,NULL,NULL),
   ('conceptualProduct2','Keychain','MyStuff logo keychain','Rocky',10.00,0.01,'123456789',NULL,NULL),
   ('conceptualProduct3','Analog Film','Medium roll of film','Canon',5.00,0.02,'234567891',NULL,NULL),
   ('conceptualRental1','Nikon 500','Intermediate digital camera','Nikon',200.00,0.06,NULL,NULL,NULL);
@@ -612,7 +612,7 @@ VALUES
   ('forRent1','store1','conceptualRental1','URLSUFS74WLSG','Aisle 1','2012-11-07 10:30:00',200.00,0,0.04,'ForRent'),
   ('forRent2','store1','conceptualRental1','POIR52CSUWARE','Aisle 1','2012-11-07 10:30:00',200.00,0,0.04,'ForRent'),
   ('forRent3','store1','conceptualRental1','7S9FJSLKDFA7C','Aisle 1','2012-11-07 10:30:00',200.00,1,0.04,'ForRent'),
-  ('forRent4','store1','conceptualRental1','ABC123','Aisle 1','2012-11-07 10:30:00',200.00,1,0.04,'ForRent');
+  ('forRent4','store1','conceptualRental1','UF8SJCS0S8F2F','Aisle 1','2012-11-07 10:30:00',200.00,1,0.04,'ForRent');
 
 
 # Populate table forsale ;
