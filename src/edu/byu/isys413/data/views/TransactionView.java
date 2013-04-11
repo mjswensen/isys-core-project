@@ -126,12 +126,13 @@ public class TransactionView extends Shell {
 					Product p = s.getProduct();
 					if(p.getClass().getSimpleName().equals("ConceptualProduct")) {
 						return ((ConceptualProduct) p).getName();
-					} else if(p.getClass().getSimpleName().equals("PhysicalProduct")) {
+					} else if(p.getClass().getSimpleName().equals("ForSale")) {
 						return ((PhysicalProduct) p).getConceptualProduct().getName();
 					} else {
-						return "(Unavailable)";
+						throw new DataException("Product was neither Conceptual nor Physical. It was: " + p.getClass().getSimpleName());
 					}
 				} catch (DataException e) {
+					System.out.println(e.getMessage());
 					return "(Unavailable)";
 				}
 			}
