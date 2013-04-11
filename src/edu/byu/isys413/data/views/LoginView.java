@@ -35,6 +35,7 @@ public class LoginView extends Shell {
 	private Text txtNetid;
 	private Text txtPassword;
 	private int tryCount = 1;
+	private int maxTryCount = 5;
 	private Label errorLabel;
 	private CLabel label;
 	private Group grpLoginStatus;
@@ -164,6 +165,16 @@ public class LoginView extends Shell {
 		String netId = txtNetid.getText();
 		String passwd = txtPassword.getText();
 		
+		// First check to be sure that they filled in both fields. If they missed one, it doesn't increment their tryCount.
+		if(netId.equals("")) {
+			errorLabel.setText("Please provide a username.");
+			return;
+		}
+		if(passwd.equals("")) {
+			errorLabel.setText("Please provide a password.");
+			return;
+		}
+		
 		LDAP ldap = new LDAP();
 		if(ldap.authenticate(netId, passwd)){
 			Employee emp = null;
@@ -178,13 +189,14 @@ public class LoginView extends Shell {
 		}
 		else{
 			
-			if(tryCount <3){
-				errorLabel.setText(("Incorrect username and/or password. Please try again.")); 
+			if(tryCount <= maxTryCount){
+				int triesLeft = maxTryCount - tryCount;
+				errorLabel.setText(("Incorrect username and/or password. Please try again. (" + triesLeft + " " + (triesLeft == 1 ? "try" : "tries") + " remaining.)")); 
 				tryCount++;
 			}
 			else{
 				MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR); 
-				messageBox.setMessage("Login failed. Please try again later."); 
+				messageBox.setMessage("Max login attempt count failed. Please try again later."); 
 				messageBox.open(); 
 				dispose();
 				System.exit(0);
