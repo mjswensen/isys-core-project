@@ -24,7 +24,7 @@ $(function() {
 	$('.search-query').on('keyup', function() {
 		var query = $('.search-query').val();
 		$.ajax({
-			url: '/MyStuffSprint/edu.byu.isys413.data.actions.ProductList.action?q=' + encodeURIComponent(query),
+			url: 'edu.byu.isys413.data.actions.ProductList.action?q=' + encodeURIComponent(query),
 			success: function(data) {
 				if(data.length > 0) {
 					$('.products').html('');
@@ -34,7 +34,7 @@ $(function() {
 								.append($('<h4></h4>').text(data[each].name))
 								.append($('<p></p>').text(data[each].description))
 								.append($('<p></p>')
-									.append($('<a></a>').addClass('btn').attr('href','/MyStuffSprint/edu.byu.isys413.data.actions.ProductDetails.action?id=' + data[each].id).text('Choose'))));
+									.append($('<a></a>').addClass('btn').attr('href','edu.byu.isys413.data.actions.ProductDetails.action?id=' + data[each].id).text('Choose'))));
 						$('.products').append($li);
 					}
 				} else {
