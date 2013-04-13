@@ -180,7 +180,7 @@ public class MainActivity extends Activity {
      */
     private String getUrlFromAction(String action) {
     	StringBuilder bldr = new StringBuilder();
-    	bldr.append("http://isysteam1-9.com/mystuff/edu.byu.isys413.data.actions.");
+    	bldr.append("http://isysteam1-9.com/edu.byu.isys413.data.actions.");
     	bldr.append(action);
     	bldr.append(".action");
     	return bldr.toString();
